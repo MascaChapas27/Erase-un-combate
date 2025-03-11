@@ -148,7 +148,7 @@ void Combate::actualizarFramePreparandoSuper(std::list<std::shared_ptr<Animacion
     ventana->display();
 }
 
-void Combate::recibirEntradaOffline()
+void Combate::recibirEntradaPlayerVSPlayerOffline()
 {
 
     sf::RenderWindow *ventana = VentanaPrincipal::unicaInstancia();
@@ -181,7 +181,74 @@ void Combate::recibirEntradaOffline()
     }
 }
 
-void Combate::recibirEntradaOnline()
+void Combate::recibirEntradaPlayerVSBot()
+{
+
+    sf::RenderWindow *ventana = VentanaPrincipal::unicaInstancia();
+
+    while (const std::optional evento = ventana->pollEvent())
+    {
+        if (evento->is<sf::Event::Closed>())
+        {
+            ventana->close();
+            exit(EXIT_SUCCESS);
+        }
+        else
+        {
+            std::pair<Jugador, Accion> par = GestorDeControles::unicaInstancia()->comprobarEvento(evento);
+
+            // Si se pulsa una tecla que no es del jugador 1 da igual, se comprueba la siguiente tecla
+            if(par.first != Jugador::JUGADOR1)
+                continue;
+
+            if ((dynamic_cast<AnimacionAgrandable *>(cartelAPelear.get()))->haTerminadoDeAgrandarse())
+            {
+                if (evento->is<sf::Event::KeyPressed>() || evento->is<sf::Event::JoystickButtonPressed>() || (evento->is<sf::Event::JoystickMoved>() && std::abs(evento->getIf<sf::Event::JoystickMoved>()->position) > UMBRAL_JOYSTICK))
+                {
+                    personajeJugador1.realizarAccion(par.second);
+                }
+                else if (evento->is<sf::Event::KeyReleased>() || evento->is<sf::Event::JoystickButtonReleased>() || (evento->is<sf::Event::JoystickMoved>() && std::abs(evento->getIf<sf::Event::JoystickMoved>()->position) < UMBRAL_JOYSTICK))
+                {
+                    personajeJugador1.detenerAccion(par.second);
+                }
+            }
+        }
+    }
+
+    if ((dynamic_cast<AnimacionAgrandable *>(cartelAPelear.get()))->haTerminadoDeAgrandarse()){
+        if(rand()%2 == 0){
+            personajeJugador2.realizarAccion(Accion::ATACAR);
+        } else {
+            personajeJugador2.detenerAccion(Accion::ATACAR);
+        }
+    
+        if(rand()%10 == 0){
+            personajeJugador2.realizarAccion(Accion::ARRIBA);
+        } else {
+            personajeJugador2.detenerAccion(Accion::ARRIBA);
+        }
+    
+        if(rand()%8 == 0){
+            if(personajeJugador2.isMirandoDerecha()){
+                personajeJugador2.realizarAccion(Accion::DERECHA);
+                personajeJugador2.detenerAccion(Accion::IZQUIERDA);
+            } else {
+                personajeJugador2.realizarAccion(Accion::IZQUIERDA);
+                personajeJugador2.detenerAccion(Accion::DERECHA);
+            }
+        }
+    
+        if(rand()%8 == 0){
+            personajeJugador2.realizarAccion(Accion::ABAJO);
+        } else {
+            personajeJugador2.detenerAccion(Accion::ABAJO);
+        }
+    }
+
+    
+}
+
+void Combate::recibirEntradaPlayerVSPlayerOnline()
 {
 
     sf::RenderWindow *ventana = VentanaPrincipal::unicaInstancia();
@@ -316,10 +383,12 @@ void Combate::actualizarFrameNormal(std::list<std::shared_ptr<Animacion>> &efect
         cartelAPelear->actualizar(efectos);
     }
 
-    if (conector.has_value())
-        recibirEntradaOnline();
-    else
-        recibirEntradaOffline();
+    recibirEntradaPlayerVSBot();
+
+    // if (conector.has_value())
+    //     recibirEntradaPlayerVSPlayerOnline();
+    // else
+    //     recibirEntradaPlayerVSPlayerOffline();
 
     // SEGUNDO PASO: ACTUALIZAR PERSONAJES, EFECTOS, GUIS, ESCENARIO Y VENTANA
 

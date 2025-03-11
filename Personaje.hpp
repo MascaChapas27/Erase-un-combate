@@ -119,6 +119,9 @@ class Personaje : public sf::Drawable {
         // Devuelve la posición del personaje
         sf::Vector2f getPosicion();
 
+        // Devuelve true si está mirando hacia la derecha
+        bool isMirandoDerecha();
+
         // Mueve al personaje según lo indicado (en realidad mueve la animación del estado
         // actual pero el resultado es el mismo)
         void mover(float offsetX, float offsetY);

@@ -80,10 +80,13 @@ class Combate{
         void actualizarPersonajesEfectosGuisEscenarioVentana(std::list<std::shared_ptr<Animacion>> &efectos, std::list<std::shared_ptr<Animacion>> &nuevosEfectos);
 
         // Procesa los eventos generados en la ventana actual e informa a los personajes para que se muevan si se está jugando offline
-        void recibirEntradaOffline();
+        void recibirEntradaPlayerVSPlayerOffline();
 
-        // Como recibirEntradaOffline() pero esta vez se sincroniza con el rival para mandarle la entrada y que nos mande su entrada
-        void recibirEntradaOnline();
+        // Como recibirEntradaPlayerVSPlayerOffline() pero esta vez se sincroniza con el rival para mandarle la entrada y que nos mande su entrada
+        void recibirEntradaPlayerVSPlayerOnline();
+
+        // Como recibirEntradaPlayerVSPlayerOffline() pero esta vez el jugador 2 es un bot
+        void recibirEntradaPlayerVSBot();
 
     public:
 

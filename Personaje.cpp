@@ -83,6 +83,10 @@ sf::Vector2f Personaje::getPosicion(){
     return animaciones.at(estado)->getPosicion();
 }
 
+bool Personaje::isMirandoDerecha(){
+    return mirandoDerecha;
+}
+
 EstadoPersonaje Personaje::getEstado(){
     return estado;
 }
