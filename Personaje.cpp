@@ -942,13 +942,25 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
     // Una vez se sabe dónde se va a colocar, se comprueba cómo está el personaje ahora mismo
     if(estado == EstadoPersonaje::BLOQUEANDO){
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("bloqueado");
+        
+        if(hitboxElegidaEnemigo.getFuerzaAtaque() > MAX_ATAQUE_PEQUE && hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_MEDIO){
+            for(int i=0;i < hitboxElegidaEnemigo.getFuerzaAtaque()/2;++i){
+
+                auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
+                ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
+                ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE));
+                ((AnimacionConGravedad*)(particula.get()))->setVelocidadGiro((rand()%2==0 ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_GIRO_PART);
+
+                efectosInsertados.push_back(particula);
+            }
+        }
+
     } else if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_PEQUE){
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-peque");
 
-        for(int i(0);i < NUM_PARTICULAS_GOLPEADO_PEQUE;++i){
-            int j(1+rand()%TIPO_PEQUE_CUANTAS_PARTICULAS);
+        for(int i=0;i < hitboxElegidaEnemigo.getFuerzaAtaque();++i){
 
-            auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-peque-"+std::to_string(j));
+            auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
             ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
             ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE));
             ((AnimacionConGravedad*)(particula.get()))->setVelocidadGiro((rand()%2==0 ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_GIRO_PART);
@@ -962,12 +974,20 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
 
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-medio");
 
-        for(int i(0);i < NUM_PARTICULAS_GOLPEADO_MEDIO;++i){
-            int j(1+rand()%TIPO_MEDIO_CUANTAS_PARTICULAS);
+        for(int i=0;i < hitboxElegidaEnemigo.getFuerzaAtaque()/2;++i){
 
-            auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-medio-"+std::to_string(j));
+            auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-2");
             ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
             ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_MEDIA,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_MEDIA));
+            ((AnimacionConGravedad*)(particula.get()))->setVelocidadGiro((rand()%2==0 ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_GIRO_PART);
+
+            efectosInsertados.push_back(particula);
+        }
+
+        if(hitboxElegidaEnemigo.getFuerzaAtaque()%2 == 1){
+            auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
+            ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
+            ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE));
             ((AnimacionConGravedad*)(particula.get()))->setVelocidadGiro((rand()%2==0 ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_GIRO_PART);
 
             efectosInsertados.push_back(particula);
@@ -979,12 +999,29 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
 
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-grande");
 
-        for(int i(0);i < NUM_PARTICULAS_GOLPEADO_GRANDE;++i){
-            int j(1+rand()%TIPO_GRANDE_CUANTAS_PARTICULAS);
+        for(int i=0;i < hitboxElegidaEnemigo.getFuerzaAtaque()/3;++i){
 
-            auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-grande-"+std::to_string(j));
+            auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-3");
             ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
             ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_GRANDE,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_GRANDE));
+            ((AnimacionConGravedad*)(particula.get()))->setVelocidadGiro((rand()%2==0 ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_GIRO_PART);
+
+            efectosInsertados.push_back(particula);
+        }
+
+        if(hitboxElegidaEnemigo.getFuerzaAtaque()%3 == 2){
+            auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-2");
+            ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
+            ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_MEDIA,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_MEDIA));
+            ((AnimacionConGravedad*)(particula.get()))->setVelocidadGiro((rand()%2==0 ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_GIRO_PART);
+
+            efectosInsertados.push_back(particula);
+        }
+
+        if(hitboxElegidaEnemigo.getFuerzaAtaque()%3 == 1){
+            auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
+            ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
+            ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE));
             ((AnimacionConGravedad*)(particula.get()))->setVelocidadGiro((rand()%2==0 ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_GIRO_PART);
 
             efectosInsertados.push_back(particula);
