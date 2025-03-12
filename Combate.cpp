@@ -555,7 +555,7 @@ void Combate::actualizarFrameCelebracion(std::list<std::shared_ptr<Animacion>> &
         ventana->draw(*cartelJugador1Gana);
     } else if(personajeJugador2.getPuntosDeVida() > personajeJugador1.getPuntosDeVida() && personajeJugador2.getEstado() == EstadoPersonaje::CELEBRANDO){
         ventana->draw(*cartelJugador2Gana);
-    } else if(personajeJugador1.getEstado() == EstadoPersonaje::TUMBADO && personajeJugador2.getEstado() == EstadoPersonaje::TUMBADO) {
+    } else if(personajeJugador1.getPuntosDeVida() == personajeJugador2.getPuntosDeVida() && personajeJugador1.getEstado() == EstadoPersonaje::TUMBADO && personajeJugador2.getEstado() == EstadoPersonaje::TUMBADO) {
         ventana->draw(*cartelEmpate);
     }
 
