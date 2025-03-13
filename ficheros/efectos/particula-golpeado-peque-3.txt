@@ -1,3 +1,0 @@
-Tipo:gravedad
-
-Hitbox:

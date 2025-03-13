@@ -122,24 +122,6 @@ const int MAX_VELOCIDAD_PARTICULA_MEDIA = 6;
 // Máxima velocidad en cualquier eje de una partícula grande
 const int MAX_VELOCIDAD_PARTICULA_GRANDE = 8;
 
-// Cuántas partículas distintas hay de tipo pequeño
-const int TIPO_PEQUE_CUANTAS_PARTICULAS = 3;
-
-// Cuántas partículas distintas hay de tipo medio
-const int TIPO_MEDIO_CUANTAS_PARTICULAS = 3;
-
-// Cuántas partículas distintas hay de tipo grande
-const int TIPO_GRANDE_CUANTAS_PARTICULAS = 3;
-
-// El número de partículas que salen cuando te pegan con un ataque pequeño
-const int NUM_PARTICULAS_GOLPEADO_PEQUE = 2;
-
-// El número de partículas que salen cuando te pegan con un ataque medio
-const int NUM_PARTICULAS_GOLPEADO_MEDIO = 4;
-
-// El número de partículas que salen cuando te pegan con un ataque grande
-const int NUM_PARTICULAS_GOLPEADO_GRANDE = 7;
-
 // Cómo de desplazada está la animación del polvo en el eje X con respecto al centro del personaje
 const int OFFSET_POLVO = 15;
 
