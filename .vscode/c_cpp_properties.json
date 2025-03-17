@@ -4,7 +4,6 @@
             "name": "windows-clang-x64",
             "includePath": [
                 "${workspaceFolder}/**",
-                "c:/Users/Ángel/OneDrive - UNIVERSIDAD DE MURCIA/Mis programas/Érase un combate/**",
                 "C:\\SFML-3.0.0\\include"
             ],
             "defines": [
@@ -16,11 +15,9 @@
             "cStandard": "c17",
             "cppStandard": "c++20",
             "intelliSenseMode": "windows-clang-x64",
-            "compilerPathInCppPropertiesJson": "C:\\msys64\\mingw64\\bin\\gcc.exe",
             "mergeConfigurations": false,
             "browse": {
                 "path": [
-                    "c:/Users/Ángel/OneDrive - UNIVERSIDAD DE MURCIA/Mis programas/Érase un combate/**",
                     "${workspaceFolder}"
                 ],
                 "limitSymbolsToIncludedHeaders": true

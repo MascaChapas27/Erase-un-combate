@@ -235,13 +235,13 @@ const sf::Vector2f POSICION_PORTRAIT_IZQUIERDA(3,3);
 const sf::Vector2f POSICION_NOMBRE_IZQUIERDA(40,28);
 
 // Color de la barra de vida en tiempo real
-const sf::Color COLOR_BARRA_VIDA_REAL(0,255,0);
+const sf::Color COLOR_BARRA_VIDA_REAL(106,206,64);
 
 // Color de la barra de vida atrasada
-const sf::Color COLOR_BARRA_VIDA_ATRASADA(255,0,0);
+const sf::Color COLOR_BARRA_VIDA_ATRASADA(204,65,65);
 
 // Color de la barra de súper
-const sf::Color COLOR_BARRA_SUPER(0,0,255);
+const sf::Color COLOR_BARRA_SUPER(89,114,255);
 
 // Cada cuántos frames se actualiza la vibración
 const int CONTADOR_VIBRACION_MAX = 2;

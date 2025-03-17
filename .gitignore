@@ -32,3 +32,9 @@
 # Code::Blocks stuff
 *.depend
 *.layout
+
+# Cmake stuff
+build/
+
+# dlls that depend on the machine
+*.dll

@@ -2,7 +2,6 @@
 #define __CONECTOR_ONLINE_HPP__
 
 #include "Enums.hpp"
-#include "AccionesOnline.hpp"
 #include <SFML/Network.hpp>
 #include <optional>
 #include <unordered_set>
