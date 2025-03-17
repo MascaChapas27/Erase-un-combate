@@ -1,6 +1,6 @@
 # 1: Crear el directorio build con `mkdir build`
 # 2: Ir al directorio build recién creado con `cd build`
-# 3: Usar CMake para crear toda la morralla en el directorio build. Por ejemplo, yo uso CMake 4.0.0 y se queja si cmake_minimum_required es bajo, y también uso Ninja para compilar, así que uso `cmake .. -G Ninja -DCMAKE_POLICY_VERSION_MINIMUM="3.5"`
+# 3: Usar CMake para crear toda la morralla en el directorio build. `cmake .. -G Ninja`
 # 4: Compilar usando `ninja` o lo que hayas utilizado para compilar si en vez de `-G Ninja` has puesto algo distinto en el comando de arriba
 # 5: Ejecutar el juego EraseUnCombate.exe en el directorio principal
 
@@ -9,6 +9,9 @@ project(EraseUnCombate LANGUAGES CXX)
 
 # El programa se creará en el directorio raíz del proyecto
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
+
+# Aunque se use CMake super moderno se permitirá que el CMake de SFML sea más viejuno
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
 # Cosa rara que se trae el repositorio entero de SFML de GitHub
 include(FetchContent)
