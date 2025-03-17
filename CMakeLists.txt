@@ -30,4 +30,4 @@ target_compile_features(EraseUnCombate PRIVATE cxx_std_20)
 target_link_libraries(EraseUnCombate PRIVATE SFML::Graphics SFML::Network SFML::Window SFML::System SFML::Audio)
 
 # Opciones de compilación para que salgan warnings
-add_compile_options(-Wall)
+add_compile_options(-Wall -Wextra -Wpedantic)
