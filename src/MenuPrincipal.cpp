@@ -18,11 +18,28 @@ MenuPrincipal::~MenuPrincipal(){
     if(menuPrincipal != nullptr) delete menuPrincipal;
 }
 
-MenuPrincipal::MenuPrincipal() : cartelTitulo(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("titulo")),
+MenuPrincipal::MenuPrincipal() : seleccionActual(Seleccion::MODO_HISTORIA),
+                                 cartelTitulo(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("titulo")),
                                  dientesSierraArriba(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png")),
-                                 dientesSierraAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png")){
+                                 dientesSierraAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png")),
+                                 selectorModoHistoria(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/selector-modo-historia.png")),
+                                 selectorBatallaVS(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/selector-batalla-vs.png")),
+                                 selectorOpciones(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/selector-opciones.png")),
+                                 capturaModoHistoria(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-modo-historia.png")),
+                                 capturaBatallaVS(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-batalla-vs.png")),
+                                 capturaOpciones(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-opciones.png")){
     cartelTitulo->setPosicion(POSICION_TITULO);
     dientesSierraAbajo.setPosition({0,-58});
+
+    selectorModoHistoria.setPosition({POSICION_X_SELECTORES,POSICION_Y_SELECTOR_MODO_HISTORIA});
+    selectorBatallaVS.setPosition({POSICION_X_SELECTORES,POSICION_Y_SELECTOR_BATALLA_VS});
+    selectorOpciones.setPosition({POSICION_X_SELECTORES,POSICION_Y_SELECTOR_OPCIONES});
+
+    selectorBatallaVS.setColor(COLOR_SELECTOR_SIN_SELECCIONAR);
+    selectorOpciones.setColor(COLOR_SELECTOR_SIN_SELECCIONAR);
+
+    capturaBatallaVS.setColor(sf::Color::Transparent);
+    capturaOpciones.setColor(sf::Color::Transparent);
 }
 
 void MenuPrincipal::comenzar(){
@@ -63,12 +80,28 @@ void MenuPrincipal::comenzar(){
 
         ventana->clear(sf::Color(160,160,160));
 
+        switch(seleccionActual){
+            case Seleccion::MODO_HISTORIA:
+                ventana->draw(capturaModoHistoria);
+                break;
+            case Seleccion::BATALLA_VS:
+                ventana->draw(capturaBatallaVS);
+                break;
+            case Seleccion::OPCIONES:
+                ventana->draw(capturaOpciones);
+                break;
+        }
+
         ventana->draw(dientesSierraArriba);
         ventana->draw(dientesSierraAbajo);
 
         for(std::shared_ptr<Animacion> &a : animaciones){
             ventana->draw(*a);
         }
+
+        ventana->draw(selectorModoHistoria);
+        ventana->draw(selectorBatallaVS);
+        ventana->draw(selectorOpciones);
         
         ventana->display();
 
