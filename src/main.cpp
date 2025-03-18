@@ -1,7 +1,7 @@
-#include "Combate.hpp"
 #include "ContenedorDePersonajes.hpp"
 #include "ContenedorDeEfectos.hpp"
-#include <SFML/Network.hpp>
+#include "MenuPrincipal.hpp"
+#include "Combate.hpp"
 
 int main(int argc, char* argv[]){
 
@@ -11,6 +11,8 @@ int main(int argc, char* argv[]){
     ContenedorDePersonajes::unicaInstancia()->cargarTodosLosPersonajes();
 
     ContenedorDeEfectos::unicaInstancia()->cargarTodosLosEfectos();
+
+    MenuPrincipal::unicaInstancia()->comenzar();
 
     if(argc == 1){
         Combate combate("juan-cuesta-sin-casco", "juan-cuesta-sin-casco", "fachada");

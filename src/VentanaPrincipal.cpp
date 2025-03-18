@@ -23,7 +23,10 @@ sf::RenderWindow * VentanaPrincipal::unicaInstancia()
 }
 
 VentanaPrincipal::~VentanaPrincipal(){
-    if(ventanaPrincipal != nullptr) delete ventanaPrincipal;
+    if(ventanaPrincipal != nullptr) {
+        ventanaPrincipal->close();
+        delete ventanaPrincipal;
+    }
 }
 
 void VentanaPrincipal::aumentarZoom(){

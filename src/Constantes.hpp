@@ -129,7 +129,13 @@ const int OFFSET_POLVO = 15;
 const double TASA_CRECIMIENTO_ANIMACION_AGRANDABLE = 0.1;
 
 // Posición de los carteles que aparecen durante los combates (los de "¿Todo listo?" y tal)
-const sf::Vector2f POSICION_CARTELES = sf::Vector2f(VENTANA_ANCHURA/2, VENTANA_ALTURA/3);
+const sf::Vector2f POSICION_CARTELES_COMBATE = sf::Vector2f(VENTANA_ANCHURA/2, VENTANA_ALTURA/3);
+
+/*
+    CONSTANTES PARA EL MENÚ PRINCIPAL
+*/
+
+const sf::Vector2f POSICION_TITULO = sf::Vector2f(VENTANA_ANCHURA/4,VENTANA_ALTURA/6);
 
 /*
     CONSTANTES PARA LOS PERSONAJES

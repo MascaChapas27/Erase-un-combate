@@ -38,11 +38,11 @@ Combate::Combate(std::string nombrePersonajeJ1, std::string nombrePersonajeJ2, s
     personajeJugador2.setJugador(Jugador::JUGADOR2);
     personajeJugador2.setPosicion(2 * VENTANA_ANCHURA / 3, ALTURA_SUELO);
 
-    cartelTodoListo->setPosicion(POSICION_CARTELES);
-    cartelAPelear->setPosicion(POSICION_CARTELES);
-    cartelJugador1Gana->setPosicion(POSICION_CARTELES);
-    cartelJugador2Gana->setPosicion(POSICION_CARTELES);
-    cartelEmpate->setPosicion(POSICION_CARTELES);
+    cartelTodoListo->setPosicion(POSICION_CARTELES_COMBATE);
+    cartelAPelear->setPosicion(POSICION_CARTELES_COMBATE);
+    cartelJugador1Gana->setPosicion(POSICION_CARTELES_COMBATE);
+    cartelJugador2Gana->setPosicion(POSICION_CARTELES_COMBATE);
+    cartelEmpate->setPosicion(POSICION_CARTELES_COMBATE);
 }
 
 void Combate::resetear()
@@ -157,7 +157,6 @@ void Combate::recibirEntradaPlayerVSPlayerOffline()
     {
         if (evento->is<sf::Event::Closed>())
         {
-            ventana->close();
             exit(EXIT_SUCCESS);
         }
         else
@@ -190,7 +189,6 @@ void Combate::recibirEntradaPlayerVSBot()
     {
         if (evento->is<sf::Event::Closed>())
         {
-            ventana->close();
             exit(EXIT_SUCCESS);
         }
         else
@@ -261,7 +259,6 @@ void Combate::recibirEntradaPlayerVSPlayerOnline()
     {
         if (evento->is<sf::Event::Closed>())
         {
-            ventana->close();
             exit(EXIT_SUCCESS);
         }
         else
@@ -475,7 +472,6 @@ void Combate::actualizarFrameCelebracion(std::list<std::shared_ptr<Animacion>> &
     {
         if (evento->is<sf::Event::Closed>())
         {
-            ventana->close();
             exit(EXIT_SUCCESS);
         }
     }

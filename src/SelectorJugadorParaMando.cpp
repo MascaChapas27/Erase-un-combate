@@ -66,7 +66,6 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
         {
             if (evento->is<sf::Event::Closed>())
             {
-                ventana->close();
                 exit(EXIT_SUCCESS);
             }
             else if (evento->is<sf::Event::JoystickButtonPressed>())

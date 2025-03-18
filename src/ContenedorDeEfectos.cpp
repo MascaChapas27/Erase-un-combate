@@ -79,7 +79,7 @@ void ContenedorDeEfectos::cargarTodosLosEfectos()
         if (!fichero.is_open())
         {
             Bitacora::unicaInstancia()->escribir("Emilio: ... pero señor Juan, es para hoy.");
-            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Creo... creo que he extraviado el fichero ficheros/efectos.txt...");
+            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Creo... creo que he extraviado el fichero ficheros/efectos/"+nombreEfecto+".txt...");
             Bitacora::unicaInstancia()->escribir("Juan Cuesta: Qué follón... se suspende la junta.");
             exit(EXIT_FAILURE);
         }
