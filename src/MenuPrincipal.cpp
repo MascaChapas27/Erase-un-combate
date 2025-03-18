@@ -3,6 +3,7 @@
 #include "ContenedorDeRecursos.hpp"
 #include "Constantes.hpp"
 #include "VentanaPrincipal.hpp"
+#include "GestorDeControles.hpp"
 
 // La instancia es nula al principio
 MenuPrincipal * MenuPrincipal::menuPrincipal = nullptr;
@@ -31,15 +32,15 @@ MenuPrincipal::MenuPrincipal() : seleccionActual(Seleccion::MODO_HISTORIA),
     cartelTitulo->setPosicion(POSICION_TITULO);
     dientesSierraAbajo.setPosition({0,-58});
 
-    selectorModoHistoria.setPosition({POSICION_X_SELECTORES,POSICION_Y_SELECTOR_MODO_HISTORIA});
-    selectorBatallaVS.setPosition({POSICION_X_SELECTORES,POSICION_Y_SELECTOR_BATALLA_VS});
-    selectorOpciones.setPosition({POSICION_X_SELECTORES,POSICION_Y_SELECTOR_OPCIONES});
+    selectorModoHistoria.setPosition({POSICION_X_SELECTOR_SELECCIONADO,POSICION_Y_SELECTOR_MODO_HISTORIA});
+    selectorBatallaVS.setPosition({POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_BATALLA_VS});
+    selectorOpciones.setPosition({POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_OPCIONES});
 
     selectorBatallaVS.setColor(COLOR_SELECTOR_SIN_SELECCIONAR);
     selectorOpciones.setColor(COLOR_SELECTOR_SIN_SELECCIONAR);
 
-    capturaBatallaVS.setColor(sf::Color::Transparent);
-    capturaOpciones.setColor(sf::Color::Transparent);
+    capturaBatallaVS.setColor(sf::Color(255,255,255,0));
+    capturaOpciones.setColor(sf::Color(255,255,255,0));
 }
 
 void MenuPrincipal::comenzar(){
@@ -57,6 +58,47 @@ void MenuPrincipal::comenzar(){
         while(const std::optional evento = ventana->pollEvent()){
             if(evento->is<sf::Event::Closed>()){
                 exit(EXIT_SUCCESS);
+            } else {
+                std::pair<Jugador,Accion> par = GestorDeControles::unicaInstancia()->comprobarEvento(evento);
+                if((evento->is<sf::Event::JoystickButtonPressed>() || evento->is<sf::Event::KeyPressed>())){
+                    if(par.second == Accion::ARRIBA){
+                        switch(seleccionActual){
+                            case Seleccion::MODO_HISTORIA:
+                                seleccionActual = Seleccion::OPCIONES;
+                                break;
+                            case Seleccion::BATALLA_VS:
+                                seleccionActual = Seleccion::MODO_HISTORIA;
+                                break;
+                            case Seleccion::OPCIONES:
+                                seleccionActual = Seleccion::BATALLA_VS;
+                                break;
+                        }
+                    } else if (par.second == Accion::ABAJO){
+                        switch(seleccionActual){
+                            case Seleccion::MODO_HISTORIA:
+                                seleccionActual = Seleccion::BATALLA_VS;
+                                break;
+                            case Seleccion::BATALLA_VS:
+                                seleccionActual = Seleccion::OPCIONES;
+                                break;
+                            case Seleccion::OPCIONES:
+                                seleccionActual = Seleccion::MODO_HISTORIA;
+                                break;
+                        }
+                    } else if (par.second == Accion::ATACAR){
+                        switch(seleccionActual){
+                            case Seleccion::MODO_HISTORIA:
+                                selectorModoHistoria.setPosition({POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_MODO_HISTORIA});
+                                break;
+                            case Seleccion::BATALLA_VS:
+                                selectorBatallaVS.setPosition({POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_BATALLA_VS});
+                                break;
+                            case Seleccion::OPCIONES:
+                                selectorOpciones.setPosition({POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_OPCIONES});
+                                break;
+                        }
+                    }
+                }
             }
         }
 
@@ -66,11 +108,11 @@ void MenuPrincipal::comenzar(){
             a->actualizar(nuevasAnimaciones);
         }
 
-        dientesSierraArriba.move({0,-0.5});
+        dientesSierraArriba.move({0,-0.2});
 
         if(dientesSierraArriba.getPosition().y <= -58) dientesSierraArriba.setPosition({0,0});
 
-        dientesSierraAbajo.move({0,0.5});
+        dientesSierraAbajo.move({0,0.2});
 
         if(dientesSierraAbajo.getPosition().y >= 0) dientesSierraAbajo.setPosition({0,-58});
 
@@ -78,19 +120,53 @@ void MenuPrincipal::comenzar(){
             animaciones.push_back(nA);
         }
 
-        ventana->clear(sf::Color(160,160,160));
+        ventana->clear(sf::Color(0,0,0));
 
         switch(seleccionActual){
             case Seleccion::MODO_HISTORIA:
-                ventana->draw(capturaModoHistoria);
+                capturaModoHistoria.setColor({capturaModoHistoria.getColor().r,capturaModoHistoria.getColor().g,capturaModoHistoria.getColor().b,static_cast<uint8_t>(capturaModoHistoria.getColor().a*0.8f+255*0.2f)});
+                selectorModoHistoria.setColor(sf::Color::White);
+                selectorModoHistoria.setPosition(selectorModoHistoria.getPosition()*0.8f + sf::Vector2f(POSICION_X_SELECTOR_SELECCIONADO,POSICION_Y_SELECTOR_MODO_HISTORIA)*0.2f);
+
+                capturaBatallaVS.setColor({capturaBatallaVS.getColor().r,capturaBatallaVS.getColor().g,capturaBatallaVS.getColor().b,static_cast<uint8_t>(capturaBatallaVS.getColor().a*0.8f+0*0.2f)});
+                selectorBatallaVS.setColor(COLOR_SELECTOR_SIN_SELECCIONAR);
+                selectorBatallaVS.setPosition(selectorBatallaVS.getPosition()*0.8f + sf::Vector2f(POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_BATALLA_VS)*0.2f);
+
+                capturaOpciones.setColor({capturaOpciones.getColor().r,capturaOpciones.getColor().g,capturaOpciones.getColor().b,static_cast<uint8_t>(capturaOpciones.getColor().a*0.8f+0*0.2f)});
+                selectorOpciones.setColor(COLOR_SELECTOR_SIN_SELECCIONAR);
+                selectorOpciones.setPosition(selectorOpciones.getPosition()*0.8f + sf::Vector2f(POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_OPCIONES)*0.2f);
                 break;
             case Seleccion::BATALLA_VS:
-                ventana->draw(capturaBatallaVS);
+                capturaModoHistoria.setColor({capturaModoHistoria.getColor().r,capturaModoHistoria.getColor().g,capturaModoHistoria.getColor().b,static_cast<uint8_t>(capturaModoHistoria.getColor().a*0.8f+0*0.2f)});
+                selectorModoHistoria.setColor(COLOR_SELECTOR_SIN_SELECCIONAR);
+                selectorModoHistoria.setPosition(selectorModoHistoria.getPosition()*0.8f + sf::Vector2f(POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_MODO_HISTORIA)*0.2f);
+
+                capturaBatallaVS.setColor({capturaBatallaVS.getColor().r,capturaBatallaVS.getColor().g,capturaBatallaVS.getColor().b,static_cast<uint8_t>(capturaBatallaVS.getColor().a*0.8f+255*0.2f)});
+                selectorBatallaVS.setColor(sf::Color::White);
+                selectorBatallaVS.setPosition(selectorBatallaVS.getPosition()*0.8f + sf::Vector2f(POSICION_X_SELECTOR_SELECCIONADO,POSICION_Y_SELECTOR_BATALLA_VS)*0.2f);
+
+                capturaOpciones.setColor({capturaOpciones.getColor().r,capturaOpciones.getColor().g,capturaOpciones.getColor().b,static_cast<uint8_t>(capturaOpciones.getColor().a*0.8f+0*0.2f)});
+                selectorOpciones.setColor(COLOR_SELECTOR_SIN_SELECCIONAR);
+                selectorOpciones.setPosition(selectorOpciones.getPosition()*0.8f + sf::Vector2f(POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_OPCIONES)*0.2f);
                 break;
             case Seleccion::OPCIONES:
-                ventana->draw(capturaOpciones);
+                capturaModoHistoria.setColor({capturaModoHistoria.getColor().r,capturaModoHistoria.getColor().g,capturaModoHistoria.getColor().b,static_cast<uint8_t>(capturaModoHistoria.getColor().a*0.8f+0*0.2f)});
+                selectorModoHistoria.setColor(COLOR_SELECTOR_SIN_SELECCIONAR);
+                selectorModoHistoria.setPosition(selectorModoHistoria.getPosition()*0.8f + sf::Vector2f(POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_MODO_HISTORIA)*0.2f);
+
+                capturaBatallaVS.setColor({capturaBatallaVS.getColor().r,capturaBatallaVS.getColor().g,capturaBatallaVS.getColor().b,static_cast<uint8_t>(capturaBatallaVS.getColor().a*0.8f+0*0.2f)});
+                selectorBatallaVS.setColor(COLOR_SELECTOR_SIN_SELECCIONAR);
+                selectorBatallaVS.setPosition(selectorBatallaVS.getPosition()*0.8f + sf::Vector2f(POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_BATALLA_VS)*0.2f);
+
+                capturaOpciones.setColor({capturaOpciones.getColor().r,capturaOpciones.getColor().g,capturaOpciones.getColor().b,static_cast<uint8_t>(capturaOpciones.getColor().a*0.8f+255*0.2f)});
+                selectorOpciones.setColor(sf::Color::White);
+                selectorOpciones.setPosition(selectorOpciones.getPosition()*0.8f + sf::Vector2f(POSICION_X_SELECTOR_SELECCIONADO,POSICION_Y_SELECTOR_OPCIONES)*0.2f);
                 break;
         }
+
+        ventana->draw(capturaModoHistoria);
+        ventana->draw(capturaBatallaVS);
+        ventana->draw(capturaOpciones);
 
         ventana->draw(dientesSierraArriba);
         ventana->draw(dientesSierraAbajo);

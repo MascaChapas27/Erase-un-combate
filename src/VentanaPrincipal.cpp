@@ -18,6 +18,8 @@ sf::RenderWindow * VentanaPrincipal::unicaInstancia()
 
         aumentarZoom();
         aumentarZoom();
+
+        ventanaPrincipal->setPosition(static_cast<sf::Vector2i>(sf::VideoMode::getDesktopMode().size/2u - sf::Vector2u(zoom*VENTANA_ANCHURA/2,zoom*VENTANA_ALTURA/2)));
     }
     return ventanaPrincipal;
 }

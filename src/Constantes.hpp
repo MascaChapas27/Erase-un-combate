@@ -43,7 +43,7 @@ constexpr int VENTANA_ALTURA = 200;
 constexpr int NUMERO_FPS = 60;
 
 // Nombre de la ventana principal
-const std::string VENTANA_NOMBRE = "Érase un combate";
+const std::string VENTANA_NOMBRE = "Erase un combate";
 
 // Estilo de la ventana principal
 constexpr int VENTANA_ESTILO = sf::Style::Close;
@@ -139,7 +139,8 @@ constexpr sf::Vector2f POSICION_CARTELES_COMBATE = sf::Vector2f(VENTANA_ANCHURA/
 constexpr sf::Vector2f POSICION_TITULO = sf::Vector2f(VENTANA_ANCHURA/4,VENTANA_ALTURA/6);
 
 // Posición en el eje X de los selectores de opción
-constexpr float POSICION_X_SELECTORES = VENTANA_ANCHURA/8;
+constexpr float POSICION_X_SELECTOR_SIN_SELECCIONAR = VENTANA_ANCHURA/8;
+constexpr float POSICION_X_SELECTOR_SELECCIONADO = VENTANA_ANCHURA/7;
 
 // Posición en el eje Y de los selectores
 constexpr float POSICION_Y_SELECTOR_MODO_HISTORIA = 7*VENTANA_ALTURA/15;
