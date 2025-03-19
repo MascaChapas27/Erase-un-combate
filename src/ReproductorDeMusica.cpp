@@ -16,7 +16,7 @@ ReproductorDeMusica::~ReproductorDeMusica(){
 }
 
 ReproductorDeMusica::ReproductorDeMusica(){
-    volumenActual = VOLUMEN_MAXIMO_MUSICA/2;
+    volumenActual = VOLUMEN_MAXIMO_MUSICA;
 
     if(!std::filesystem::is_directory("musica/combate")){
         Bitacora::unicaInstancia()->escribir("Juan Cuesta: Oye Emilio... he notado que el directorio musica/combate es más liviano de lo habitial, ¿no crees?");
@@ -65,18 +65,6 @@ void ReproductorDeMusica::reproducirCancionCombate(){
     int indiceCancion = rand() % (cancionesCombate.size());
 
     reproducir(cancionesCombate[indiceCancion]);
-}
-
-void ReproductorDeMusica::reproducirCancionMenu(){
-    reproducir(cancionMenu);
-}
-
-void ReproductorDeMusica::reproducirCancionFinRonda(){
-    reproducir(cancionFinRonda,false);
-}
-
-void ReproductorDeMusica::reproducirCancionAjustes(){
-    reproducir(cancionAjustes);
 }
 
 void ReproductorDeMusica::detener()
