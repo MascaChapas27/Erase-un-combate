@@ -56,11 +56,14 @@ class MenuPrincipal {
         // lo antes posible del menú principal
         bool selectorPulsado;
 
+        // Rectángulo que tapa el menú principal cuando se selecciona una opción
+        sf::RectangleShape rectanguloNegro;
+
     public:
 
         // Comienza el funcionamiento del menú principal, que toma el control
         // de la ventana hasta que no se selecciona otra cosa
-        void comenzar();
+        Seleccion comenzar();
 
         // NUNCA SE COPIA UN SINGLETON
         MenuPrincipal(MenuPrincipal &otro) = delete;

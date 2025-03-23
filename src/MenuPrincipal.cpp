@@ -6,6 +6,7 @@
 #include "GestorDeControles.hpp"
 #include "ReproductorDeMusica.hpp"
 #include "ReproductorDeSonidos.hpp"
+#include "Utilidades.hpp"
 
 // La instancia es nula al principio
 MenuPrincipal * MenuPrincipal::menuPrincipal = nullptr;
@@ -31,7 +32,7 @@ MenuPrincipal::MenuPrincipal() : seleccionActual(Seleccion::MODO_HISTORIA),
                                  capturaModoHistoria(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-modo-historia.png")),
                                  capturaBatallaVS(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-batalla-vs.png")),
                                  capturaOpciones(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-opciones.png")),
-                                 brilloSelector(0.f), selectorPulsado(false){
+                                 brilloSelector(0.f), selectorPulsado(false), rectanguloNegro({VENTANA_ANCHURA,VENTANA_ALTURA}){
     cartelTitulo->setPosicion(POSICION_TITULO);
     dientesSierraAbajo.setPosition({0,-58});
     
@@ -50,9 +51,11 @@ MenuPrincipal::MenuPrincipal() : seleccionActual(Seleccion::MODO_HISTORIA),
         Bitacora::unicaInstancia()->escribir("ERROR: no se pudo cargar el shader");
         exit(EXIT_FAILURE);
     }
+
+    rectanguloNegro.setFillColor(sf::Color::Black);
 }
 
-void MenuPrincipal::comenzar(){
+Seleccion MenuPrincipal::comenzar(){
 
     ReproductorDeMusica::unicaInstancia()->reproducir("musica/menu-principal.wav");
 
@@ -61,6 +64,10 @@ void MenuPrincipal::comenzar(){
     std::list<std::shared_ptr<Animacion>> animaciones;
 
     animaciones.push_back(cartelTitulo);
+
+    selectorPulsado = false;
+
+    seleccionActual = Seleccion::MODO_HISTORIA;
 
     while(true){
         // Se prepara un reloj para ver cuánto tiempo pasa entre frames
@@ -134,6 +141,15 @@ void MenuPrincipal::comenzar(){
 
         for(std::shared_ptr<Animacion> &a : animaciones){
             a->actualizar(nuevasAnimaciones);
+        }
+
+        // Se cambia la opacidad del rectángulo negro según sea necesario
+        if(!selectorPulsado && rectanguloNegro.getFillColor().a > 0){
+            rectanguloNegro.setFillColor(sf::Color(rectanguloNegro.getFillColor().r, rectanguloNegro.getFillColor().g, rectanguloNegro.getFillColor().b, rectanguloNegro.getFillColor().a-5));
+        } else if (selectorPulsado && brilloSelector < 0.1f && rectanguloNegro.getFillColor().a < 255){
+            rectanguloNegro.setFillColor(sf::Color(rectanguloNegro.getFillColor().r, rectanguloNegro.getFillColor().g, rectanguloNegro.getFillColor().b, rectanguloNegro.getFillColor().a+5));
+        } else if (selectorPulsado && rectanguloNegro.getFillColor().a == 255){
+            return seleccionActual;
         }
 
         dientesSierraArriba.move({0,-0.2});
@@ -239,6 +255,8 @@ void MenuPrincipal::comenzar(){
         for(std::shared_ptr<Animacion> &a : animaciones){
             ventana->draw(*a);
         }
+
+        ventana->draw(rectanguloNegro);
         
         ventana->display();
 
