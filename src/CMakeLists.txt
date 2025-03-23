@@ -10,6 +10,9 @@ project(EraseUnCombate LANGUAGES CXX)
 # El programa se creará en el directorio raíz del proyecto
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
 
+# Si hay algún error saldrán colorines
+set(CMAKE_COLOR_DIAGNOSTICS ON)
+
 # Aunque se use CMake super moderno se permitirá que el CMake de SFML sea más viejuno
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
@@ -24,7 +27,7 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 # Se ponen todos los ficheros .cpp
-add_executable(EraseUnCombate Animacion.cpp AnimacionAgrandable.cpp AnimacionConGravedad.cpp AnimacionPorFrames.cpp AtaqueEspecial.cpp Bitacora.cpp Combate.cpp ConectorOnline.cpp ContenedorDeEfectos.cpp ContenedorDePersonajes.cpp ContenedorDeRecursos.cpp Escenario.cpp GestorDeControles.cpp GUIPersonaje.cpp Hitbox.cpp main.cpp MenuPrincipal.cpp Personaje.cpp ReproductorDeMusica.cpp ReproductorDeSonidos.cpp SelectorJugadorParaMando.cpp Utilidades.cpp VentanaPrincipal.cpp)
+add_executable(EraseUnCombate Animacion.cpp AnimacionAgrandable.cpp AnimacionConGravedad.cpp AnimacionDesvaneciente.cpp AnimacionPorFrames.cpp AtaqueEspecial.cpp Bitacora.cpp Combate.cpp ConectorOnline.cpp ContenedorDeEfectos.cpp ContenedorDePersonajes.cpp ContenedorDeRecursos.cpp Escenario.cpp GestorDeControles.cpp GUIPersonaje.cpp Hitbox.cpp main.cpp MenuPrincipal.cpp Personaje.cpp ReproductorDeMusica.cpp ReproductorDeSonidos.cpp SelectorJugadorParaMando.cpp Utilidades.cpp VentanaPrincipal.cpp)
 
 # Se especifica que el estándar de C++ que se quiere usar es el de 2020
 target_compile_features(EraseUnCombate PRIVATE cxx_std_20)

@@ -45,6 +45,17 @@ class MenuPrincipal {
         sf::Sprite capturaBatallaVS;
         sf::Sprite capturaOpciones;
 
+        // Shader para hacer que los selectores del menú principal brillen
+        std::shared_ptr<sf::Shader> shaderDestello;
+
+        // Del 0 al 1, indica el brillo del selector actual, donde 0 significa que está
+        // normal y 1 significa que está completamente blanco
+        float brilloSelector;
+
+        // Si está a true, significa que se ha pulsado un selector y es necesario salir
+        // lo antes posible del menú principal
+        bool selectorPulsado;
+
     public:
 
         // Comienza el funcionamiento del menú principal, que toma el control

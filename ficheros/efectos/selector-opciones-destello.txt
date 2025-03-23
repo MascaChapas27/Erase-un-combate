@@ -1,0 +1,3 @@
+Tipo:desvaneciente
+
+Escala:2

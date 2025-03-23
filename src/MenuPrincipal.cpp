@@ -30,10 +30,11 @@ MenuPrincipal::MenuPrincipal() : seleccionActual(Seleccion::MODO_HISTORIA),
                                  selectorOpciones(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/selector-opciones.png")),
                                  capturaModoHistoria(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-modo-historia.png")),
                                  capturaBatallaVS(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-batalla-vs.png")),
-                                 capturaOpciones(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-opciones.png")){
+                                 capturaOpciones(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-opciones.png")),
+                                 brilloSelector(0.f), selectorPulsado(false){
     cartelTitulo->setPosicion(POSICION_TITULO);
     dientesSierraAbajo.setPosition({0,-58});
-
+    
     selectorModoHistoria.setPosition({POSICION_X_SELECTOR_SELECCIONADO,POSICION_Y_SELECTOR_MODO_HISTORIA});
     selectorBatallaVS.setPosition({POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_BATALLA_VS});
     selectorOpciones.setPosition({POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_OPCIONES});
@@ -43,6 +44,12 @@ MenuPrincipal::MenuPrincipal() : seleccionActual(Seleccion::MODO_HISTORIA),
 
     capturaBatallaVS.setColor(sf::Color(255,255,255,0));
     capturaOpciones.setColor(sf::Color(255,255,255,0));
+
+    shaderDestello = std::make_shared<sf::Shader>();
+    if(!shaderDestello->loadFromFile("shaders/blendColor.frag",sf::Shader::Type::Fragment)){
+        Bitacora::unicaInstancia()->escribir("ERROR: no se pudo cargar el shader");
+        exit(EXIT_FAILURE);
+    }
 }
 
 void MenuPrincipal::comenzar(){
@@ -62,7 +69,7 @@ void MenuPrincipal::comenzar(){
         while(const std::optional evento = ventana->pollEvent()){
             if(evento->is<sf::Event::Closed>()){
                 exit(EXIT_SUCCESS);
-            } else {
+            } else if(!selectorPulsado) {
                 std::pair<Jugador,Accion> par = GestorDeControles::unicaInstancia()->comprobarEvento(evento);
                 if((evento->is<sf::Event::JoystickButtonPressed>() || evento->is<sf::Event::KeyPressed>())){
                     if(par.second == Accion::ARRIBA){
@@ -94,14 +101,27 @@ void MenuPrincipal::comenzar(){
                     } else if (par.second == Accion::ATACAR){
                         ReproductorDeMusica::unicaInstancia()->detener();
                         ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/seleccionar.wav");
+                        std::shared_ptr<Animacion> anim;
+                        shaderDestello->setUniform("amount",1.f);
+                        brilloSelector = 1.f;
+                        selectorPulsado = true;
                         switch(seleccionActual){
                             case Seleccion::MODO_HISTORIA:
+                                anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("selector-modo-historia-destello");
+                                anim->setPosicion(selectorModoHistoria.getPosition() + sf::Vector2f(selectorModoHistoria.getTextureRect().size/2));
+                                animaciones.push_back(anim);
                                 selectorModoHistoria.setPosition({POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_MODO_HISTORIA});
                                 break;
                             case Seleccion::BATALLA_VS:
+                                anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("selector-batalla-vs-destello");
+                                anim->setPosicion(selectorBatallaVS.getPosition() + sf::Vector2f(selectorBatallaVS.getTextureRect().size/2));
+                                animaciones.push_back(anim);
                                 selectorBatallaVS.setPosition({POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_BATALLA_VS});
                                 break;
                             case Seleccion::OPCIONES:
+                                anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("selector-opciones-destello");
+                                anim->setPosicion(selectorOpciones.getPosition() + sf::Vector2f(selectorOpciones.getTextureRect().size/2));
+                                animaciones.push_back(anim);
                                 selectorOpciones.setPosition({POSICION_X_SELECTOR_SIN_SELECCIONAR,POSICION_Y_SELECTOR_OPCIONES});
                                 break;
                         }
@@ -127,6 +147,10 @@ void MenuPrincipal::comenzar(){
         for(std::shared_ptr<Animacion> &nA : nuevasAnimaciones){
             animaciones.push_back(nA);
         }
+
+        // Se actualiza el brillo del shader
+        brilloSelector = brilloSelector*0.95f;
+        shaderDestello->setUniform("amount",brilloSelector);
 
         switch(seleccionActual){
             case Seleccion::MODO_HISTORIA:
@@ -188,13 +212,33 @@ void MenuPrincipal::comenzar(){
         ventana->draw(dientesSierraArriba);
         ventana->draw(dientesSierraAbajo);
 
+        sf::RenderStates states;
+
+        if(selectorPulsado){
+            states.shader = shaderDestello.get();
+        }
+        
+        if(seleccionActual == Seleccion::MODO_HISTORIA){
+            ventana->draw(selectorModoHistoria,states);
+        } else {
+            ventana->draw(selectorModoHistoria);
+        }
+        
+        if(seleccionActual == Seleccion::BATALLA_VS){
+            ventana->draw(selectorBatallaVS,states);
+        } else {
+            ventana->draw(selectorBatallaVS);
+        }
+
+        if(seleccionActual == Seleccion::OPCIONES){
+            ventana->draw(selectorOpciones,states);
+        } else {
+            ventana->draw(selectorOpciones);
+        }
+
         for(std::shared_ptr<Animacion> &a : animaciones){
             ventana->draw(*a);
         }
-
-        ventana->draw(selectorModoHistoria);
-        ventana->draw(selectorBatallaVS);
-        ventana->draw(selectorOpciones);
         
         ventana->display();
 

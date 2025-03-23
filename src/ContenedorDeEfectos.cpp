@@ -4,6 +4,7 @@
 #include "AnimacionPorFrames.hpp"
 #include "AnimacionConGravedad.hpp"
 #include "AnimacionAgrandable.hpp"
+#include "AnimacionDesvaneciente.hpp"
 #include "Utilidades.hpp"
 #include <SFML/Audio.hpp>
 #include <fstream>
@@ -66,7 +67,6 @@ void ContenedorDeEfectos::cargarTodosLosEfectos()
     // Abrimos cada fichero del directorio
     for (const auto &entrada : std::filesystem::directory_iterator("ficheros/efectos"))
     {
-
         // Se abre el fichero con información del personaje actual
         std::ifstream fichero(entrada.path());
 
@@ -269,6 +269,25 @@ void ContenedorDeEfectos::cargarTodosLosEfectos()
             }
 
             anim = std::make_shared<AnimacionAgrandable>(framesEspera, textura, rutaSonido);
+        }
+        else if (tipoAnimacion == "desvaneciente")
+        {
+            // Se salta una línea en blanco y se saca la escala nueva
+            std::getline(fichero, linea);
+            std::getline(fichero, linea);
+            
+            float escalado;
+
+            std::vector<std::string> lineaSeparada(util::separarString(linea,':'));
+
+            if(lineaSeparada[0] != "Escala"){
+                Bitacora::unicaInstancia()->escribir("Juan Cuesta: esto es inaudito. En el fichero " + entrada.path().string() + " han escrito \"" + lineaSeparada[0] + "\" en vez de \"Escala\"... es imposible continuar en esas condiciones. Se suspende la junta.");
+                exit(EXIT_FAILURE);
+            } else {
+                escalado = std::stof(lineaSeparada[1]);
+            }
+
+            anim = std::make_shared<AnimacionDesvaneciente>(textura,escalado);
         }
 
         animaciones.insert(std::pair<std::string, std::shared_ptr<Animacion>>(nombreEfecto, anim));
