@@ -144,7 +144,7 @@ Seleccion MenuPrincipal::comenzar(){
         }
 
         // Se cambia la opacidad del rectángulo negro según sea necesario
-        if(!selectorPulsado && rectanguloNegro.getFillColor().a > 0){
+        if(rectanguloNegro.getFillColor().a > 0 && (!selectorPulsado || (selectorPulsado && brilloSelector >= 0.1f))){
             rectanguloNegro.setFillColor(sf::Color(rectanguloNegro.getFillColor().r, rectanguloNegro.getFillColor().g, rectanguloNegro.getFillColor().b, rectanguloNegro.getFillColor().a-5));
         } else if (selectorPulsado && brilloSelector < 0.1f && rectanguloNegro.getFillColor().a < 255){
             rectanguloNegro.setFillColor(sf::Color(rectanguloNegro.getFillColor().r, rectanguloNegro.getFillColor().g, rectanguloNegro.getFillColor().b, rectanguloNegro.getFillColor().a+5));

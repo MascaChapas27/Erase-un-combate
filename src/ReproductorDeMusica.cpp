@@ -34,10 +34,6 @@ ReproductorDeMusica::ReproductorDeMusica(){
             }
         }
     }
-
-    cancionMenu = "musica/menu-principal.wav";
-    cancionAjustes = "musica/ajustes.wav";
-    cancionFinRonda = "musica/fin-ronda.wav";
 }
 
 void ReproductorDeMusica::reproducir(std::string cancion, bool bucle)
