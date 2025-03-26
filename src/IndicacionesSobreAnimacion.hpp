@@ -13,10 +13,12 @@
 // características de esa animación).
 struct IndicacionesSobreAnimacion {
     
-    // Ruta de la animación para poder encontrarla después
+    // Ruta de la animación para poder encontrarla después (en realidad solo hay que
+    // especificar el nombre que tiene, no hay que indicar la ruta completa)
     std::string rutaAnimacion;
 
-    // Posición en la que aparece la animación
+    // Posición en la que aparece la animación relativa a la esquina superior
+    // izquierda de la animación que genera a esta
     sf::Vector2f posicionInicial;
 
     // Velocidad inicial de la animación (si es una animación con gravedad)
@@ -24,7 +26,7 @@ struct IndicacionesSobreAnimacion {
 
     // Por lo general las animaciones se muestran para un personaje que está mirando a
     // la derecha, pero si un personaje está mirando a la izquierda es necesario voltear
-    // la animación, lo que se deberá hacer al generarle en base a estas indicaciones
+    // la animación, lo que se deberá hacer al generarla en base a estas indicaciones
     bool necesitaVoltearse;
     
 };
