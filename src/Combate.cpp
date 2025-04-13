@@ -14,9 +14,7 @@
 Combate::Combate(std::string nombrePersonajeJ1, std::string nombrePersonajeJ2, std::string nombreEscenario, sf::IpAddress direccionIP, bool lider) : personajeJugador1(ContenedorDePersonajes::unicaInstancia()->obtenerPersonaje(nombrePersonajeJ1).clonar()),
                                                                                                                                                      personajeJugador2(ContenedorDePersonajes::unicaInstancia()->obtenerPersonaje(nombrePersonajeJ2).clonar()),
                                                                                                                                                      GUIJugador1(personajeJugador1, true), GUIJugador2(personajeJugador2, false),
-                                                                                                                                                     escenario(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/escenarios/" + nombreEscenario + "/fondo.png"),
-                                                                                                                                                               ContenedorDeTexturas::unicaInstancia()->obtener("sprites/escenarios/" + nombreEscenario + "/frente.png"),
-                                                                                                                                                               ContenedorDeTexturas::unicaInstancia()->obtener("sprites/escenarios/" + nombreEscenario + "/suelo.png")),
+                                                                                                                                                     escenario(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/escenarios/" + nombreEscenario + ".png")),
                                                                                                                                                      cartelTodoListo(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-todo-listo")),
                                                                                                                                                      cartelAPelear(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-a-pelear")),
                                                                                                                                                      cartelJugador1Gana(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-jugador-1-gana")),
@@ -116,7 +114,7 @@ void Combate::actualizarFramePreparandoSuper(std::list<std::shared_ptr<Animacion
     ventana->clear(sf::Color(100, 100, 120));
 
     // Se dibuja todo como de costumbre (menos los personajes que están preparando súper)
-    escenario.dibujarFondo(*ventana, sf::RenderStates::Default);
+    ventana->draw(escenario);
 
     if (personajeJugador1.getEstado() != EstadoPersonaje::PREPARANDO_SUPER)
         ventana->draw(personajeJugador1);
@@ -139,8 +137,6 @@ void Combate::actualizarFramePreparandoSuper(std::list<std::shared_ptr<Animacion
         ventana->draw(personajeJugador1);
     if (personajeJugador2.getEstado() == EstadoPersonaje::PREPARANDO_SUPER)
         ventana->draw(personajeJugador2);
-
-    escenario.dibujarFrente(*ventana, sf::RenderStates::Default);
 
     ventana->draw(GUIJugador1);
     ventana->draw(GUIJugador2);
@@ -434,7 +430,7 @@ void Combate::actualizarFrameNormal(std::list<std::shared_ptr<Animacion>> &efect
     // CUARTO PASO: DIBUJAR EL ESCENARIO, LOS PERSONAJES Y LAS ANIMACIONES
 
     ventana->clear(sf::Color(100, 100, 120));
-    escenario.dibujarFondo(*ventana, sf::RenderStates::Default);
+    ventana->draw(escenario);
     ventana->draw(personajeJugador1);
     ventana->draw(personajeJugador2);
 
@@ -442,8 +438,6 @@ void Combate::actualizarFrameNormal(std::list<std::shared_ptr<Animacion>> &efect
     {
         ventana->draw(**iter);
     }
-
-    escenario.dibujarFrente(*ventana, sf::RenderStates::Default);
 
     ventana->draw(GUIJugador1);
     ventana->draw(GUIJugador2);
@@ -532,7 +526,7 @@ void Combate::actualizarFrameCelebracion(std::list<std::shared_ptr<Animacion>> &
     // CUARTO PASO: DIBUJAR EL ESCENARIO, LOS PERSONAJES Y LAS ANIMACIONES
 
     ventana->clear(sf::Color(100, 100, 100));
-    escenario.dibujarFondo(*ventana, sf::RenderStates::Default);
+    ventana->draw(escenario);
     ventana->draw(personajeJugador1);
     ventana->draw(personajeJugador2);
 
@@ -540,8 +534,6 @@ void Combate::actualizarFrameCelebracion(std::list<std::shared_ptr<Animacion>> &
     {
         ventana->draw(**iter);
     }
-
-    escenario.dibujarFrente(*ventana, sf::RenderStates::Default);
 
     ventana->draw(GUIJugador1);
     ventana->draw(GUIJugador2);

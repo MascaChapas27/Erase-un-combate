@@ -9,31 +9,20 @@
 
 /*
     Esta clase define un escenario en el que pueden pelear los luchadores. Los escenarios
-    están formados por una parte trasera, situada detrás de los personajes, y una parte delantera,
-    situada delante. El origen de ambos sprites se coloca justo enmedio en el eje X, y en el eje Y arriba del todo (y=0)
+    están formados por una imagen de fondo que se va moviendo según se mueven los personajes.
+    El origen de este sprite se coloca justo enmedio en el eje X, y en el eje Y arriba del todo (y=0)
 */
 
-class Escenario {
+class Escenario : public sf::Drawable {
 
     private:
 
         // Sprite que forma el fondo del escenario
         sf::Sprite spriteFondo;
 
-        // Sprite que forma la parte frontal del escenario, que puede colocarse encima de los personajes
-        // (por ejemplo, farolas o árboles)
-        sf::Sprite spriteFrente;
-
-        // Textura para el suelo
-        sf::Texture& texturaSuelo;
-
-        // Suelo hecho especialmente para que se vaya torciendo con el movimiento. Está formado por cuatro
-        // vértices de los cuales los dos de abajo se van moviento más de la cuenta para conseguir el efecto
-        sf::VertexArray suelo;
-
     public:
-        // Construye un escenario utilizando la textura del fondo y la textura del frente
-        Escenario(sf::Texture& texturaFondo, sf::Texture& texturaFrente, sf::Texture& texturaSuelo);
+        // Construye un escenario utilizando la textura del fondo
+        Escenario(sf::Texture& texturaFondo);
 
         // Actualiza el escenario según la posición de los personajes (también puede actualizar
         // la posición de los personajes y los efectos para que se muevan con el fondo)
@@ -42,11 +31,9 @@ class Escenario {
         // Coloca el escenario en el centro
         void resetear();
 
-        // Dibuja el fondo del escenario
-        void dibujarFondo(sf::RenderTarget& target, sf::RenderStates states) const;
+        // Dibuja el fondo
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-        // Dibuja el frente del escenario
-        void dibujarFrente(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
 #endif
