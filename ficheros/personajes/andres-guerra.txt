@@ -116,12 +116,33 @@ Rectangulo:1
 Hitboxes:
 51,27,26,73,0
 
-Rectangulo:1
+Rectangulo:2
 Hitboxes:
 52,27,26,73,0
 
 Frames:
 0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2,2
+
+Sonido:no repetir
+0
+
+Movimiento:
+
+Efectos:
+----------------------------------------
+Estado:bloqueando
+Bucle:sin-bucle
+
+Rectangulo:0
+Hitboxes:
+51,27,26,73,0
+
+Rectangulo:1
+Hitboxes:
+51,27,26,73,0
+
+Frames:
+0,0,0,0,0,1,1,1,1
 
 Sonido:no repetir
 0

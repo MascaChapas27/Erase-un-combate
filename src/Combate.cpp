@@ -380,7 +380,7 @@ void Combate::actualizarFrameNormal(std::list<std::shared_ptr<Animacion>> &efect
         cartelAPelear->actualizar(efectos);
     }
 
-    recibirEntradaPlayerVSBot();
+    recibirEntradaPlayerVSPlayerOffline();
 
     // if (conector.has_value())
     //     recibirEntradaPlayerVSPlayerOnline();
