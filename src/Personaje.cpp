@@ -625,8 +625,6 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         case EstadoPersonaje::GOLPEADO_BAJANDO:
         case EstadoPersonaje::GOLPEADO_SUBIENDO:
         case EstadoPersonaje::TUMBADO:
-        case EstadoPersonaje::GOLPEADO_PEQUE:
-        case EstadoPersonaje::GOLPEADO_MEDIO:
         case EstadoPersonaje::BLOQUEANDO:
         case EstadoPersonaje::ESQUIVE_SUPER:
         case EstadoPersonaje::CELEBRANDO:
@@ -641,6 +639,8 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         case EstadoPersonaje::ANDANDO_ALEJANDOSE:
         case EstadoPersonaje::QUIETO:
         case EstadoPersonaje::TOCANDO_SUELO:
+        case EstadoPersonaje::GOLPEADO_PEQUE:
+        case EstadoPersonaje::GOLPEADO_MEDIO:
             if((animaciones.at(estado)->getPosicion().x < posicionEnemigo.x && !mirandoDerecha) ||
                 (animaciones.at(estado)->getPosicion().x > posicionEnemigo.x && mirandoDerecha)){
                     mirandoDerecha = !mirandoDerecha;
