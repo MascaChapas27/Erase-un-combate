@@ -2,21 +2,13 @@
 #include "Constantes.hpp"
 #include <iostream>
 
-Escenario::Escenario(sf::Texture& texturaFondo, sf::Texture& texturaFrente, sf::Texture& texturaSuelo) : spriteFondo(texturaFondo), spriteFrente(texturaFrente),
-    texturaSuelo(texturaSuelo), suelo(sf::PrimitiveType::TriangleStrip,4) {
+Escenario::Escenario(sf::Texture& texturaFondo) : spriteFondo(texturaFondo) {
 
     // Se saca justo la mitad de la anchura de los sprites y se coloca el origen en esa X
     // (la Y da igual porque el escenario no se puede mover hacia arriba o abajo)
     spriteFondo.setOrigin({spriteFondo.getTextureRect().size.x/2.f,0});
-    spriteFrente.setOrigin({spriteFrente.getTextureRect().size.x/2.f,0});
 
-    // Se establecen los cuatro vértices de coordenadas para abarcar todo el rectángulo de la textura
-    suelo[0].texCoords = sf::Vector2f(texturaSuelo.getSize().x,0);
-    suelo[1].texCoords = sf::Vector2f(0,0);
-    suelo[2].texCoords = sf::Vector2f(texturaSuelo.getSize().x,texturaSuelo.getSize().y);
-    suelo[3].texCoords = sf::Vector2f(0,texturaSuelo.getSize().y);
-
-    // Los sprites se mueven al centro
+    // El sprite se mueve al centro
     resetear();
 }
 
@@ -46,14 +38,8 @@ void Escenario::actualizar(Personaje& personaje1, Personaje& personaje2, std::li
     // aún puede ir más a la derecha, se mueve todo a la derecha
     if(personajeEnLadoIzquierdo && !personajeEnLadoDerecho && !escenarioTopeDerecha){
         spriteFondo.move({1,0});
-        spriteFrente.move({1,0});
         personaje1.mover(1,0);
         personaje2.mover(1,0);
-        for(int i=0;i<4;i++){
-            suelo[i].position.x++;
-        }
-        suelo[2].position.x+=0.1;
-        suelo[3].position.x+=0.1;
 
         for(std::shared_ptr<Animacion>& efecto : efectos){
             efecto->mover(1,0);
@@ -63,14 +49,8 @@ void Escenario::actualizar(Personaje& personaje1, Personaje& personaje2, std::li
     // Si un personaje se va mucho a la derecha, se mueve todo a la izquierda
     if(personajeEnLadoDerecho && !personajeEnLadoIzquierdo && !escenarioTopeIzquierda){
         spriteFondo.move({-1.f,0.f});
-        spriteFrente.move({-1.f,0.f});
         personaje1.mover(-1.f,0.f);
         personaje2.mover(-1.f,0.f);
-        for(int i=0;i<4;i++){
-            suelo[i].position.x--;
-        }
-        suelo[2].position.x-=0.1f;
-        suelo[3].position.x-=0.1f;
 
         for(std::shared_ptr<Animacion>& efecto : efectos){
             efecto->mover(-1.f,0.f);
@@ -80,20 +60,8 @@ void Escenario::actualizar(Personaje& personaje1, Personaje& personaje2, std::li
 
 void Escenario::resetear(){
     spriteFondo.setPosition({VENTANA_ANCHURA/2,0});
-    spriteFrente.setPosition({VENTANA_ANCHURA/2,0});
-
-    // Se pone abajo del todo en el eje Y, y enmedio en el eje X
-    suelo[0].position = sf::Vector2f(VENTANA_ANCHURA/2.f + texturaSuelo.getSize().x/2.f, VENTANA_ALTURA - texturaSuelo.getSize().y);
-    suelo[1].position = sf::Vector2f(VENTANA_ANCHURA/2.f - texturaSuelo.getSize().x/2.f, VENTANA_ALTURA - texturaSuelo.getSize().y);
-    suelo[2].position = sf::Vector2f(VENTANA_ANCHURA/2.f + texturaSuelo.getSize().x/2.f, VENTANA_ALTURA);
-    suelo[3].position = sf::Vector2f(VENTANA_ANCHURA/2.f - texturaSuelo.getSize().x/2.f, VENTANA_ALTURA);
 }
 
-void Escenario::dibujarFondo(sf::RenderTarget& target, sf::RenderStates states) const{
-    target.draw(suelo,&texturaSuelo);
+void Escenario::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(spriteFondo,states);
-}
-
-void Escenario::dibujarFrente(sf::RenderTarget& target, sf::RenderStates states) const{
-    target.draw(spriteFrente,states);
 }
