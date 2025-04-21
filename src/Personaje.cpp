@@ -942,27 +942,39 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
     sf::Vector2f posicionMedia = util::centroDeInterseccion(hitboxElegidaEnemigo.getRectangulo(),hitboxElegidaPropia.getRectangulo());
     
     std::shared_ptr<Animacion> anim;
+
+    // Ahora, se calcula la fuerza del ataque realizado por el enemigo
+    int fuerzaAtaque = hitboxElegidaEnemigo.getFuerzaAtaque();
+
+    // Si estamos bloqueando, el daño se reduce
+    if(estado == EstadoPersonaje::BLOQUEANDO){
+        // Si el ataque era un ataque peque, el daño es 0
+        if(fuerzaAtaque <= MAX_ATAQUE_PEQUE){
+            fuerzaAtaque = 0;
+        }
+        // Si es un ataque medio, recibimos la mitad del daño
+        else if (fuerzaAtaque <= MAX_ATAQUE_MEDIO){
+            fuerzaAtaque/=2;
+            // Además, como estamos bloqueando, el ataque no nos puede matar
+            if(fuerzaAtaque >= puntosDeVida){
+                fuerzaAtaque = puntosDeVida-1;
+            }
+        }
+        // Si es un ataque súper, el programa termina porque nunca se debería bloquear un ataque súper
+        else {
+            Bitacora::unicaInstancia()->escribir("Emilio: Señor Juan, ¿cómo ve usted eso de bloquear ataques súper?");
+            Bitacora::unicaInstancia()->escribir("Juan: Pero qué disparetes dices, Emilio. ¿Cómo iba alguien a bloquear un ataque súper?");
+            Bitacora::unicaInstancia()->escribir("Emilio: No, lo digo porque acaba de pasar. Ya usted verá qué hace.");
+            Bitacora::unicaInstancia()->escribir("Juan: ¡¿Cómo dices...?!");
+            exit(EXIT_FAILURE);
+        }
+    }
     
-    // Una vez se sabe dónde se va a colocar, se comprueba cómo está el personaje ahora mismo
+    // Una vez se sabe dónde ha ocurrido la colisión y cuánto daño se ha hecho, se añaden los numeritos
     if(estado == EstadoPersonaje::BLOQUEANDO){
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("bloqueado");
         
-        if(hitboxElegidaEnemigo.getFuerzaAtaque() > MAX_ATAQUE_PEQUE && hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_MEDIO){
-            for(int i=0;i < hitboxElegidaEnemigo.getFuerzaAtaque()/2;++i){
-
-                auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
-                ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
-                ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE));
-                ((AnimacionConGravedad*)(particula.get()))->setVelocidadGiro((rand()%2==0 ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_GIRO_PART);
-
-                efectosInsertados.push_back(particula);
-            }
-        }
-
-    } else if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_PEQUE){
-        anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-peque");
-
-        for(int i=0;i < hitboxElegidaEnemigo.getFuerzaAtaque();++i){
+        for(int i=0;i < fuerzaAtaque;++i){
 
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
             ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
@@ -972,13 +984,26 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
             efectosInsertados.push_back(particula);
         }
 
-    } else if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_MEDIO){
+    } else if (fuerzaAtaque <= MAX_ATAQUE_PEQUE){
+        anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-peque");
+
+        for(int i=0;i < fuerzaAtaque;++i){
+
+            auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
+            ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
+            ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE));
+            ((AnimacionConGravedad*)(particula.get()))->setVelocidadGiro((rand()%2==0 ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_GIRO_PART);
+
+            efectosInsertados.push_back(particula);
+        }
+
+    } else if (fuerzaAtaque <= MAX_ATAQUE_MEDIO){
 
         VentanaPrincipal::vibrar(VIBRACION_ATAQUE_MEDIO);
 
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-medio");
 
-        for(int i=0;i < hitboxElegidaEnemigo.getFuerzaAtaque()/2;++i){
+        for(int i=0;i < fuerzaAtaque/2;++i){
 
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-2");
             ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
@@ -988,7 +1013,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
             efectosInsertados.push_back(particula);
         }
 
-        if(hitboxElegidaEnemigo.getFuerzaAtaque()%2 == 1){
+        if(fuerzaAtaque%2 == 1){
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
             ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
             ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE));
@@ -1003,7 +1028,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
 
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-grande");
 
-        for(int i=0;i < hitboxElegidaEnemigo.getFuerzaAtaque()/3;++i){
+        for(int i=0;i < fuerzaAtaque/3;++i){
 
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-3");
             ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
@@ -1013,7 +1038,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
             efectosInsertados.push_back(particula);
         }
 
-        if(hitboxElegidaEnemigo.getFuerzaAtaque()%3 == 2){
+        if(fuerzaAtaque%3 == 2){
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-2");
             ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
             ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_MEDIA,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_MEDIA));
@@ -1022,7 +1047,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
             efectosInsertados.push_back(particula);
         }
 
-        if(hitboxElegidaEnemigo.getFuerzaAtaque()%3 == 1){
+        if(fuerzaAtaque%3 == 1){
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
             ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
             ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_PEQUE));
@@ -1037,19 +1062,14 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         return;
     }
 
-    // Finalmente, se quitan puntos de vida según se vea
-    if(estado == EstadoPersonaje::BLOQUEANDO){
-        // Al bloquear, los ataques pequeños pasan a no hacer nada de daño, mientras que
-        // los ataques medios hacen la mitad de daño (se supone que los ataques súper son
-        // inesquivables, por lo que no hay que tenerlos en cuenta)
-        if(hitboxElegidaEnemigo.getFuerzaAtaque() > MAX_ATAQUE_PEQUE){
-            puntosDeVida-=(hitboxElegidaEnemigo.getFuerzaAtaque()/2);
-        }
+    // Después, se quitan puntos de vida correspondientes
+    puntosDeVida-=fuerzaAtaque;
 
-        // Los ataques bloqueados aumentan el medidor de súper al doble
+    // Finalmente, se sube el medidor de súper según el daño original de la hitbox
+    if(estado == EstadoPersonaje::BLOQUEANDO){
+        // Los ataques bloqueados aumentan el medidor de súper el doble
         medidorSuper+=(hitboxElegidaEnemigo.getFuerzaAtaque()*2);
     } else {
-        puntosDeVida-=hitboxElegidaEnemigo.getFuerzaAtaque();
         medidorSuper+=hitboxElegidaEnemigo.getFuerzaAtaque();
     }
 
