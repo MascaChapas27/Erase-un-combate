@@ -1,5 +1,4 @@
-#ifndef __GESTOR_DE_CONTROLES_HPP__
-#define __GESTOR_DE_CONTROLES_HPP__
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "ContenedorDeRecursos.hpp"
@@ -54,4 +53,4 @@ class GestorDeControles
         static GestorDeControles * unicaInstancia();
 };
 
-#endif // __GESTOR_DE_CONTROLES_HPP__
+

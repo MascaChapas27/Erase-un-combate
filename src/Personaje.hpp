@@ -1,5 +1,4 @@
-#ifndef __PERSONAJE_HPP__
-#define __PERSONAJE_HPP__
+#pragma once
 
 #include "AnimacionPorFrames.hpp"
 #include "Enums.hpp"
@@ -149,4 +148,4 @@ class Personaje : public sf::Drawable {
 
 };
 
-#endif // __PERSONAJE_HPP__
+

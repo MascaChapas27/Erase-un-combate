@@ -1,5 +1,4 @@
-#ifndef __VENTANA_PRINCIPAL_HPP__
-#define __VENTANA_PRINCIPAL_HPP__
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -58,4 +57,4 @@ class VentanaPrincipal {
         void operator=(const VentanaPrincipal &) = delete;
 };
 
-#endif // __VENTANA_PRINCIPAL_HPP__
+

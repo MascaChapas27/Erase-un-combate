@@ -1,5 +1,4 @@
-#ifndef __REPRODUCTOR_DE_MUSICA_HPP__
-#define __REPRODUCTOR_DE_MUSICA_HPP__
+#pragma once
 
 #include <SFML/Audio.hpp>
 #include "Constantes.hpp"
@@ -24,8 +23,12 @@ class ReproductorDeMusica
         // Única instancia
         static ReproductorDeMusica * reproductorDeMusica;
 
-        // Música que se está reproduciendo actualmente
-        sf::Music musicaActual;
+        // Ruta de la canción que se está reproduciendo actualmente
+        std::string cancionActual;
+
+        // Mapa donde se guardan las canciones según se van reproduciendo
+        // para volver a reproducirlas después y así tenerlas disponibles
+        std::unordered_map<std::string,sf::Music> canciones;
 
         // Todas las canciones de combate que hay
         std::vector<std::string> cancionesCombate;
@@ -42,8 +45,12 @@ class ReproductorDeMusica
         // Reproduce aleatoriamente una canción de combate
         void reproducirCancionCombate();
 
-        // Detiene por completo la reproducción de la canción
+        // Detiene por completo la reproducción de la canción actual
         void detener();
+
+        // Pausa la reproducción de la canción actual. Si se reproduce de nuevo, seguirá
+        // por donde estaba
+        void pausar();
 
         // Devuelve el volumen de la canción actual
         float getVolumen();
@@ -53,6 +60,9 @@ class ReproductorDeMusica
 
         // Dice si se está reproduciendo una canción o no
         bool estaReproduciendo();
+
+        // Devuelve la ruta de la canción que se está reproduciendo actualmente
+        std::string getCancionActual();
 
         // NUNCA SE COPIA UN SINGLETON
         ReproductorDeMusica(ReproductorDeMusica &otro) = delete;
@@ -65,4 +75,4 @@ class ReproductorDeMusica
 
 };
 
-#endif // __REPRODUCTOR_DE_MUSICA_HPP__
+

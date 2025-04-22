@@ -1,5 +1,4 @@
-#ifndef __ESCENARIO_HPP__
-#define __ESCENARIO_HPP__
+#pragma once
 
 #include "Personaje.hpp"
 #include "Animacion.hpp"
@@ -36,4 +35,3 @@ class Escenario : public sf::Drawable {
 
 };
 
-#endif

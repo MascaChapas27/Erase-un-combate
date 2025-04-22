@@ -1,5 +1,4 @@
-#ifndef __HITBOX_HPP__
-#define __HITBOX_HPP__
+#pragma once
 
 #include "Enums.hpp"
 
@@ -40,4 +39,4 @@ class Hitbox {
 
 };
 
-#endif // __HITBOX_HPP__
+

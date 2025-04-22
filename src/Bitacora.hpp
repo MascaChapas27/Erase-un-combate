@@ -1,5 +1,4 @@
-#ifndef __BITACORA_HPP__
-#define __BITACORA_HPP__
+#pragma once
 
 #include <fstream>
 #include <string>
@@ -38,4 +37,4 @@ public:
     static Bitacora *unicaInstancia();
 };
 
-#endif // __BITACORA_HPP__
+

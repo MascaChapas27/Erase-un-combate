@@ -1,5 +1,4 @@
-#ifndef __ATAQUE_ESPECIAL_HPP__
-#define __ATAQUE_ESPECIAL_HPP__
+#pragma once
 
 #include "Enums.hpp"
 #include <vector>
@@ -39,4 +38,3 @@ class AtaqueEspecial {
         void resetear();
 };
 
-#endif

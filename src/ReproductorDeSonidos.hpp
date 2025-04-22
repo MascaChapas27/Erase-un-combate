@@ -1,5 +1,4 @@
-#ifndef __REPRODUCTOR_DE_SONIDOS_HPP__
-#define __REPRODUCTOR_DE_SONIDOS_HPP__
+#pragma once
 
 #include <SFML/Audio.hpp>
 #include "Constantes.hpp"
@@ -59,4 +58,4 @@ class ReproductorDeSonidos
 
 };
 
-#endif // __REPRODUCTOR_DE_SONIDOS_HPP__
+

@@ -1,5 +1,4 @@
-#ifndef __SELECTOR_JUGADOR_PARA_MANDO_HPP__
-#define __SELECTOR_JUGADOR_PARA_MANDO_HPP__
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -50,4 +49,3 @@ class SelectorJugadorParaMando {
         static SelectorJugadorParaMando * unicaInstancia();
 };
 
-#endif

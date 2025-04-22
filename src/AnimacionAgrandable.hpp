@@ -1,5 +1,4 @@
-#ifndef __ANIMACION_AGRANDABLE_HPP__
-#define __ANIMACION_AGRANDABLE_HPP__
+#pragma once
 
 #include "Animacion.hpp"
 #include "SFML/Graphics.hpp"
@@ -60,4 +59,3 @@ class AnimacionAgrandable : public Animacion {
 
 };
 
-#endif

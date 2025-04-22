@@ -1,5 +1,4 @@
-#ifndef __ANIMACION_HPP__
-#define __ANIMACION_HPP__
+#pragma once
 
 #include "Hitbox.hpp"
 
@@ -74,5 +73,3 @@ class Animacion : public sf::Drawable {
         // Las clases que heredan de sf::Drawable deben implementar draw
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
-
-#endif // __ANIMACION_HPP__

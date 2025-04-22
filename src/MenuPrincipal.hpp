@@ -1,5 +1,4 @@
-#ifndef __MENU_PRINCIPAL_HPP__
-#define __MENU_PRINCIPAL_HPP__
+#pragma once
 
 #include "Animacion.hpp"
 #include <memory>
@@ -75,4 +74,3 @@ class MenuPrincipal {
         static MenuPrincipal * unicaInstancia();
 };
 
-#endif

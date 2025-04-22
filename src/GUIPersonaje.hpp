@@ -1,5 +1,4 @@
-#ifndef __GUI_PERSONAJE_HPP__
-#define __GUI_PERSONAJE_HPP__
+#pragma once
 
 #include "Personaje.hpp"
 #include "SFML/Graphics.hpp"
@@ -85,4 +84,3 @@ class GUIPersonaje : public sf::Drawable {
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
-#endif

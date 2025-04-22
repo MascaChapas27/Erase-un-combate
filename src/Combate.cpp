@@ -159,17 +159,21 @@ void Combate::recibirEntradaPlayerVSPlayerOffline()
         {
             std::pair<Jugador, Accion> par = GestorDeControles::unicaInstancia()->comprobarEvento(evento);
 
-            Personaje &personajeElegido = par.first == Jugador::JUGADOR1 ? personajeJugador1 : personajeJugador2;
+            // Puede ser que la acción sea inválida, hay que comprobar que el jugador no es NADIE
+            if(par.first != Jugador::NADIE){
+                
+                Personaje &personajeElegido = par.first == Jugador::JUGADOR1 ? personajeJugador1 : personajeJugador2;
 
-            if ((dynamic_cast<AnimacionAgrandable *>(cartelAPelear.get()))->haTerminadoDeAgrandarse())
-            {
-                if (evento->is<sf::Event::KeyPressed>() || evento->is<sf::Event::JoystickButtonPressed>() || (evento->is<sf::Event::JoystickMoved>() && std::abs(evento->getIf<sf::Event::JoystickMoved>()->position) > UMBRAL_JOYSTICK))
+                if ((dynamic_cast<AnimacionAgrandable *>(cartelAPelear.get()))->haTerminadoDeAgrandarse())
                 {
-                    personajeElegido.realizarAccion(par.second);
-                }
-                else if (evento->is<sf::Event::KeyReleased>() || evento->is<sf::Event::JoystickButtonReleased>() || (evento->is<sf::Event::JoystickMoved>() && std::abs(evento->getIf<sf::Event::JoystickMoved>()->position) < UMBRAL_JOYSTICK))
-                {
-                    personajeElegido.detenerAccion(par.second);
+                    if (evento->is<sf::Event::KeyPressed>() || evento->is<sf::Event::JoystickButtonPressed>() || (evento->is<sf::Event::JoystickMoved>() && std::abs(evento->getIf<sf::Event::JoystickMoved>()->position) > UMBRAL_JOYSTICK))
+                    {
+                        personajeElegido.realizarAccion(par.second);
+                    }
+                    else if (evento->is<sf::Event::KeyReleased>() || evento->is<sf::Event::JoystickButtonReleased>() || (evento->is<sf::Event::JoystickMoved>() && std::abs(evento->getIf<sf::Event::JoystickMoved>()->position) < UMBRAL_JOYSTICK))
+                    {
+                        personajeElegido.detenerAccion(par.second);
+                    }
                 }
             }
         }

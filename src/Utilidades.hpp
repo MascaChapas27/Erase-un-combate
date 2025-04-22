@@ -1,5 +1,4 @@
-#ifndef __UTILIDADES_HPP__
-#define __UTILIDADES_HPP__
+#pragma once
 
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
@@ -37,6 +36,11 @@ namespace util{
 
     // Dada una acción, devuelve el bit correspondiente
     uint8_t accionABit(Accion accion);
+
+    // Dados dos colores, devuelve una aproximación del primero al segundo, multiplicando el primero por
+    // el factorPrimero y multiplicando el segundo por (1-factorPrimero), y sumando los dos resultados.
+    // En caso de que la diferencia entre alguno de los elementos (red, green, blue o alpha) sea 0, se cambia
+    // en 1 para que no se queda atascada para siempre
+    sf::Color aproximarColor(const sf::Color& primerColor, const sf::Color& segundoColor, double factorPrimero);
 }
 
-#endif

@@ -159,4 +159,44 @@ namespace util{
                 break;
         }
     }
+
+    sf::Color aproximarColor(const sf::Color& primerColor, const sf::Color& segundoColor, double factorPrimero){
+        sf::Color colorResultado = primerColor;
+        colorResultado.r = colorResultado.r*0.8 + segundoColor.r*0.2;
+        colorResultado.g = colorResultado.g*0.8 + segundoColor.g*0.2;
+        colorResultado.b = colorResultado.b*0.8 + segundoColor.b*0.2;
+        colorResultado.a = colorResultado.a*0.8 + segundoColor.a*0.2;
+
+        // Se comprueba si los colores se han quedado pillados y no avanzan, teniendo que avanzarlos
+        // a mano
+        if(colorResultado.r == primerColor.r){
+            if(colorResultado.r < segundoColor.r)
+                colorResultado.r++;
+            else if(colorResultado.r > segundoColor.r)
+                colorResultado.r--;
+        }
+
+        if(colorResultado.g == primerColor.g){
+            if(colorResultado.g < segundoColor.g)
+                colorResultado.g++;
+            else if(colorResultado.g > segundoColor.g)
+                colorResultado.g--;
+        }
+
+        if(colorResultado.b == primerColor.b){
+            if(colorResultado.b < segundoColor.b)
+                colorResultado.b++;
+            else if(colorResultado.b > segundoColor.b)
+                colorResultado.b--;
+        }
+
+        if(colorResultado.a == primerColor.a){
+            if(colorResultado.a < segundoColor.a)
+                colorResultado.a++;
+            else if(colorResultado.a > segundoColor.a)
+                colorResultado.a--;
+        }
+
+        return colorResultado;
+    }
 }

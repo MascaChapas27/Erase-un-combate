@@ -1,5 +1,4 @@
-#ifndef __COMBATE_HPP__
-#define __COMBATE_HPP__
+#pragma once
 
 #include "Personaje.hpp"
 #include "Enums.hpp"
@@ -103,4 +102,4 @@ class Combate{
 
 };
 
-#endif // __COMBATE_HPP__
+

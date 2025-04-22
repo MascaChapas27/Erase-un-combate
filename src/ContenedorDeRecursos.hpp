@@ -1,5 +1,4 @@
-#ifndef __CONTENEDOR_DE_RECURSOS_HPP__
-#define __CONTENEDOR_DE_RECURSOS_HPP__
+#pragma once
 
 #include "Enums.hpp"
 #include <SFML/Graphics.hpp>
@@ -66,4 +65,4 @@ class ContenedorDeRecursos
 
 #include "ContenedorDeRecursos.tpp"
 
-#endif // __CONTENEDOR_DE_RECURSOS_HPP__
+

@@ -203,13 +203,15 @@ std::pair<Jugador,Accion> GestorDeControles::comprobarEvento(std::optional<sf::E
                 // Se asigna el personaje y la acción
                 pair.first = controlAJugador[c];
                 pair.second = a;
-                // Si el personaje es NADIE es porque nadie tiene ese control, así
-                // que todo lo que hemos hecho ha sido perder el tiempo
-                if(pair.first == Jugador::NADIE){
-                    pair.second = Accion::NADA;
-                }
             }
         }
+    }
+
+    // Si el personaje es NADIE, la acción sí o sí tiene que ser NADA y viceversa
+    if(pair.first == Jugador::NADIE){
+        pair.second = Accion::NADA;
+    } else if(pair.second == Accion::NADA){
+        pair.first = Jugador::NADIE;
     }
 
     // Después de este pifostio devolvemos el par

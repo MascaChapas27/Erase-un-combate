@@ -1,5 +1,4 @@
-#ifndef __CONTENEDOR_DE_EFECTOS_HPP__
-#define __CONTENEDOR_DE_EFECTOS_HPP__
+#pragma once
 
 #include "Constantes.hpp"
 #include "Enums.hpp"
@@ -42,4 +41,4 @@ class ContenedorDeEfectos
 
 };
 
-#endif // __CONTENEDOR_DE_EFECTOS_HPP__
+

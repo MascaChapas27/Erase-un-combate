@@ -1,5 +1,4 @@
-#ifndef __CONECTOR_ONLINE_HPP__
-#define __CONECTOR_ONLINE_HPP__
+#pragma once
 
 #include "Enums.hpp"
 #include <SFML/Network.hpp>
@@ -37,4 +36,3 @@ class ConectorOnline {
         bool isLider();
 };
 
-#endif

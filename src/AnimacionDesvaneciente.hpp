@@ -1,5 +1,4 @@
-#ifndef __ANIMACION_DESVANECIENTE_HPP__
-#define __ANIMACION_DESVANECIENTE_HPP__
+#pragma once
 
 #include "Animacion.hpp"
 #include <SFML/Graphics.hpp>
@@ -43,4 +42,3 @@ class AnimacionDesvaneciente : public Animacion {
         std::shared_ptr<Animacion> clonar();
 };
 
-#endif

@@ -1,5 +1,4 @@
-#ifndef __ANIMACION_CON_GRAVEDAD_HPP__
-#define __ANIMACION_CON_GRAVEDAD_HPP__
+#pragma once
 
 #include <optional>
 #include "Animacion.hpp"
@@ -66,4 +65,3 @@ public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
-#endif

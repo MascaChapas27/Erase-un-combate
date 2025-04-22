@@ -1,5 +1,4 @@
-#ifndef __CONSTANTES_HPP__
-#define __CONSTANTES_HPP__
+#pragma once
 
 #include <string>
 #include <SFML/Window.hpp>
@@ -151,6 +150,16 @@ constexpr float POSICION_Y_SELECTOR_OPCIONES = 11*VENTANA_ALTURA/15;
 constexpr sf::Color COLOR_SELECTOR_SIN_SELECCIONAR = sf::Color(50,50,50);
 
 /*
+    CONSTANTES PARA EL SELECTOR DE MANDOS
+*/
+
+// Color inicial del rectángulo que cubre el fondo en el menú de selección de jugador para el mando
+constexpr sf::Color COLOR_INICIAL_RECTANGULO_OSCURO_SELECTOR_MANDOS = sf::Color(0,0,0,0);
+
+// Color final del rectángulo que cubre el fondo en el menú de selección de jugador para el mando
+constexpr sf::Color COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_MANDOS = sf::Color(0,0,0,125);
+
+/*
     CONSTANTES PARA LOS PERSONAJES
 */
 
@@ -294,4 +303,3 @@ constexpr uint8_t BIT_ATAQUE = 16;
 // Si dos floats se diferencian en menos que este número, se consideran iguales
 constexpr float UMBRAL_FLOAT = 0.0001;
 
-#endif // __CONSTANTES_CPP__

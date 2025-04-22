@@ -38,7 +38,7 @@ ReproductorDeMusica::ReproductorDeMusica(){
 
 void ReproductorDeMusica::reproducir(std::string cancion, bool bucle)
 {
-    if(!musicaActual.openFromFile(cancion)){
+    if(!canciones.count(cancion) && !canciones[cancion].openFromFile(cancion)){
         Bitacora::unicaInstancia()->escribir("Juan Cuesta: Emilio, vamos a animar un poco el ambiente, reproduce la canción " + cancion);
         Bitacora::unicaInstancia()->escribir("Emilio: Ah no, esa se la llevó mi padre y ya no la he vuelto a ver");
         Bitacora::unicaInstancia()->escribir("Juan Cuesta: Pero... ¿para qué le das a tu padre un bien común de esta, nuestra comunidad?");
@@ -48,9 +48,11 @@ void ReproductorDeMusica::reproducir(std::string cancion, bool bucle)
         exit(EXIT_FAILURE);
     }
 
-    musicaActual.setLooping(bucle);
-    musicaActual.setVolume(volumenActual);
-    musicaActual.play();
+    canciones[cancion].setLooping(bucle);
+    canciones[cancion].setVolume(volumenActual);
+    canciones[cancion].play();
+
+    cancionActual = cancion;
 }
 
 void ReproductorDeMusica::reproducirCancionCombate(){
@@ -65,21 +67,30 @@ void ReproductorDeMusica::reproducirCancionCombate(){
 
 void ReproductorDeMusica::detener()
 {
-    musicaActual.stop();
+    canciones[cancionActual].stop();
+    cancionActual = "";
+}
+
+void ReproductorDeMusica::pausar(){
+    canciones[cancionActual].pause();
 }
 
 float ReproductorDeMusica::getVolumen()
 {
-    return musicaActual.getVolume();
+    return canciones[cancionActual].getVolume();
 }
 
 bool ReproductorDeMusica::estaReproduciendo()
 {
-    return musicaActual.getStatus() == sf::Music::Status::Playing;
+    return canciones[cancionActual].getStatus() == sf::Music::Status::Playing;
+}
+
+std::string ReproductorDeMusica::getCancionActual(){
+    return cancionActual;
 }
 
 void ReproductorDeMusica::setVolumen(float nuevoVolumen)
 {
     volumenActual = (nuevoVolumen > VOLUMEN_MAXIMO_MUSICA ? VOLUMEN_MAXIMO_MUSICA : nuevoVolumen < 0 ? 0 : nuevoVolumen);
-    musicaActual.setVolume(volumenActual);
+    if(cancionActual != "") canciones[cancionActual].setVolume(volumenActual);
 }

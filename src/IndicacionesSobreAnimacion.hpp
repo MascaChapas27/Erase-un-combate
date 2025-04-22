@@ -1,5 +1,4 @@
-#ifndef __INDICACIONES_SOBRE_ANIMACION_HPP__
-#define __INDICACIONES_SOBRE_ANIMACION_HPP__
+#pragma once
 
 #include <SFML/System.hpp>
 #include <string>
@@ -31,4 +30,3 @@ struct IndicacionesSobreAnimacion {
     
 };
 
-#endif

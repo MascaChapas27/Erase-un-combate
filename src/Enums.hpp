@@ -1,5 +1,4 @@
-#ifndef __ENUMS_HPP__
-#define __ENUMS_HPP__
+#pragma once
 
 /*
     Este fichero contiene enumerados (enums)
@@ -62,4 +61,4 @@ enum class Control{
     MANDO4, MANDO5, MANDO6, MANDO7
 };
 
-#endif // __ENUMS_HPP__
+

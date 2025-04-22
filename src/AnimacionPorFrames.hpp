@@ -1,5 +1,4 @@
-#ifndef __ANIMACION_POR_FRAMES_HPP__
-#define __ANIMACION_POR_FRAMES_HPP__
+#pragma once
 
 #include "Enums.hpp"
 #include "Hitbox.hpp"
@@ -98,4 +97,3 @@ public:
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
 
-#endif // __ANIMACION_POR_FRAMES_HPP__
