@@ -58,6 +58,9 @@ class MenuPrincipal {
         // Rectángulo que tapa el menú principal cuando se selecciona una opción
         sf::RectangleShape rectanguloNegro;
 
+        // Se devuelven los botones y carteles y demás a su posición original
+        void resetear();
+
     public:
 
         // Comienza el funcionamiento del menú principal, que toma el control

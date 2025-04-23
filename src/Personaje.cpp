@@ -538,7 +538,12 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
             if(accionesRealizadas[Accion::ATACAR]){
                 cambiarEstado(EstadoPersonaje::ATAQUE_NORMAL_1);
             } else if(animaciones.at(estado)->haTerminado()){
-                cambiarEstado(EstadoPersonaje::QUIETO);
+                if((accionesRealizadas[Accion::DERECHA] && !mirandoDerecha) ||
+                   (accionesRealizadas[Accion::IZQUIERDA] && mirandoDerecha)){
+                    cambiarEstado(EstadoPersonaje::ANDANDO_ALEJANDOSE);
+                } else {
+                    cambiarEstado(EstadoPersonaje::QUIETO);
+                }
             }
         } else {
             velY+=GRAVEDAD;

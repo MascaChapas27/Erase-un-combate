@@ -146,8 +146,17 @@ constexpr float POSICION_Y_SELECTOR_MODO_HISTORIA = 7*VENTANA_ALTURA/15;
 constexpr float POSICION_Y_SELECTOR_BATALLA_VS = 9*VENTANA_ALTURA/15;
 constexpr float POSICION_Y_SELECTOR_OPCIONES = 11*VENTANA_ALTURA/15;
 
-// Color de las opciones sin seleccionar
+// Color de los selectores sin seleccionar
 constexpr sf::Color COLOR_SELECTOR_SIN_SELECCIONAR = sf::Color(50,50,50);
+
+// Color de los selectores seleccionados
+constexpr sf::Color COLOR_SELECTOR_SELECCIONADO = sf::Color(255,255,255);
+
+// Color de las capturas correspondientes a selectores sin seleccionar
+constexpr sf::Color COLOR_CAPTURA_SIN_SELECCIONAR = sf::Color(255,255,255,0);
+
+// Color de las capturas correspondientes a selectores seleccionados
+constexpr sf::Color COLOR_CAPTURA_SELECCIONADA = sf::Color(255,255,255,255);
 
 /*
     CONSTANTES PARA EL SELECTOR DE MANDOS
