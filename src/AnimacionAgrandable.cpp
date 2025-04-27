@@ -1,9 +1,10 @@
 #include "AnimacionAgrandable.hpp"
 #include "Constantes.hpp"
 #include "ReproductorDeSonidos.hpp"
+#include <iostream>
 
 AnimacionAgrandable::AnimacionAgrandable(int framesEspera, sf::Texture& textura, std::string rutaSonido) : 
-    Animacion(textura), escalaActual(0), seEstaAgrandando(true), framesEspera(framesEspera), contadorEspera(0) {
+    Animacion(textura), escalaActual(0.0f), seEstaAgrandando(true), framesEspera(framesEspera), contadorEspera(0) {
     
     sprite.setOrigin({(float)sprite.getTextureRect().size.x / 2, (float)sprite.getTextureRect().size.y / 2});
     sprite.setScale({0.f,0.f});
@@ -21,14 +22,14 @@ void AnimacionAgrandable::actualizar(std::list<std::shared_ptr<Animacion>> &nuev
 
         // Adicionalmente, si es la primera vez que se actualiza, se
         // reproduce el efecto de sonido asociado
-        if(std::abs(escalaActual - TASA_CRECIMIENTO_ANIMACION_AGRANDABLE) < UMBRAL_FLOAT)
+        if(std::abs(escalaActual - 0.0f) < UMBRAL_FLOAT)
             ReproductorDeSonidos::unicaInstancia()->reproducir(rutaSonido);
 
-        escalaActual+=TASA_CRECIMIENTO_ANIMACION_AGRANDABLE;
+        escalaActual = escalaActual*0.7f + 1.0f*0.3f;
 
-        if(escalaActual > 1.0) {
+        if(std::abs(escalaActual - 1.0f) < UMBRAL_FLOAT) {
             // Se ha hecho grande del todo
-            escalaActual = 1.0;
+            escalaActual = 1.0f;
             seEstaAgrandando = false;
         }
         sprite.setScale({escalaActual,escalaActual});
@@ -45,8 +46,8 @@ void AnimacionAgrandable::actualizar(std::list<std::shared_ptr<Animacion>> &nuev
     // 3: Disminuyendo. El sprite ha estado el tiempo que tenía que estar
     // sin cambiar de tamaño y ahora le toca hacerse más pequeño
     else if (framesEspera != -1){
-        escalaActual-=TASA_CRECIMIENTO_ANIMACION_AGRANDABLE;
-        if(escalaActual < 0.0) escalaActual = 0.0;
+        escalaActual-=(1/(escalaActual*30.f));
+        if(escalaActual <= 0.0f) escalaActual = 0.0f;
         sprite.setScale({escalaActual,escalaActual});
     }
 }
