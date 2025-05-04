@@ -118,8 +118,8 @@ constexpr int MAX_VELOCIDAD_PARTICULA_PEQUE = 3;
 // Máxima velocidad en cualquier eje de una partícula mediana
 constexpr int MAX_VELOCIDAD_PARTICULA_MEDIA = 6;
 
-// Máxima velocidad en cualquier eje de una partícula grande
-constexpr int MAX_VELOCIDAD_PARTICULA_GRANDE = 8;
+// Máxima velocidad en cualquier eje de una partícula súper
+constexpr int MAX_VELOCIDAD_PARTICULA_SUPER = 8;
 
 // Cómo de desplazada está la animación del polvo en el eje X con respecto al centro del personaje
 constexpr int OFFSET_POLVO = 15;
@@ -210,9 +210,9 @@ constexpr float IMPULSO_GOLPE_PEQUE = 1;
 // Impulso inicial en el eje X al recibir un golpe mediano
 constexpr float IMPULSO_GOLPE_MEDIO = 3;
 
-// Impulso inicial en los ejes X e Y al recibir un golpe grande
-constexpr float IMPULSO_X_GOLPE_GRANDE = 7;
-constexpr float IMPULSO_Y_GOLPE_GRANDE = -10;
+// Impulso inicial en los ejes X e Y al recibir un golpe súper
+constexpr float IMPULSO_X_GOLPE_SUPER = 7;
+constexpr float IMPULSO_Y_GOLPE_SUPER = -10;
 
 // Impulso inicial en el eje Y al recibir un golpe bajo mediano
 constexpr float IMPULSO_GOLPE_BAJO_MEDIO = -5;

@@ -7,6 +7,7 @@
 #include "AnimacionConGravedad.hpp"
 #include "VentanaPrincipal.hpp"
 #include "Bitacora.hpp"
+#include "ReproductorDeSonidos.hpp"
 #include <iostream>
 
 Personaje::Personaje(std::map<EstadoPersonaje,std::shared_ptr<AnimacionPorFrames>> animaciones, std::string nombre, std::vector<Accion> accionesAtaqueEspecial) :
@@ -816,8 +817,8 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         if(estado == EstadoPersonaje::ANDANDO_ALEJANDOSE &&  contadorEsquiveSuper < MAX_CONTADOR_ESQUIVE_SUPER){
             cambiarEstado(EstadoPersonaje::ESQUIVE_SUPER);
         } else {
-            velX = mirandoDerecha ? -IMPULSO_X_GOLPE_GRANDE : IMPULSO_X_GOLPE_GRANDE;
-            velY = IMPULSO_Y_GOLPE_GRANDE;
+            velX = mirandoDerecha ? -IMPULSO_X_GOLPE_SUPER : IMPULSO_X_GOLPE_SUPER;
+            velY = IMPULSO_Y_GOLPE_SUPER;
 
             cambiarEstado(EstadoPersonaje::GOLPEADO_SUBIENDO);
         }
@@ -862,8 +863,8 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
                         cambiarEstado(EstadoPersonaje::GOLPEADO_MEDIO);
                     }
                 } else {
-                    velX = mirandoDerecha ? -IMPULSO_X_GOLPE_GRANDE : IMPULSO_X_GOLPE_GRANDE;
-                    velY = IMPULSO_Y_GOLPE_GRANDE;
+                    velX = mirandoDerecha ? -IMPULSO_X_GOLPE_SUPER : IMPULSO_X_GOLPE_SUPER;
+                    velY = IMPULSO_Y_GOLPE_SUPER;
 
                     cambiarEstado(EstadoPersonaje::GOLPEADO_SUBIENDO);
                 }
@@ -978,6 +979,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
     // Una vez se sabe dónde ha ocurrido la colisión y cuánto daño se ha hecho, se añaden los numeritos
     if(estado == EstadoPersonaje::BLOQUEANDO){
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("bloqueado");
+        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/personajes/" + this->nombre + "/bloqueando.wav");
         
         for(int i=0;i < fuerzaAtaque;++i){
 
@@ -991,6 +993,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
 
     } else if (fuerzaAtaque <= MAX_ATAQUE_PEQUE){
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-peque");
+        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/personajes/" + this->nombre + "/golpeado-peque.wav");
 
         for(int i=0;i < fuerzaAtaque;++i){
 
@@ -1007,6 +1010,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         VentanaPrincipal::vibrar(VIBRACION_ATAQUE_MEDIO);
 
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-medio");
+        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/personajes/" + this->nombre + "/golpeado-medio.wav");
 
         for(int i=0;i < fuerzaAtaque/2;++i){
 
@@ -1031,13 +1035,14 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
 
         VentanaPrincipal::vibrar(VIBRACION_ATAQUE_SUPER);
 
-        anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-grande");
+        anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-super");
+        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/personajes/" + this->nombre + "/golpeado-super.wav");
 
         for(int i=0;i < fuerzaAtaque/3;++i){
 
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-3");
             ((AnimacionConGravedad*)(particula.get()))->setPosicion(posicionMedia);
-            ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_GRANDE,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_GRANDE));
+            ((AnimacionConGravedad*)(particula.get()))->setVelocidad(sf::Vector2f((mirandoDerecha ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_SUPER,-1 * util::realAleatorio()*MAX_VELOCIDAD_PARTICULA_SUPER));
             ((AnimacionConGravedad*)(particula.get()))->setVelocidadGiro((rand()%2==0 ? -1 : 1) * util::realAleatorio()*MAX_VELOCIDAD_GIRO_PART);
 
             efectosInsertados.push_back(particula);

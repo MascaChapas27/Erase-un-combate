@@ -275,8 +275,7 @@ Hitboxes:
 Frames:
 0,0,0,0,0,0,0,0
 
-Sonido:no repetir
-0
+Sonido:sin sonido
 
 Movimiento:
 
@@ -296,8 +295,7 @@ Hitboxes:
 Frames:
 0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1
 
-Sonido:no repetir
-0
+Sonido:sin sonido
 
 Movimiento:
 
@@ -317,8 +315,7 @@ Hitboxes:
 Frames:
 0,0,0,1,1,1
 
-Sonido:no repetir
-0
+Sonido:sin sonido
 
 Movimiento:
 

@@ -35,7 +35,7 @@ Hitboxes:
 
 Rectangulo:1
 Hitboxes:
-51,27,28,73,0
+51,29,28,71,0
 
 Rectangulo:2
 Hitboxes:
@@ -43,7 +43,7 @@ Hitboxes:
 
 Rectangulo:3
 Hitboxes:
-51,27,28,73,0
+51,29,28,71,0
 
 Frames:
 0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3
@@ -210,7 +210,7 @@ Hitboxes:
 54,29,27,71,0
 
 Frames:
-0,0,0,0,1,2,2,2,2,3,3,3,3
+0,0,0,0,1,2,2,2,2,3,3,3,3,3,3,3,3
 
 Sonido:no repetir
 4
@@ -275,8 +275,7 @@ Hitboxes:
 Frames:
 0,0,0,0,0,0,0,0
 
-Sonido:no repetir
-0
+Sonido:sin sonido
 
 Movimiento:
 
@@ -296,8 +295,7 @@ Hitboxes:
 Frames:
 0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1
 
-Sonido:no repetir
-0
+Sonido:sin sonido
 
 Movimiento:
 
@@ -317,8 +315,7 @@ Hitboxes:
 Frames:
 0,0,0,1,1,1
 
-Sonido:no repetir
-0
+Sonido:sin sonido
 
 Movimiento:
 
@@ -454,7 +451,7 @@ Hitboxes:
 55,81,23,19,0
 
 Frames:
-0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,3,3,3,3,3
+0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
 
 Sonido:no repetir
 11
