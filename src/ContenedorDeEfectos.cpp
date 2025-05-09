@@ -182,7 +182,7 @@ void ContenedorDeEfectos::cargarTodosLosEfectos()
 
                 repetirSonido = util::separarString(linea, ':')[1] == "repetir";
 
-                rutaSonido = "sonidos/efectos/" + nombreEfecto + ".wav";
+                rutaSonido = "sonidos/efectos/" + nombreEfecto + ".ogg";
 
                 // Avanzamos de línea para conseguir la lista de frames
                 std::getline(fichero, linea);
@@ -250,7 +250,7 @@ void ContenedorDeEfectos::cargarTodosLosEfectos()
             std::getline(fichero, linea);
             std::getline(fichero, linea);
 
-            rutaSonido = "sonidos/efectos/" + nombreEfecto + ".wav";
+            rutaSonido = "sonidos/efectos/" + nombreEfecto + ".ogg";
 
             int framesEspera;
 

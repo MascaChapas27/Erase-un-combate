@@ -979,7 +979,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
     // Una vez se sabe dónde ha ocurrido la colisión y cuánto daño se ha hecho, se añaden los numeritos
     if(estado == EstadoPersonaje::BLOQUEANDO){
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("bloqueado");
-        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/personajes/" + this->nombre + "/bloqueando.wav");
+        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/personajes/" + this->nombre + "/bloqueando.ogg");
         
         for(int i=0;i < fuerzaAtaque;++i){
 
@@ -993,7 +993,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
 
     } else if (fuerzaAtaque <= MAX_ATAQUE_PEQUE){
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-peque");
-        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/personajes/" + this->nombre + "/golpeado-peque.wav");
+        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/personajes/" + this->nombre + "/golpeado-peque.ogg");
 
         for(int i=0;i < fuerzaAtaque;++i){
 
@@ -1010,7 +1010,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         VentanaPrincipal::vibrar(VIBRACION_ATAQUE_MEDIO);
 
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-medio");
-        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/personajes/" + this->nombre + "/golpeado-medio.wav");
+        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/personajes/" + this->nombre + "/golpeado-medio.ogg");
 
         for(int i=0;i < fuerzaAtaque/2;++i){
 
@@ -1036,7 +1036,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         VentanaPrincipal::vibrar(VIBRACION_ATAQUE_SUPER);
 
         anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("golpeado-super");
-        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/personajes/" + this->nombre + "/golpeado-super.wav");
+        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/personajes/" + this->nombre + "/golpeado-super.ogg");
 
         for(int i=0;i < fuerzaAtaque/3;++i){
 

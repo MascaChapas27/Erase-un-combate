@@ -23,9 +23,9 @@ SelectorJugadorParaMando::~SelectorJugadorParaMando()
 
 SelectorJugadorParaMando::SelectorJugadorParaMando() : spriteJugador1(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugador1.png")),
                                                        spriteJugador2(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugador2.png")),
-                                                       sonidoAparecer(ContenedorDeSonidos::unicaInstancia()->obtener("sonidos/seleccionar-mando/aparece-ventana.wav")),
-                                                       sonidoCambiarSeleccion(ContenedorDeSonidos::unicaInstancia()->obtener("sonidos/seleccionar-mando/cambiar-seleccion.wav")),
-                                                       sonidoDesaparecer(ContenedorDeSonidos::unicaInstancia()->obtener("sonidos/seleccionar-mando/desaparece-ventana.wav"))
+                                                       sonidoAparecer(ContenedorDeSonidos::unicaInstancia()->obtener("sonidos/seleccionar-mando/aparece-ventana.ogg")),
+                                                       sonidoCambiarSeleccion(ContenedorDeSonidos::unicaInstancia()->obtener("sonidos/seleccionar-mando/cambiar-seleccion.ogg")),
+                                                       sonidoDesaparecer(ContenedorDeSonidos::unicaInstancia()->obtener("sonidos/seleccionar-mando/desaparece-ventana.ogg"))
 {
 }
 
@@ -60,7 +60,7 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
     bool joystickMovido = false;
 
     sonidoAparecer.play();
-    ReproductorDeMusica::unicaInstancia()->reproducir("musica/selector-mando.wav");
+    ReproductorDeMusica::unicaInstancia()->reproducir("musica/selector-mando.ogg");
 
     while(rectanguloOscuro.getFillColor() != COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_MANDOS){
 

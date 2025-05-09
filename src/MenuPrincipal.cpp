@@ -71,7 +71,7 @@ Seleccion MenuPrincipal::comenzar(){
 
     resetear();
 
-    ReproductorDeMusica::unicaInstancia()->reproducir("musica/menu-principal.wav");
+    ReproductorDeMusica::unicaInstancia()->reproducir("musica/menu-principal.ogg");
 
     sf::RenderWindow * ventana = VentanaPrincipal::unicaInstancia();
 
@@ -94,7 +94,7 @@ Seleccion MenuPrincipal::comenzar(){
                 std::pair<Jugador,Accion> par = GestorDeControles::unicaInstancia()->comprobarEvento(evento);
                 if((evento->is<sf::Event::JoystickButtonPressed>() || evento->is<sf::Event::KeyPressed>())){
                     if(par.second == Accion::ARRIBA){
-                        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/cambiar-seleccion.wav");
+                        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/cambiar-seleccion.ogg");
                         switch(seleccionActual){
                             case Seleccion::MODO_HISTORIA:
                                 seleccionActual = Seleccion::OPCIONES;
@@ -107,7 +107,7 @@ Seleccion MenuPrincipal::comenzar(){
                                 break;
                         }
                     } else if (par.second == Accion::ABAJO){
-                        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/cambiar-seleccion.wav");
+                        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/cambiar-seleccion.ogg");
                         switch(seleccionActual){
                             case Seleccion::MODO_HISTORIA:
                                 seleccionActual = Seleccion::BATALLA_VS;
@@ -121,7 +121,7 @@ Seleccion MenuPrincipal::comenzar(){
                         }
                     } else if (par.second == Accion::ATACAR){
                         ReproductorDeMusica::unicaInstancia()->detener();
-                        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/seleccionar.wav");
+                        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/seleccionar.ogg");
                         std::shared_ptr<Animacion> anim;
                         shaderDestello->setUniform("amount",1.f);
                         brilloSelector = 1.f;

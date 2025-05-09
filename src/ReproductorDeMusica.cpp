@@ -26,10 +26,10 @@ ReproductorDeMusica::ReproductorDeMusica(){
     } else {
         for(const std::filesystem::directory_entry & entrada : std::filesystem::directory_iterator("musica/combate")){
 
-            // Es necesario comprobar que los cuatro últimos caracteres del string son ".wav"
+            // Es necesario comprobar que los cuatro últimos caracteres del string son ".ogg"
             std::size_t posicionPunto = entrada.path().string().size()-4;
 
-            if(entrada.path().string().substr(posicionPunto,4) == ".wav"){
+            if(entrada.path().string().substr(posicionPunto,4) == ".ogg"){
                 cancionesCombate.push_back(entrada.path().string());
             }
         }
