@@ -36,6 +36,11 @@ class Personaje : public sf::Drawable {
         // Velocidad en el eje X
         float velX;
 
+        // Escala para el sprite del personaje para así dar la
+        // sensación de que se estira y se comprime (o al menos eso me
+        // ha enseñado el vídeo ese de los 12 principios de la animación)
+        sf::Vector2f escalaSprite;
+
         // Verdadero si el personaje está mirando hacia la derecha (el enemigo está a la derecha)
         bool mirandoDerecha;
 
@@ -120,6 +125,10 @@ class Personaje : public sf::Drawable {
 
         // Devuelve true si está mirando hacia la derecha
         bool isMirandoDerecha();
+
+        // Voltea al jugador para que mire al otro lado (al principio estará
+        // mirando a la derecha)
+        void voltear();
 
         // Mueve al personaje según lo indicado (en realidad mueve la animación del estado
         // actual pero el resultado es el mismo)

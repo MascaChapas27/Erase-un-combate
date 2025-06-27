@@ -46,6 +46,10 @@ class Animacion : public sf::Drawable {
         // Establece el color de la animación
         void setColor(sf::Color color);
 
+        // Establece la escala de la animación por si la quieres
+        // espachurrar o estirarla o esas cosas
+        void setEscala(const sf::Vector2f& escala);
+
         // Devuelve la posición actual del sprite (teniendo en cuenta el origen, sea cual sea)
         sf::Vector2f getPosicion();
 

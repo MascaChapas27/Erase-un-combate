@@ -162,10 +162,10 @@ namespace util{
 
     sf::Color aproximarColor(const sf::Color& primerColor, const sf::Color& segundoColor, double factorPrimero){
         sf::Color colorResultado = primerColor;
-        colorResultado.r = colorResultado.r*0.8 + segundoColor.r*0.2;
-        colorResultado.g = colorResultado.g*0.8 + segundoColor.g*0.2;
-        colorResultado.b = colorResultado.b*0.8 + segundoColor.b*0.2;
-        colorResultado.a = colorResultado.a*0.8 + segundoColor.a*0.2;
+        colorResultado.r = colorResultado.r*factorPrimero + segundoColor.r*(1-factorPrimero);
+        colorResultado.g = colorResultado.g*factorPrimero + segundoColor.g*(1-factorPrimero);
+        colorResultado.b = colorResultado.b*factorPrimero + segundoColor.b*(1-factorPrimero);
+        colorResultado.a = colorResultado.a*factorPrimero + segundoColor.a*(1-factorPrimero);
 
         // Se comprueba si los colores se han quedado pillados y no avanzan, teniendo que avanzarlos
         // a mano
@@ -198,5 +198,10 @@ namespace util{
         }
 
         return colorResultado;
+    }
+
+    float aproximarFloat(const float& primerFloat, const float& segundoFloat, double factorPrimero)
+    {
+        return primerFloat*factorPrimero + segundoFloat*(1-factorPrimero);
     }
 }

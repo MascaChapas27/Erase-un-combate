@@ -36,6 +36,8 @@ Combate::Combate(std::string nombrePersonajeJ1, std::string nombrePersonajeJ2, s
     personajeJugador2.setJugador(Jugador::JUGADOR2);
     personajeJugador2.setPosicion(2 * VENTANA_ANCHURA / 3, ALTURA_SUELO);
 
+    personajeJugador2.voltear();
+
     cartelTodoListo->setPosicion(POSICION_CARTELES_COMBATE);
     cartelAPelear->setPosicion(POSICION_CARTELES_COMBATE);
     cartelJugador1Gana->setPosicion(POSICION_CARTELES_COMBATE);

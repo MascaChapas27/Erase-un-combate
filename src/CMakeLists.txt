@@ -4,7 +4,7 @@
 # 4: Compilar usando `ninja` o lo que hayas utilizado para compilar si en vez de `-G Ninja` has puesto algo distinto en el comando de arriba
 # 5: Ejecutar el juego EraseUnCombate.exe en el directorio principal
 
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.28)
 project(EraseUnCombate LANGUAGES CXX)
 
 # El programa se creará en el directorio raíz del proyecto
