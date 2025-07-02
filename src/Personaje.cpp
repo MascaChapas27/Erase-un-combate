@@ -227,6 +227,8 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         }
         else if (accionesRealizadas[Accion::ABAJO])
         {
+            escalaSprite.x = mirandoDerecha ? 1.05 : -1.05;
+            escalaSprite.y = 0.95;
             cambiarEstado(EstadoPersonaje::AGACHADO);
         }
         else if (accionesRealizadas[Accion::DERECHA])
@@ -351,6 +353,8 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
 
     case EstadoPersonaje::SALTANDO_BAJANDO:
         velY+=GRAVEDAD;
+        escalaSprite.x+=(mirandoDerecha ? -0.01 : 0.01);
+        escalaSprite.y+=0.01;
 
         if(accionesRealizadas[Accion::ATACAR]) {
             detenerAccion(Accion::ATACAR);
@@ -596,6 +600,8 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
             cambiarEstado(EstadoPersonaje::ATAQUE_ESPECIAL);
         }
         else if(!accionesRealizadas[Accion::ABAJO]){
+            escalaSprite.x = mirandoDerecha ? 0.95 : -0.95;
+            escalaSprite.y = 1.05;
             cambiarEstado(EstadoPersonaje::QUIETO);
         } else if (accionesRealizadas[Accion::ATACAR]){
             cambiarEstado(EstadoPersonaje::ATAQUE_AGACHADO);
@@ -687,8 +693,8 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
     animaciones[estado]->setEscala(escalaSprite);
 
     // Se devuelve la escala del sprite a su valor original
-    escalaSprite.x = util::aproximarFloat(escalaSprite.x,mirandoDerecha ? 1.f : -1.f, 0.7);
-    escalaSprite.y = util::aproximarFloat(escalaSprite.y,1.f,0.7);
+    escalaSprite.x = util::aproximarFloat(escalaSprite.x,mirandoDerecha ? 1.f : -1.f, 0.8);
+    escalaSprite.y = util::aproximarFloat(escalaSprite.y,1.f,0.8);
 
     // Se consulta el movimiento de la animación por frames
     sf::Vector2f movimiento;
