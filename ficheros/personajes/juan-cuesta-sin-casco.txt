@@ -500,7 +500,8 @@ Hitboxes:
 Frames:
 0
 
-Sonido:sin sonido
+Sonido:no repetir
+0
 
 Movimiento:
 

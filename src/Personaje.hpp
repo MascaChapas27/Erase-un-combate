@@ -30,19 +30,13 @@ class Personaje : public sf::Drawable {
         // Nombre del personaje
         std::string nombre;
 
-        // Velocidad en el eje Y
-        float velY;
-
-        // Velocidad en el eje X
-        float velX;
+        // Velocidad en los ejes X e Y
+        sf::Vector2f velocidad;
 
         // Escala para el sprite del personaje para así dar la
         // sensación de que se estira y se comprime (o al menos eso me
         // ha enseñado el vídeo ese de los 12 principios de la animación)
         sf::Vector2f escalaSprite;
-
-        // Verdadero si el personaje está mirando hacia la derecha (el enemigo está a la derecha)
-        bool mirandoDerecha;
 
         // Va aumentando si te mueves estando tumbado y cuando llega a MAX_CONTADOR_TUMBADO
         // tu personaje se levanta y el contador vuelve a cero
