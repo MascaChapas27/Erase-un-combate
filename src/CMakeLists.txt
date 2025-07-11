@@ -20,11 +20,19 @@ set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 include(FetchContent)
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 3.0.0
+    GIT_TAG master
     GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
+
+# Lo mismo pero para traer el repositorio de yaml-cpp
+FetchContent_Declare(
+  yaml-cpp
+  GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
+  GIT_TAG master
+)
+FetchContent_MakeAvailable(yaml-cpp)
 
 # Se ponen todos los ficheros .cpp
 add_executable(EraseUnCombate Animacion.cpp AnimacionAgrandable.cpp AnimacionConGravedad.cpp AnimacionDesvaneciente.cpp AnimacionPorFrames.cpp AtaqueEspecial.cpp Bitacora.cpp Combate.cpp ConectorOnline.cpp ContenedorDeEfectos.cpp ContenedorDePersonajes.cpp ContenedorDeRecursos.cpp Escenario.cpp GestorDeControles.cpp GUIPersonaje.cpp Hitbox.cpp main.cpp MenuPrincipal.cpp Personaje.cpp ReproductorDeMusica.cpp ReproductorDeSonidos.cpp SelectorJugadorParaMando.cpp Utilidades.cpp VentanaPrincipal.cpp)
@@ -32,8 +40,8 @@ add_executable(EraseUnCombate Animacion.cpp AnimacionAgrandable.cpp AnimacionCon
 # Se especifica que el estándar de C++ que se quiere usar es el de 2020
 target_compile_features(EraseUnCombate PRIVATE cxx_std_20)
 
-# Se especifican los cinco módulos de SFML
-target_link_libraries(EraseUnCombate PRIVATE SFML::Graphics SFML::Network SFML::Window SFML::System SFML::Audio)
+# Se especifican los cinco módulos de SFML y el módulo de yaml-cpp
+target_link_libraries(EraseUnCombate PRIVATE SFML::Graphics SFML::Network SFML::Window SFML::System SFML::Audio yaml-cpp::yaml-cpp)
 
 # Enlazar OpenMP
 find_package(OpenMP)

@@ -1,0 +1,83 @@
+infoPersonaje:
+  nombre: "Juan Cuesta"
+  vida: 100
+  velocidad: 5
+  salto: 10
+estados:
+  quieto:
+    bucle: "Normal"
+    rectangulos:
+      - posX: 51
+        posY: 29
+        ancho: 27
+        alto: 71
+        ataque: 0
+      - posX: 51
+        posY: 30
+        ancho: 27
+        alto: 70
+        ataque: 0
+      - posX: 54
+        posY: 12
+        ancho: 32
+        alto: 43
+        ataque: 1
+    frames: [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [1,2,3]
+    movimiento:
+      - frame: 3
+        ejeX: 30
+        ejeY: 10
+      - frame: 8
+        ejeX: 10
+        ejeY: 25
+    efectos:
+      - frame: 1
+        efecto: "particula-golpeado-medio-1"
+        posX: 30
+        posY: 10
+        velX: 3
+        velY: 4
+      - frame: 34
+        efecto: "disparo-juan-cuesta"
+        posX: 20
+        posY: 40
+        velX: 0
+        velY: 0
+  
+  andando-acercandose:
+    bucle: "Normal"
+    rectangulos:
+      - posX: 51
+        posY: 29
+        ancho: 27
+        alto: 71
+        ataque: 0
+      - posX: 51
+        posY: 30
+        ancho: 27
+        alto: 70
+        ataque: 0
+    frames: [0,0,0,0,1,2,3,3,3,3,3]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [1]
+    movimiento:
+      - frame: 3
+        ejeX: 30
+        ejeY: 10
+    efectos:
+      - frame: 1
+        efecto: "particula-golpeado-medio-1"
+        posX: 30
+        posY: 10
+        velX: 3
+        velY: 4
+      - frame: 34
+        efecto: "disparo-juan-cuesta"
+        posX: 20
+        posY: 40
+        velX: 0
+        velY: 0

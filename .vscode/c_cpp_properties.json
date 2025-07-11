@@ -27,7 +27,7 @@
             "name": "includePath",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/SFML-3.0.0/include"
+                "${workspaceFolder}/build/_deps/yaml-cpp-src/include"
             ],
             "defines": [
                 "_DEBUG",
