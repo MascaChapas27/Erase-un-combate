@@ -14,7 +14,7 @@ int main(int argc, char* argv[]){
 
     YAML::Node estados = config["estados"];
 
-    std::cout << "Personaje " << infoPersonaje["nombre"].as<std::string>() << ", con " << infoPersonaje["vida"].as<int>() << " puntos de vida, velocidad de " << infoPersonaje["velocidad"].as<int>() << " y fuerza de salto de " << infoPersonaje["salto"].as<int>() << "\n";
+    std::cout << "Personaje " << infoPersonaje["nombre"].as<std::string>() << ", con " << infoPersonaje["vida"].as<int>() << " puntos de vida, velocidad de " << infoPersonaje["velocidad"].as<float>() << " y fuerza de salto de " << infoPersonaje["salto"].as<float>() << "\n";
 
     for(YAML::const_iterator itEstado = estados.begin(); itEstado != estados.end(); ++itEstado)
     {
@@ -40,10 +40,28 @@ int main(int argc, char* argv[]){
                 {
                     std::cout << itAtributoEstado->second[frameActual] << ", ";
                 }
+                std::cout << "\n";
             }
             else if(itAtributoEstado->first.as<std::string>() == "sonido")
             {
-                s
+                if(itAtributoEstado->second["tipo"].as<std::string>() == "No repetir")
+                {
+                    std::cout << "Este estado tiene un sonido que no se debe repetir. Los fotogramas son: ";
+                    for(size_t i = 0; i < itAtributoEstado->second["fotogramas"].size(); i++)
+                    {
+                        std::cout << itAtributoEstado->second["fotogramas"][i] << ", ";
+                    }
+                    std::cout << "\n";
+                }
+            }
+            else if(itAtributoEstado->first.as<std::string>() == "efectos")
+            {
+                std::cout << "Encontrados " << itAtributoEstado->second.size() << " efectos\n";
+
+                for(size_t i = 0; i < itAtributoEstado->second.size(); i++)
+                {
+                    std::cout << "Efecto número " << i << " de nombre \"" << itAtributoEstado->second[i]["efecto"].as<std::string>() << "\"desencadenado en frame " << itAtributoEstado->second[i]["frame"].as<int>() << ". Posición (" << itAtributoEstado->second[i]["posX"].as<int>() << "," << itAtributoEstado->second[i]["posY"].as<int>() << ") y velocidad inicial (" << itAtributoEstado->second[i]["velX"].as<int>() << "," << itAtributoEstado->second[i]["velY"].as<int>() << ").\n";
+                }
             }
         }
         std::cout << "\n";

@@ -1,0 +1,60 @@
+infoPersonaje:
+  nombre: "Juan Cuesta"
+  vida: 100
+  velocidad: 2.5
+  salto: 6
+
+estados:
+  quieto:
+    bucle: "Normal"
+    rectangulos:
+      - posX: 51
+        posY: 29
+        ancho: 27
+        alto: 71
+        ataque: 0
+      - posX: 51
+        posY: 30
+        ancho: 27
+        alto: 70
+        ataque: 0
+      - posX: 51
+        posY: 30
+        ancho: 27
+        alto: 70
+        ataque: 0
+      - posX: 51
+        posY: 29
+        ancho: 27
+        alto: 71
+        ataque: 0
+    frames: [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
+  
+  andando-acercandose:
+    bucle: "Normal"
+    rectangulos:
+      - posX: 51
+        posY: 29
+        ancho: 28
+        alto: 71
+        ataque: 0
+      - posX: 51
+        posY: 29
+        ancho: 28
+        alto: 71
+        ataque: 0
+      - posX: 51
+        posY: 29
+        ancho: 28
+        alto: 71
+        ataque: 0
+      - posX: 51
+        posY: 29
+        ancho: 28
+        alto: 71
+        ataque: 0
+    frames: [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
+  
+  andando-alejandose:
+    bucle: "Normal"
+    

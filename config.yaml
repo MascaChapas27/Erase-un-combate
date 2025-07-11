@@ -25,7 +25,7 @@ estados:
     frames: [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
     sonido:
       tipo: "No repetir"
-      fotogramas: [1,2,3]
+      fotogramas: [1,4,8]
     movimiento:
       - frame: 3
         ejeX: 30
@@ -62,8 +62,8 @@ estados:
         ataque: 0
     frames: [0,0,0,0,1,2,3,3,3,3,3]
     sonido:
-      tipo: "No repetir"
-      fotogramas: [1]
+      tipo: "Sin sonido"
+      fotogramas:
     movimiento:
       - frame: 3
         ejeX: 30

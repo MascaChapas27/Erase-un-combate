@@ -38,3 +38,9 @@ build/
 
 # dlls that depend on the machine
 *.dll
+
+# Linux executables
+EraseUnCombate
+parse
+read
+sandbox
