@@ -10,23 +10,23 @@ ConectorOnline::ConectorOnline(sf::IpAddress direccionIP, bool lider) : lider(li
     Bitacora::unicaInstancia()->escribir("Juan Cuesta: Emilio, abre el puerto " + std::to_string(NUMERO_PUERTO) + ", es hora de aprovechar la conexión de alta velocidad recién instalada.");
 
     if (socket.bind(NUMERO_PUERTO) != sf::Socket::Status::Done){
-        Bitacora::unicaInstancia()->escribir("Emilio: oye señor Juan, ¿no estará usando este puerto para algo ya?");
-        Bitacora::unicaInstancia()->escribir("Juan Cuesta: imposible, si yo los puertos ni los he tocado desde que vino el instalador");
-        Bitacora::unicaInstancia()->escribir("Emilio: pues me da a mí que hay alguien que no ha tardado en engancharse. Vamos, que el puerto " + std::to_string(NUMERO_PUERTO) + " ya está en uso.");
-        Bitacora::unicaInstancia()->escribir("Juan Cuesta: qué follón... se suspende la junta.");
+        Bitacora::unicaInstancia()->escribir("Emilio: Oye señor Juan, ¿no estará usando este puerto para algo ya?");
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Imposible, si yo los puertos ni los he tocado desde que vino el instalador");
+        Bitacora::unicaInstancia()->escribir("Emilio: Pues me da a mí que hay alguien que no ha tardado en engancharse. Vamos, que el puerto " + std::to_string(NUMERO_PUERTO) + " ya está en uso.");
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Qué follón... se suspende la junta.");
         exit(EXIT_FAILURE);
     }
 
-    Bitacora::unicaInstancia()->escribir("Emilio: puerto listo. A ver si el otro está listo allá donde esté...");
+    Bitacora::unicaInstancia()->escribir("Emilio: Puerto listo. A ver si el otro está listo allá donde esté...");
 
     if (lider)
     {
         sf::Packet paquete;
         unsigned short puerto = NUMERO_PUERTO;
         if(socket.receive(paquete, this->direccionIP, puerto) != sf::Socket::Status::Done){
-            Bitacora::unicaInstancia()->escribir("Emilio: pues parece que no.");
+            Bitacora::unicaInstancia()->escribir("Emilio: Pues parece que no.");
             Bitacora::unicaInstancia()->escribir("Juan Cuesta: ¿cómo que no? ¿Lo has puesto bien?");
-            Bitacora::unicaInstancia()->escribir("Emilio: vamos, digo yo que sí. No sé qué ha pasado, pero esto ha petado.");
+            Bitacora::unicaInstancia()->escribir("Emilio: Vamos, digo yo que sí. No sé qué ha pasado, pero esto ha petado.");
             exit(EXIT_FAILURE);
         }
     }
@@ -36,9 +36,9 @@ ConectorOnline::ConectorOnline(sf::IpAddress direccionIP, bool lider) : lider(li
         unsigned short puerto = NUMERO_PUERTO;
 
         if(socket.send(paquete, direccionIP, puerto) != sf::Socket::Status::Done){
-            Bitacora::unicaInstancia()->escribir("Emilio: pues parece que no.");
-            Bitacora::unicaInstancia()->escribir("Juan Cuesta: ¿cómo que no? ¿Lo has puesto bien?");
-            Bitacora::unicaInstancia()->escribir("Emilio: vamos, digo yo que sí. No sé qué ha pasado, pero esto ha petado.");
+            Bitacora::unicaInstancia()->escribir("Emilio: Pues parece que no.");
+            Bitacora::unicaInstancia()->escribir("Juan Cuesta: ¿Cómo que no? ¿Lo has puesto bien?");
+            Bitacora::unicaInstancia()->escribir("Emilio: Vamos, digo yo que sí. No sé qué ha pasado, pero esto ha petado.");
             exit(EXIT_FAILURE);
         }
     }
@@ -80,17 +80,17 @@ AccionesOnline ConectorOnline::enviarRecibirAcciones(std::unordered_set<Accion> 
         } while (estado == sf::Socket::Status::Partial);
 
         if(estado == sf::Socket::Status::Error){
-            Bitacora::unicaInstancia()->escribir("Juan Cuesta: pero bueno, esto es indignante. ¿Pago una conexión de alta velocidad y no puedo enviar datos?");
-            Bitacora::unicaInstancia()->escribir("Emilio: si esto del Internet es una estafa, a saber cuánto le habrán cobrado por el trastajo este.");
+            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Pero bueno, esto es indignante. ¿Pago una conexión de alta velocidad y no puedo enviar datos?");
+            Bitacora::unicaInstancia()->escribir("Emilio: Si esto del Internet es una estafa, a saber cuánto le habrán cobrado por el trastajo este.");
             exit(EXIT_FAILURE);
         }
 
         if (socket.receive(paqueteRecibido, direccionIP, puerto) != sf::Socket::Status::Done)
         {
             Bitacora::unicaInstancia()->escribir("Juan Cuesta: Emilio, ¿qué pasa ahora...?");
-            Bitacora::unicaInstancia()->escribir("Emilio: pues que estaba aquí recibiendo datos, y de repente ha petado esto.");
-            Bitacora::unicaInstancia()->escribir("Juan Cuesta: ¿cómo que \"ha petado\"?");
-            Bitacora::unicaInstancia()->escribir("Emilio: mire, yo que usted devolvía esto y me compraba un aparato de estos de gimnasia pasiva, que se acerca el veranito y hay que coger buen cuerpo.");
+            Bitacora::unicaInstancia()->escribir("Emilio: Pues que estaba aquí recibiendo datos, y de repente ha petado esto.");
+            Bitacora::unicaInstancia()->escribir("Juan Cuesta: ¿Cómo que \"ha petado\"?");
+            Bitacora::unicaInstancia()->escribir("Emilio: Mire, yo que usted devolvía esto y me compraba un aparato de estos de gimnasia pasiva, que se acerca el veranito y hay que coger buen cuerpo.");
             exit(EXIT_FAILURE);
         }
     }
@@ -100,9 +100,9 @@ AccionesOnline ConectorOnline::enviarRecibirAcciones(std::unordered_set<Accion> 
         if (socket.receive(paqueteRecibido, direccionIP, puerto) != sf::Socket::Status::Done)
         {
             Bitacora::unicaInstancia()->escribir("Juan Cuesta: Emilio, ¿qué pasa ahora...?");
-            Bitacora::unicaInstancia()->escribir("Emilio: pues que estaba aquí recibiendo datos, y de repente ha petado esto.");
-            Bitacora::unicaInstancia()->escribir("Juan Cuesta: ¿cómo que \"ha petado\"?");
-            Bitacora::unicaInstancia()->escribir("Emilio: mire, yo que usted devolvía esto y me compraba un aparato de estos de gimnasia pasiva, que se acerca el veranito y hay que coger buen cuerpo.");
+            Bitacora::unicaInstancia()->escribir("Emilio: Pues que estaba aquí recibiendo datos, y de repente ha petado esto.");
+            Bitacora::unicaInstancia()->escribir("Juan Cuesta: ¿Cómo que \"ha petado\"?");
+            Bitacora::unicaInstancia()->escribir("Emilio: Mire, yo que usted devolvía esto y me compraba un aparato de estos de gimnasia pasiva, que se acerca el veranito y hay que coger buen cuerpo.");
             exit(EXIT_FAILURE);
         }
 
@@ -113,8 +113,8 @@ AccionesOnline ConectorOnline::enviarRecibirAcciones(std::unordered_set<Accion> 
         } while (estado == sf::Socket::Status::Partial);
 
         if(estado == sf::Socket::Status::Error){
-            Bitacora::unicaInstancia()->escribir("Juan Cuesta: pero bueno, esto es indignante. ¿Pago una conexión de alta velocidad y no puedo enviar datos?");
-            Bitacora::unicaInstancia()->escribir("Emilio: si esto del Internet es una estafa, a saber cuánto le habrán cobrado por el trastajo este.");
+            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Pero bueno, esto es indignante. ¿Pago una conexión de alta velocidad y no puedo enviar datos?");
+            Bitacora::unicaInstancia()->escribir("Emilio: Si esto del Internet es una estafa, a saber cuánto le habrán cobrado por el trastajo este.");
             exit(EXIT_FAILURE);
         }
     }

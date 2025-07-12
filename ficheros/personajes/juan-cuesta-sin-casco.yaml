@@ -1,5 +1,4 @@
 infoPersonaje:
-  nombre: "Juan Cuesta"
   vida: 100
   velocidad: 2.5
   salto: 6
@@ -8,53 +7,540 @@ estados:
   quieto:
     bucle: "Normal"
     rectangulos:
-      - posX: 51
-        posY: 29
-        ancho: 27
-        alto: 71
-        ataque: 0
-      - posX: 51
-        posY: 30
-        ancho: 27
-        alto: 70
-        ataque: 0
-      - posX: 51
-        posY: 30
-        ancho: 27
-        alto: 70
-        ataque: 0
-      - posX: 51
-        posY: 29
-        ancho: 27
-        alto: 71
-        ataque: 0
-    frames: [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 30
+          ancho: 27
+          alto: 70
+          ataque: 0
+      - - posX: 51
+          posY: 30
+          ancho: 27
+          alto: 70
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+    fotogramas: [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
   
   andando-acercandose:
     bucle: "Normal"
     rectangulos:
-      - posX: 51
-        posY: 29
-        ancho: 28
-        alto: 71
-        ataque: 0
-      - posX: 51
-        posY: 29
-        ancho: 28
-        alto: 71
-        ataque: 0
-      - posX: 51
-        posY: 29
-        ancho: 28
-        alto: 71
-        ataque: 0
-      - posX: 51
-        posY: 29
-        ancho: 28
-        alto: 71
-        ataque: 0
-    frames: [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
+      - - posX: 51
+          posY: 29
+          ancho: 28
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 28
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 28
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 28
+          alto: 71
+          ataque: 0
+    fotogramas: [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
   
   andando-alejandose:
     bucle: "Normal"
+    rectangulos:
+      - - posX: 51
+          posY: 29
+          ancho: 28
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 27
+          ancho: 28
+          alto: 73
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 28
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 27
+          ancho: 28
+          alto: 73
+          ataque: 0
+    fotogramas: [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
+    sonido:
+      tipo: "Repetir"
+      fotogramas: [8,24]
     
+  saltando-subiendo:
+    bucle: "Normal"
+    rectangulos:
+      - - posX: 51
+          posY: 26
+          ancho: 27
+          alto: 74
+          ataque: 0
+      - - posX: 51
+          posY: 26
+          ancho: 27
+          alto: 74
+          ataque: 0
+      - - posX: 51
+          posY: 26
+          ancho: 27
+          alto: 74
+          ataque: 0
+    fotogramas: [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [0]
+    
+  saltando-bajando:
+    bucle: "Normal"
+    rectangulos:
+      - - posX: 51
+          posY: 25
+          ancho: 27
+          alto: 75
+          ataque: 0
+      - - posX: 51
+          posY: 25
+          ancho: 27
+          alto: 75
+          ataque: 0
+      - - posX: 51
+          posY: 25
+          ancho: 27
+          alto: 75
+          ataque: 0
+    fotogramas: [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
+
+  ataque-normal-1:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+        - posX: 93
+          posY: 60
+          ancho: 12
+          alto: 12
+          ataque: 1
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+    fotogramas: [0,0,0,0,1,2,2,2,2]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [4]
+  
+  ataque-normal-2:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+        - posX: 89
+          posY: 63
+          ancho: 17
+          alto: 12
+          ataque: 2
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+    fotogramas: [0,0,0,0,1,2,2,2,2,3,3,3,3]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [4]
+
+  ataque-normal-3:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 54
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+        - posX: 86
+          posY: 56
+          ancho: 14
+          alto: 16
+          ataque: 4
+      - - posX: 54
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 54
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+    fotogramas: [0,0,0,0,1,2,2,2,2,3,3,3,3,3,3,3,3]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [4]
+  
+  ataque-especial:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+        - posX: 85
+          posY: 56
+          ancho: 17
+          alto: 17
+          ataque: 1
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+        - posX: 79
+          posY: 50
+          ancho: 29
+          alto: 29
+          ataque: 1
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+        - posX: 73
+          posY: 44
+          ancho: 41
+          alto: 41
+          ataque: 1
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+    fotogramas: [0,0,0,0,0,0,0,1,1,5,5,5,2,2,4,4,4,2,2,3,3,3,2,2,4,4,4,2,2,3,3,3,2,2,2,2,2,6,6,6,6,6]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [7]
+    acciones: ["DERECHA","DERECHA","DERECHA","ATACAR"]
+
+  golpeado-peque:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+    fotogramas: [0,0,0,0,0,0,0,0]
+  
+  golpeado-medio:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+    fotogramas: [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]
+  
+  bloqueando:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+    fotogramas: [0,0,0,1,1,1]
+
+  esquive-super:
+    bucle: "Sin bucle"
+    rectangulos:
+      -
+      -
+      -
+      -
+      -
+      -
+    fotogramas: [0,1,0,1,0,1,0,1,2,2,3,3,2,2,3,3,2,2,3,3,4,4,4,5,5,5,4,4,4,5,5,5,4,4,4,5,5,5]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [0]
+  
+  agachado:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 51
+          posY: 38
+          ancho: 27
+          alto: 62
+          ataque: 0
+    fotogramas: [0]
+  
+  ataque-agachado:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 51
+          posY: 38
+          ancho: 27
+          alto: 62
+          ataque: 0
+      - - posX: 52
+          posY: 38
+          ancho: 27
+          alto: 62
+          ataque: 0
+        - posX: 87
+          posY: 78
+          ancho: 14
+          alto: 14
+          ataque: 4
+      - - posX: 51
+          posY: 38
+          ancho: 27
+          alto: 62
+          ataque: 0
+    fotogramas: [0,0,0,0,0,0,0,0,1,2,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [8]
+  
+  tocando-suelo:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 51
+          posY: 38
+          ancho: 27
+          alto: 62
+          ataque: 0
+      - - posX: 51
+          posY: 37
+          ancho: 27
+          alto: 63
+          ataque: 0
+      - - posX: 51
+          posY: 32
+          ancho: 27
+          alto: 68
+          ataque: 0
+    fotogramas: [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [0]
+    
+  ataque-aereo:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 51
+          posY: 25
+          ancho: 27
+          alto: 75
+          ataque: 0
+      - - posX: 92
+          posY: 48
+          ancho: 32
+          alto: 37
+          ataque: 0
+        - posX: 92
+          posY: 48
+          ancho: 32
+          alto: 37
+          ataque: 5
+        - posX: 69
+          posY: 65
+          ancho: 26
+          alto: 27
+          ataque: 0
+        - posX: 55
+          posY: 74
+          ancho: 25
+          alto: 27
+          ataque: 0
+      - - posX: 92
+          posY: 48
+          ancho: 32
+          alto: 37
+          ataque: 0
+        - posX: 69
+          posY: 65
+          ancho: 26
+          alto: 27
+          ataque: 0
+        - posX: 55
+          posY: 74
+          ancho: 25
+          alto: 27
+          ataque: 0
+      - - posX: 85
+          posY: 39
+          ancho: 33
+          alto: 37
+          ataque: 0
+        - posX: 62
+          posY: 64
+          ancho: 32
+          alto: 29
+          ataque: 0
+        - posX: 55
+          posY: 81
+          ancho: 23
+          alto: 19
+          ataque: 0
+    fotogramas: [0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [11]
+  
+  golpeado-subiendo:
+    bucle: "Normal"
+    rectangulos:
+      -
+    fotogramas: [0]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [0]
+  
+  golpeado-bajando:
+    bucle: "Normal"
+    rectangulos:
+      -
+    fotogramas: [0]
+  
+  tumbado:
+    bucle: "Normal"
+    rectangulos:
+      -
+    fotogramas: [0]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [0]
+  
+  levantandose:
+    bucle: "Sin bucle"
+    rectangulos:
+      -
+      -
+      -
+      -
+    fotogramas: [0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3]
+  
+  preparando-super:
+    bucle: "Sin bucle"
+    rectangulos:
+      -
+      -
+      -
+      -
+    fotogramas: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [0]
+  
+  ataque-super:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 52
+          posY: 31
+          ancho: 24
+          alto: 69
+          ataque: 0
+      - - posX: 52
+          posY: 31
+          ancho: 24
+          alto: 69
+          ataque: 0
+      - - posX: 52
+          posY: 31
+          ancho: 24
+          alto: 69
+          ataque: 0
+    movimientos:
+      - fotograma: 0
+        velX: -2
+        velY: 0
+    efectos:
+      - fotograma: 0
+        efecto: "disparo-juan-cuesta"
+        posX: 118
+        posY: 56
+        velX: 0
+        velY: 0
+  
+  celebrando:
+    bucle: "Sin bucle"
+    rectangulos:
+      -
+      -
+      -
+      -
+      -
+      -
+    fotogramas: [0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,2,2,2,2,2,2,2,1,1,1,1,1,1,1,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [0]

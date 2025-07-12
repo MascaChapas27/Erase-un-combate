@@ -90,14 +90,14 @@ void AnimacionConGravedad::resetear()
     contadorParpadeo = 0;
 }
 
-std::list<Hitbox> AnimacionConGravedad::getHitboxes(){
+std::vector<Hitbox> AnimacionConGravedad::getHitboxes(){
     if(!haChocado){
-        std::list<Hitbox> lista = std::list<Hitbox>();
+        std::vector<Hitbox> hitboxes;
         if(hitbox.has_value())
-            lista.push_back(hitbox.value());
-        return lista;
+            hitboxes.push_back(hitbox.value());
+        return hitboxes;
     }
-    else return std::list<Hitbox>();
+    else return std::vector<Hitbox>();
 }
 
 bool AnimacionConGravedad::haTerminado(){

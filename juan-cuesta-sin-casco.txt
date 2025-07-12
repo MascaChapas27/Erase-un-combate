@@ -35,7 +35,7 @@ Hitboxes:
 
 Rectangulo:1
 Hitboxes:
-51,29,28,71,0
+51,27,28,73,0
 
 Rectangulo:2
 Hitboxes:
@@ -43,7 +43,7 @@ Hitboxes:
 
 Rectangulo:3
 Hitboxes:
-51,29,28,71,0
+51,27,28,73,0
 
 Frames:
 0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3
@@ -56,7 +56,7 @@ Movimiento:
 Efectos:
 ----------------------------------------
 Estado:andando-alejandose
-Bucle:al-reves
+Bucle:normal
 
 Rectangulo:0
 Hitboxes:

@@ -66,8 +66,8 @@ void AnimacionAgrandable::voltear(){
     sprite.scale({-1,1});
 }
 
-std::list<Hitbox> AnimacionAgrandable::getHitboxes(){
-    return std::list<Hitbox>();
+std::vector<Hitbox> AnimacionAgrandable::getHitboxes(){
+    return std::vector<Hitbox>();
 }
 
 bool AnimacionAgrandable::haTerminado(){

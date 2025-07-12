@@ -5,9 +5,8 @@
 #include "Enums.hpp"
 #include "IndicacionesSobreAnimacion.hpp"
 #include <SFML/Audio.hpp>
-#include <fstream>
-#include <iostream>
 #include <filesystem>
+#include "yaml-cpp/yaml.h"
 
 ContenedorDePersonajes *ContenedorDePersonajes::contenedorDePersonajes = nullptr;
 
@@ -39,227 +38,169 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
     // Abrimos cada fichero del directorio
     for (const std::filesystem::directory_entry &entrada : std::filesystem::directory_iterator("ficheros/personajes"))
     {
-        // En esta variable se van a poner datos del fichero línea a línea
-        std::string linea;
-
-        // En esta variable se van a meter elementos separados en base a un string dado
-        std::vector<std::string> elementosSeparados;
-
-        // En esta variable se guarda el nombre del personaje actual
-        std::string nombrePersonaje;
-
-        // En esta variable se guarda el nombre del estado actual
-        std::string nombreEstado;
-
-        // En esta variable se guarda el nombre del tipo de bucle usado para la animación actual
-        std::string nombreBucle;
-
-        // En esta variable se guarda el número de rectángulos de la animación actual
-        int numeroRectangulos;
-        
-        // Se abre el fichero con información del personaje actual
-        std::ifstream fichero(entrada.path());
-
-        // Aprovechando que tenemos la ruta del fichero podemos sacar el nombre del personaje
-        nombrePersonaje = entrada.path().stem().string();
-
-        // Se prepara el vector de acciones para el ataque especial
-        std::vector<Accion> accionesAtaqueEspecial;
-
-        if (!fichero.is_open())
-        {
-            Bitacora::unicaInstancia()->escribir("Emilio: ... pero señor Juan, es para hoy.");
-            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Es que creo que he perdido el fichero ficheros/personajes.txt...");
-            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Qué follon... se suspende la junta.");
-            exit(EXIT_FAILURE);
-        }
-        else
-        {
-            Bitacora::unicaInstancia()->escribir("Juan Cuesta: registrando personaje " + nombrePersonaje + ".");
-        }
-
         // En este mapa se van a guardar las animaciones según el estado
         std::map<EstadoPersonaje, std::shared_ptr<AnimacionPorFrames>> animaciones;
 
-        std::getline(fichero, linea);
+        // Las acciones que hay que hacer en orden para poder desencadenar el ataque especial
+        std::vector<Accion> accionesAtaqueEspecial;
+        
+        // Se abre el fichero con información del personaje actual
+        YAML::Node fichero = YAML::LoadFile(entrada.path().generic_string());
 
-        while (linea != SECUENCIA_FIN_FICHERO)
+        // Aprovechando que tenemos la ruta del fichero podemos sacar el nombre del personaje
+        std::string nombrePersonaje = entrada.path().stem().string();
+
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Abriendo fichero " + entrada.path().generic_string() + ", donde se encuentra la información del personaje " + nombrePersonaje);
+
+        // Se consigue el nodo con la información del personaje y el nodo con los estados
+        YAML::Node infoPersonaje = fichero["infoPersonaje"];
+
+        YAML::Node estados = fichero["estados"];
+
+        // Se saca la info del propio personaje (no de sus estados)
+        int vidaPersonaje = infoPersonaje["vida"].as<int>();
+
+        float velocidadPersonaje = infoPersonaje["velocidad"].as<float>();
+
+        float fuerzaSaltoPersonaje = infoPersonaje["salto"].as<float>();
+        
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Personaje con " + std::to_string(vidaPersonaje) + " puntos de vida, velocidad de " + std::to_string(velocidadPersonaje) + " y fuerza de salto de " + std::to_string(fuerzaSaltoPersonaje));
+
+        // Ahora se saca la info de los estados del personaje
+        for(YAML::const_iterator itEstado = estados.begin(); itEstado != estados.end(); ++itEstado)
         {
-            // Se obtiene el nombre del estado
-            nombreEstado = util::separarString(linea, ':')[1];
+            // Se preparan los ingredientes
+            IngredientesAnimacionPorFrames ingredientes;
 
-            Bitacora::unicaInstancia()->escribir("Juan Cuesta: estado " + nombreEstado + ".");
+            ingredientes.posicion = {0, 0};
 
-            // Se obtiene el tipo de bucle
-            std::getline(fichero, linea);
-            nombreBucle = util::separarString(linea, ':')[1];
+            ingredientes.origen = {PERSONAJE_PLANTILLA_ORIGEN.x, PERSONAJE_PLANTILLA_ORIGEN.y};
 
-            // Se salta una línea en blanco y se empiezan a sacar rectángulos
-            numeroRectangulos = 0;
-            std::getline(fichero, linea);
-            std::getline(fichero, linea);
+            // Se saca el nombre de este estado
+            std::string nombreEstado = itEstado->first.as<std::string>();
 
-            // En esta variable se guarda el mapa que mapea números de rectángulo a hitboxes
-            std::map<int, std::list<Hitbox>> hitboxes;
+            ingredientes.textura = ContenedorDeTexturas::unicaInstancia()->obtener("sprites/personajes/" + nombrePersonaje + "/" + nombreEstado + ".png");
 
-            while (util::separarString(linea, ':')[0] == "Rectangulo")
+            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Encontrado estado \"" + nombreEstado);
+
+            // Dentro de este estado se sacan datos
+            for(YAML::const_iterator itAtributoEstado = itEstado->second.begin(); itAtributoEstado != itEstado->second.end(); ++itAtributoEstado)
             {
-                // Lista de hitboxes para este rectángulo
-                std::list<Hitbox> listaHitboxes;
-
-                // Se salta la línea que dice "Hitboxes" y empezamos a contar hitboxes
-                std::getline(fichero, linea);
-                std::getline(fichero, linea);
-
-                while (linea != "")
+                // Se saca la info del tipo de bucle
+                if(itAtributoEstado->first.as<std::string>() == "bucle")
                 {
-                    // Se sacan los enteros (pero son strings)
-                    std::vector<std::string> enterosPeroSonStrings = util::separarString(linea, ',');
+                    std::string nombreBucle = itAtributoEstado->second.as<std::string>();
 
-                    // Se sacan los enteros de verdad
-                    std::vector<int> enteros;
-                    for (std::string string : enterosPeroSonStrings)
+                    ingredientes.tipoBucle = util::stringATipoBucle(nombreBucle);
+
+                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: El bucle es de tipo \"" + nombreBucle + "\"");
+                }
+                
+                // Se saca la info de los rectángulos de la animación de este estado
+                else if(itAtributoEstado->first.as<std::string>() == "rectangulos")
+                {
+                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: Extrayendo información sobre los " + std::to_string(itAtributoEstado->second.size()) + " rectángulos...");
+
+                    ingredientes.numRectangulos = itAtributoEstado->second.size();
+
+                    // Se itera por cada rectángulo
+                    for(size_t rectanguloActual = 0; rectanguloActual < itAtributoEstado->second.size(); rectanguloActual++)
                     {
-                        enteros.push_back(std::stoi(string));
+                        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Rectángulo " + std::to_string(rectanguloActual));
+                        
+                        // Por cada rectángulo, se itera por sus hitboxes
+                        for(size_t hitboxActual = 0; hitboxActual < itAtributoEstado->second[rectanguloActual].size(); hitboxActual++)
+                        {
+                            sf::Vector2i posicionHitbox({itAtributoEstado->second[rectanguloActual][hitboxActual]["posX"].as<int>(),itAtributoEstado->second[rectanguloActual][hitboxActual]["posY"].as<int>()});
+                            sf::Vector2i tamanoHitbox({itAtributoEstado->second[rectanguloActual][hitboxActual]["ancho"].as<int>(),itAtributoEstado->second[rectanguloActual][hitboxActual]["alto"].as<int>()});
+                            int ataqueHitbox = itAtributoEstado->second[rectanguloActual][hitboxActual]["ataque"].as<int>();
+                            bool ataqueBajo = nombreEstado == "ataque-bajo";
+
+                            ingredientes.hitboxes[hitboxActual].emplace_back(sf::IntRect(posicionHitbox,tamanoHitbox),ataqueHitbox,ataqueBajo);
+
+                            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Hitbox " + std::to_string(hitboxActual) + ". Posición (" + std::to_string(posicionHitbox.x) + "," + std::to_string(posicionHitbox.y) + "), tamaño " + std::to_string(tamanoHitbox.x) + "x" + std::to_string(tamanoHitbox.y) + ", ataque " + std::to_string(ataqueHitbox));
+                        }
+                    }
+                }
+
+                // Se saca la info de en qué fotograma va cada rectángulo
+                else if(itAtributoEstado->first.as<std::string>() == "fotogramas")
+                {
+                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: Fotogramas encontrados: " + itAtributoEstado->second.as<std::string>() + ".");
+
+                    for(size_t frameActual = 0; frameActual < itAtributoEstado->second.size(); frameActual++)
+                    {
+                        ingredientes.rectanguloCorrespondiente[frameActual] = itAtributoEstado->second[frameActual].as<int>();
+                    }
+                }
+
+                // Se saca la info del sonido
+                else if(itAtributoEstado->first.as<std::string>() == "sonido")
+                {
+                    ingredientes.rutaSonido = "sonidos/personajes/" + nombrePersonaje + "/" + nombreEstado + ".ogg";
+
+                    ingredientes.repetirSonido = itAtributoEstado->second["tipo"].as<std::string>() == "Repetir";
+                    
+                    if(itAtributoEstado->second["tipo"].as<std::string>() == "No repetir")
+                    {
+                        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Este estado tiene un sonido que no se debe repetir.");
+                    }
+                    else if(itAtributoEstado->second["tipo"].as<std::string>() == "Repetir")
+                    {
+                        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Este estado tiene un sonido que se debe repetir.");
                     }
 
-                    // Se crea la hitbox en base a muchas cosas
-                    Hitbox h(sf::IntRect({enteros[0], enteros[1]}, {enteros[2], enteros[3]}), enteros[4], nombreEstado == "ataque-agachado" && enteros[4] > 0);
-
-                    listaHitboxes.push_back(h);
-
-                    std::getline(fichero, linea);
-                }
-
-                hitboxes[numeroRectangulos] = listaHitboxes;
-
-                std::getline(fichero, linea);
-                numeroRectangulos++;
-            }
-
-            if (nombreEstado == "ataque-agachado")
-                Bitacora::unicaInstancia()->escribir("Juan Cuesta: las hitboxes con daño de este estado serán de ataque bajo");
-
-            // Ahora sacamos la correspondencia de frames y rectángulos
-            std::getline(fichero, linea);
-
-            int contadorFrame = 0;
-
-            // En esta variable se guarda el mapa que mapea números de frame a números de rectángulo
-            std::map<int, int> frameARectangulo;
-
-            for (std::string rectanguloString : util::separarString(linea, ','))
-            {
-                frameARectangulo[contadorFrame] = std::stoi(rectanguloString);
-
-                contadorFrame++;
-            }
-
-            // Nos saltamos dos líneas, y ahora leemos información sobre los sonidos
-            std::getline(fichero, linea);
-            std::getline(fichero, linea);
-
-            std::string rutaSonido;
-
-            bool repetirSonido = false;
-
-            std::set<int> framesConSonido;
-
-            std::map<int, sf::Vector2f> framesConMovimiento;
-
-            std::map<int, IndicacionesSobreAnimacion> framesConAnimaciones;
-
-            if (util::separarString(linea, ':')[1] != "sin sonido")
-            {
-
-                repetirSonido = util::separarString(linea, ':')[1] == "repetir";
-
-                rutaSonido = "sonidos/personajes/" + nombrePersonaje + "/" + nombreEstado + ".ogg";
-
-                // Avanzamos de línea para conseguir la lista de frames
-                std::getline(fichero, linea);
-
-                for (std::string s : util::separarString(linea, ','))
-                {
-                    framesConSonido.insert(std::stoi(s));
-                }
-            }
-
-            // Nos saltamos dos líneas para comprobar los movimientos
-            std::getline(fichero, linea);
-            std::getline(fichero, linea);
-
-            // Nos saltamos la línea que dice "Movimiento:"
-            std::getline(fichero, linea);
-
-            while (linea != "")
-            {
-                elementosSeparados = util::separarString(linea, ',');
-
-                framesConMovimiento[std::stoi(elementosSeparados[0])] = sf::Vector2f(std::stof(elementosSeparados[1]), std::stof(elementosSeparados[2]));
-
-                std::getline(fichero, linea);
-            }
-
-            // Saltamos una línea para poder extraer las animaciones
-            std::getline(fichero, linea);
-
-            // Saltamos la línea que dice "Efectos:"
-            std::getline(fichero, linea);
-
-            while (linea != "" && linea != SECUENCIA_DELIMITADORA_FICHERO)
-            {
-                elementosSeparados = util::separarString(linea, ',');
-
-                IndicacionesSobreAnimacion indicaciones;
-
-                indicaciones.necesitaVoltearse = false;
-
-                indicaciones.rutaAnimacion = elementosSeparados[1];
-                indicaciones.posicionInicial = sf::Vector2f(std::stof(elementosSeparados[2]), std::stof(elementosSeparados[3]));
-
-                if (elementosSeparados.size() == 6)
-                {
-                    indicaciones.velocidadInicial = sf::Vector2f(std::stof(elementosSeparados[4]), std::stof(elementosSeparados[5]));
-                }
-
-                framesConAnimaciones[std::stoi(elementosSeparados[0])] = indicaciones;
-
-                std::getline(fichero, linea);
-            }
-
-            // Se salta una línea, puede que hayamos llegado al final de esta acción
-            // o puede que hayamos llegado a una línea en blanco porque después están
-            // las acciones para el ataque especial
-            std::getline(fichero, linea);
-            
-            // Si el estado es ataque especial, se leen las acciones
-            if(nombreEstado == "ataque-especial"){
-                if(util::separarString(linea,':')[0] == "Acciones"){
-                    for(const std::string &s : util::separarString(util::separarString(linea,':')[1],',')){
-                        accionesAtaqueEspecial.push_back(util::stringAAccion(s));
+                    for(size_t i = 0; i < itAtributoEstado->second["fotogramas"].size(); i++)
+                    {
+                        ingredientes.framesConSonido.insert(itAtributoEstado->second["fotogramas"][i].as<int>());
                     }
-                    std::getline(fichero, linea);
-                    std::getline(fichero, linea);
-                } else {
-                    Bitacora::unicaInstancia()->escribir("Emilio: Señor Juan, no me pregunte por qué, pero este ataque especial no tiene teclas asociadas.");
-                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: Esto es inaudito, vamos. Se suspende la junta.");
-                    exit(EXIT_FAILURE);
+                }
+                else if(itAtributoEstado->first.as<std::string>() == "efectos")
+                {
+                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: Encontrados " + std::to_string(itAtributoEstado->second.size()) + " efectos");
+
+                    for(size_t i = 0; i < itAtributoEstado->second.size(); i++)
+                    {
+                        std::string nombreEfecto = itAtributoEstado->second[i]["efecto"].as<std::string>();
+                        int fotogramaEfecto = itAtributoEstado->second[i]["fotograma"].as<int>();
+                        sf::Vector2i posicionEfecto({itAtributoEstado->second[i]["posX"].as<int>(), itAtributoEstado->second[i]["posY"].as<int>()});
+                        sf::Vector2f velocidadInicialEfecto({itAtributoEstado->second[i]["velX"].as<float>(), itAtributoEstado->second[i]["velY"].as<float>()});
+
+                        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Efecto número " + std::to_string(i) + " de nombre \"" + nombreEfecto + "\"desencadenado en fotograma " + std::to_string(fotogramaEfecto) + ". Posición (" + std::to_string(posicionEfecto.x) + "," + std::to_string(posicionEfecto.y) + ") y velocidad inicial (" + std::to_string(velocidadInicialEfecto.x) + "," + std::to_string(velocidadInicialEfecto.y) + ")");
+                    }
+                }
+                else if(itAtributoEstado->first.as<std::string>() == "movimiento")
+                {
+                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: Encontrados " + std::to_string(itAtributoEstado->second.size()) + " movimientos");
+
+                    for(size_t i = 0; i < itAtributoEstado->second.size(); i++)
+                    {
+                        int fotogramaMovimiento = itAtributoEstado->second[i]["fotograma"].as<int>();
+                        sf::Vector2f velocidadMovimiento = {itAtributoEstado->second[i]["velX"].as<float>(),itAtributoEstado->second[i]["velY"].as<float>()};
+
+                        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Movimiento número " + std::to_string(i) + " desencadenado en fotograma " + std::to_string(fotogramaMovimiento) + ". Movimiento de (" + std::to_string(velocidadMovimiento.x) + "," + std::to_string(velocidadMovimiento.y));
+                    }
+                }
+                else if(itEstado->first.as<std::string>() == "ataque-especial" && itAtributoEstado->first.as<std::string>() == "acciones")
+                {
+                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: Las acciones a llevar a cabo para realizar este ataque especial son:");
+
+                    for(size_t i = 0; i < itAtributoEstado->second.size(); i++)
+                    {
+                        Bitacora::unicaInstancia()->escribir("Juan Cuesta: " + itAtributoEstado->second[i].as<std::string>());
+                    }
                 }
             }
 
-            std::shared_ptr<AnimacionPorFrames> anim = std::make_shared<AnimacionPorFrames>(0, 0, PERSONAJE_PLANTILLA_ORIGEN.x, PERSONAJE_PLANTILLA_ORIGEN.y, numeroRectangulos,
-                                                                                            ContenedorDeTexturas::unicaInstancia()->obtener("sprites/personajes/" + nombrePersonaje + "/" + nombreEstado + ".png"),
-                                                                                            util::stringATipoBucle(nombreBucle), 0, hitboxes, frameARectangulo, framesConSonido, framesConMovimiento,
-                                                                                            framesConAnimaciones, rutaSonido, repetirSonido);
+            std::shared_ptr<AnimacionPorFrames> anim = std::make_shared<AnimacionPorFrames>(ingredientes);
 
             animaciones.insert(std::pair<EstadoPersonaje, std::shared_ptr<AnimacionPorFrames>>(util::stringAEstadoPersonaje(nombreEstado), anim));
-
-            Bitacora::unicaInstancia()->escribir("Juan Cuesta: se terminó de cargar la animación para el estado " + nombreEstado + ".\n");
+            
+            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Se terminó de cargar la animación para el estado " + nombreEstado + ".\n");
         }
 
         personajes.insert(std::pair<std::string, Personaje>(nombrePersonaje, Personaje(animaciones, nombrePersonaje, accionesAtaqueEspecial)));
 
-        Bitacora::unicaInstancia()->escribir("Juan Cuesta: concluye la inserción del personaje " + nombrePersonaje + ".\n");
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Concluye la inserción del personaje " + nombrePersonaje + ".\n");
     }
 }

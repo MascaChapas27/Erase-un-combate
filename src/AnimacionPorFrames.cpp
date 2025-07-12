@@ -7,22 +7,21 @@
 #include <iostream>
 #include <typeinfo>
 
-AnimacionPorFrames::AnimacionPorFrames(float posicionX, float posicionY, float origenX, float origenY, int numRectangulos, sf::Texture &textura, TipoBucle tipoBucle, int numRepeticionesTotal, std::map<int,std::list<Hitbox>> hitboxes, std::map<int,int> rectanguloCorrespondiente, std::set<int> framesConSonido, std::map<int,sf::Vector2f> framesConMovimiento, std::map<int,IndicacionesSobreAnimacion> framesConAnimaciones, std::string rutaSonido, bool repetirSonido) :
-    Animacion(textura) {
+AnimacionPorFrames::AnimacionPorFrames(IngredientesAnimacionPorFrames &ingredientes) :
+    Animacion(ingredientes.textura) {
 
-    sprite.setTextureRect(sf::IntRect({0,0}, {(int)(textura.getSize().x/numRectangulos), (int)textura.getSize().y}));
-    sprite.setOrigin({origenX,origenY});
-    sprite.setPosition({posicionX,posicionY});
+    sprite.setTextureRect(sf::IntRect({0,0}, {static_cast<int>(ingredientes.textura.getSize().x/ingredientes.numRectangulos), static_cast<int>(ingredientes.textura.getSize().y)}));
+    sprite.setOrigin(ingredientes.origen);
+    sprite.setPosition(ingredientes.posicion);
 
-    this->tipoBucle = tipoBucle;
-    this->numRepeticionesTotal = numRepeticionesTotal;
-    this->hitboxes = hitboxes;
-    this->rectanguloCorrespondiente = rectanguloCorrespondiente;
-    this->rutaSonido = rutaSonido;
-    this->framesConSonido = framesConSonido;
-    this->framesConMovimiento = framesConMovimiento;
-    this->framesConAnimaciones = framesConAnimaciones;
-    this->repetirSonido = repetirSonido;
+    this->tipoBucle = ingredientes.tipoBucle;
+    this->hitboxes = ingredientes.hitboxes;
+    this->rectanguloCorrespondiente = ingredientes.rectanguloCorrespondiente;
+    this->rutaSonido = ingredientes.rutaSonido;
+    this->framesConSonido = ingredientes.framesConSonido;
+    this->framesConMovimiento = ingredientes.framesConMovimiento;
+    this->framesConAnimaciones = ingredientes.framesConAnimaciones;
+    this->repetirSonido = ingredientes.repetirSonido;
 
     sonidoYaReproducido = false;
 
@@ -37,12 +36,6 @@ void AnimacionPorFrames::actualizar(std::list<std::shared_ptr<Animacion>> &nueva
             frameActual = 0;
             if(!repetirSonido) sonidoYaReproducido = true;
         }
-    } else if (tipoBucle == TipoBucle::AL_REVES){
-        if(frameActual == 0) {
-            frameActual = rectanguloCorrespondiente.size()-1;
-            if(!repetirSonido) sonidoYaReproducido = true;
-        }
-        else if(!primerFrame) frameActual--;
     } else if (tipoBucle == TipoBucle::SIN_BUCLE){
         if(frameActual < (int)rectanguloCorrespondiente.size()-1)
             if(!primerFrame) frameActual++;
@@ -96,7 +89,7 @@ void AnimacionPorFrames::voltear(){
 
     // También hay que voltear las hitboxes
     for(auto const &[entero, listaHitboxes] : hitboxes){
-        std::list<Hitbox> nuevaLista;
+        std::vector<Hitbox> nuevaLista;
 
         for(Hitbox hitbox : listaHitboxes){
 
@@ -147,21 +140,7 @@ bool AnimacionPorFrames::haTerminado(){
 }
 
 void AnimacionPorFrames::resetear(){
-
-    switch(tipoBucle){
-        case TipoBucle::NORMAL:
-        case TipoBucle::PING_PONG:
-        case TipoBucle::SIN_BUCLE:
-            frameActual = 0;
-            break;
-
-        case TipoBucle::AL_REVES:
-            frameActual = rectanguloCorrespondiente.size()-1;
-            break;
-    }
-
-    numRepeticionesActual = 0;
-    pingPongHaciaDelante = true;
+    frameActual = 0;
     sonidoYaReproducido = false;
     primerFrame = true;
 }
@@ -170,7 +149,7 @@ std::shared_ptr<Animacion> AnimacionPorFrames::clonar(){
     return std::make_shared<AnimacionPorFrames>(*this);
 }
 
-std::list<Hitbox> AnimacionPorFrames::getHitboxes(){
+std::vector<Hitbox> AnimacionPorFrames::getHitboxes(){
     return hitboxes[rectanguloCorrespondiente[frameActual]];
 }
 

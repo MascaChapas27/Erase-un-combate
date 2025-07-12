@@ -57,8 +57,8 @@ class Animacion : public sf::Drawable {
         // cuenta el origen que pueda tener)
         sf::Vector2f getPosicionEsqSupIzq() const;
 
-        // Devuelve una lista con las hitboxes
-        virtual std::list<Hitbox> getHitboxes() = 0;
+        // Devuelve un vector con las hitboxes
+        virtual std::vector<Hitbox> getHitboxes() = 0;
 
         // Mueve la posición del sprite con respecto a la posición actual
         void mover(float x, float y);

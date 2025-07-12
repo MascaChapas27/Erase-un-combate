@@ -7,21 +7,21 @@ estados:
   quieto:
     bucle: "Normal"
     rectangulos:
-      - posX: 51
-        posY: 29
-        ancho: 27
-        alto: 71
-        ataque: 0
-      - posX: 51
-        posY: 30
-        ancho: 27
-        alto: 70
-        ataque: 0
-      - posX: 54
-        posY: 12
-        ancho: 32
-        alto: 43
-        ataque: 1
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 30
+          ancho: 27
+          alto: 70
+          ataque: 0
+      - - posX: 54
+          posY: 12
+          ancho: 32
+          alto: 43
+          ataque: 1
     frames: [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
     sonido:
       tipo: "No repetir"
@@ -50,16 +50,21 @@ estados:
   andando-acercandose:
     bucle: "Normal"
     rectangulos:
-      - posX: 51
-        posY: 29
-        ancho: 27
-        alto: 71
-        ataque: 0
-      - posX: 51
-        posY: 30
-        ancho: 27
-        alto: 70
-        ataque: 0
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+        - posX: 53
+          posY: 28
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 51
+          posY: 30
+          ancho: 27
+          alto: 70
+          ataque: 0
     frames: [0,0,0,0,1,2,3,3,3,3,3]
     sonido:
       tipo: "Sin sonido"

@@ -20,8 +20,8 @@ void AnimacionDesvaneciente::voltear(){
     sprite.setScale(sf::Vector2f(sprite.getScale().x*-1,sprite.getScale().y));
 }
 
-std::list<Hitbox> AnimacionDesvaneciente::getHitboxes(){
-    return std::list<Hitbox>();
+std::vector<Hitbox> AnimacionDesvaneciente::getHitboxes(){
+    return std::vector<Hitbox>();
 }
 
 bool AnimacionDesvaneciente::haTerminado(){

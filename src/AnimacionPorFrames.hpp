@@ -10,6 +10,50 @@
 #include <map>
 
 /*
+    Esta estructura de datos es para pasar la info al constructor de forma más bonita
+    y corta en vez de pasarle 1894178 parámetros que sería un coñazo
+*/
+struct IngredientesAnimacionPorFrames{
+    // Posición de la animación
+    sf::Vector2f posicion = {0.f, 0.f};
+    
+    // Origen a partir del cual se harán las operaciones estas de escalado,
+    // traslación y rotación y tal y cual
+    sf::Vector2f origen = {0.f, 0.f};
+    
+    // Número de rectángulos distintos que tiene la animación
+    int numRectangulos = 0;
+    
+    // Textura de la animación
+    sf::Texture textura;
+    
+    // Tipo de repetición en bucle
+    TipoBucle tipoBucle = TipoBucle::NORMAL;
+    
+    // Correspondencia entre rectángulo y hitboxes
+    std::unordered_map<int,std::vector<Hitbox>> hitboxes;
+
+    // Correspondencia entre frame y rectángulo (por ejemplo, frame 0 rectángulo 0, o frame 5 rectángulo 2)
+    std::unordered_map<int, int> rectanguloCorrespondiente;
+
+    // Indica qué frames deben hacer sonar el sonido de la animación
+    std::unordered_set<int> framesConSonido;
+
+    // Indica qué frames tienen movimiento
+    std::unordered_map<int,sf::Vector2f> framesConMovimiento;
+
+    // Indica qué frames hacen aparecer animaciones adicionales
+    std::unordered_map<int,IndicacionesSobreAnimacion> framesConAnimaciones;
+
+    // Ruta del sonido a reproducir
+    std::string rutaSonido = "";
+    
+    // Indica si el sonido se debe repetir cada vez que vuelva a salir el frame o si una vez se
+    // termine el bucle no hay que repetirlo
+    bool repetirSonido = false;
+};
+
+/*
     Esta clase define animaciones para personajes y ataques formadas por varios frames
     Cada animación puede tener asociado cualquier número de hitboxes
 */
@@ -19,29 +63,20 @@ private:
     // Tipo de repetición en bucle
     TipoBucle tipoBucle;
 
-    // Si tipoBucle es PING_PONG, indica si la animación va hacia delante o hacia atrás
-    bool pingPongHaciaDelante;
-
-    // Si tipoBucle no es SIN_BUCLE, indica cuántas veces se repetirá la animación (0 es infinito)
-    int numRepeticionesTotal;
-
-    // Si numRepeticionesTotal no es 0, indica cuántas veces se ha repetido la animación de momento
-    int numRepeticionesActual;
-
     // Correspondencia entre rectángulo y hitboxes
-    std::map<int, std::list<Hitbox>> hitboxes;
+    std::unordered_map<int, std::vector<Hitbox>> hitboxes;
 
     // Correspondencia entre frame y rectángulo (por ejemplo, frame 0 rectángulo 0, o frame 5 rectángulo 2)
-    std::map<int, int> rectanguloCorrespondiente;
+    std::unordered_map<int, int> rectanguloCorrespondiente;
 
     // Indica qué frames deben hacer sonar el sonido de la animación
-    std::set<int> framesConSonido;
+    std::unordered_set<int> framesConSonido;
 
     // Indica qué frames tienen movimiento
-    std::map<int,sf::Vector2f> framesConMovimiento;
+    std::unordered_map<int,sf::Vector2f> framesConMovimiento;
 
     // Indica qué frames hacen aparecer animaciones adicionales
-    std::map<int,IndicacionesSobreAnimacion> framesConAnimaciones;
+    std::unordered_map<int,IndicacionesSobreAnimacion> framesConAnimaciones;
 
     // Indica si el sonido se debe repetir cada vez que vuelva a salir el frame o si una vez se
     // termine el bucle no hay que repetirlo
@@ -59,8 +94,8 @@ private:
 
 public:
 
-    // Constructor de la hostia que podría ser más corto pero nose
-    AnimacionPorFrames(float posicionX, float posicionY, float origenX, float origenY, int numRectangulos, sf::Texture &textura, TipoBucle tipoBucle, int numRepeticionesTotal, std::map<int,std::list<Hitbox>> hitboxes, std::map<int,int> rectanguloCorrespondiente, std::set<int> framesConSonido, std::map<int,sf::Vector2f> framesConMovimiento, std::map<int,IndicacionesSobreAnimacion> framesConAnimaciones, std::string rutaSonido, bool repetirSonido);
+    // Constructor que se pone a cocinar una animación por frames en base a unos ingredientes
+    AnimacionPorFrames(IngredientesAnimacionPorFrames &ingredientes);
 
     // Actualiza la animación (avanza un frame), reproduciendo el sonido si es necesario. En nuevasAnimaciones
     // se insertan las nuevas animaciones que serán introducidas. Puede que se deba mover la animación, por lo que se 
@@ -85,15 +120,15 @@ public:
     bool haTerminado();
 
     // Resetea la animación al primer frame y el primer rectángulo
-    virtual void resetear();
+    void resetear();
 
     // Devuelve un clon de la animación
-    virtual std::shared_ptr<Animacion> clonar();
+    std::shared_ptr<Animacion> clonar();
 
-    // Devuelve una lista con las hitboxes del frame actual
-    virtual std::list<Hitbox> getHitboxes();
+    // Devuelve un vector con las hitboxes del frame actual
+    std::vector<Hitbox> getHitboxes();
 
     // Las clases que heredan de sf::Drawable deben implementar draw
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
 

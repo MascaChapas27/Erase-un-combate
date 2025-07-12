@@ -22,8 +22,6 @@ namespace util{
     TipoBucle stringATipoBucle(std::string string){
         if(string == "normal")
             return TipoBucle::NORMAL;
-        if(string == "al-reves")
-            return TipoBucle::AL_REVES;
         if(string == "ping-pong")
             return TipoBucle::PING_PONG;
 
@@ -80,7 +78,12 @@ namespace util{
         if(string == "celebrando")
             return EstadoPersonaje::CELEBRANDO;
 
-        return EstadoPersonaje::QUIETO;
+        Bitacora::unicaInstancia()->escribir("Emilio: Oiga señor Juan, esto de \"" + string + "\"... ¿qué estado de personaje es?");
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Pues ninguno, que yo sepa. ¿Por?");
+        Bitacora::unicaInstancia()->escribir("Emilio: No, es que se supone que tiene que ser alguno, porque estoy aquí en util::stringAEstadoPersonaje y me acaba de llegar.");
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: ¡¿Pero cómo te va a llegar eso?! Esto es un sinsentido... se suspende la junta.");
+        
+        exit(EXIT_FAILURE);
     }
 
     Accion stringAAccion(const std::string &string){
@@ -95,7 +98,7 @@ namespace util{
         if(string == "ATACAR")
             return Accion::ATACAR;
         
-        Bitacora::unicaInstancia()->escribir("Juan Cuesta: a ver, ¿cuántas veces lo tengo que decir? En la función stringAAccion solo se deben pasar acciones válidas, y " + string + " no lo es. Esta gente no se lee las circulares...");
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: A ver, ¿cuántas veces lo tengo que decir? En la función stringAAccion solo se deben pasar acciones válidas, y " + string + " no lo es. Esta gente no se lee las circulares... se suspende la junta.");
         exit(EXIT_FAILURE);
     }
 

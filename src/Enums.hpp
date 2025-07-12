@@ -13,7 +13,6 @@ enum class Accion {
 enum class TipoBucle {
     SIN_BUCLE,      // No hay bucle, cuando la animación termina se deja de actualizar
     NORMAL,         // Cuando termina la animación, vuelve a empezar desde el principio
-    AL_REVES,       // Como el normal, pero desde el final hasta el principio
     PING_PONG       // POR ELIMINAR // Cuando termina la animación, empieza desde el final hasta el principio y al revés
 };
 

@@ -32,8 +32,8 @@ class AnimacionDesvaneciente : public Animacion {
         // Le da la vuelta a la animación
         void voltear();
 
-        // Devuelve una lista con las hitboxes
-        std::list<Hitbox> getHitboxes();
+        // Devuelve un vector con las hitboxes
+        std::vector<Hitbox> getHitboxes();
 
         // Determina si una animación ha terminado
         bool haTerminado();
