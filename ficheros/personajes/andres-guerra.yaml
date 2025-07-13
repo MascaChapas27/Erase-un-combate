@@ -1,0 +1,143 @@
+infoPersonaje:
+  vida: 110
+  velocidad: 2.3
+  salto: 5
+
+estados:
+  quieto:
+    bucle: "Normal"
+    rectangulos:
+      - - posX: 52
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+      - - posX: 52
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+      - - posX: 52
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+      - - posX: 52
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+      - - posX: 52
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+    fotogramas: [0,0,0,0,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,0,0,0,0,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,3,3,3]
+  
+  andando-acercandose:
+    bucle: "Normal"
+    rectangulos:
+      - - posX: 52
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+      - - posX: 52
+          posY: 29
+          ancho: 26
+          alto: 71
+          ataque: 0
+      - - posX: 52
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+      - - posX: 52
+          posY: 29
+          ancho: 26
+          alto: 71
+          ataque: 0
+    fotogramas: [0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3]
+    sonido:
+      tipo: "Repetir"
+      fotogramas: [0,16]
+    
+  andando-alejandose:
+    bucle: "Normal"
+    rectangulos:
+      - - posX: 52
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+      - - posX: 52
+          posY: 29
+          ancho: 26
+          alto: 71
+          ataque: 0
+      - - posX: 52
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+      - - posX: 52
+          posY: 29
+          ancho: 26
+          alto: 71
+          ataque: 0
+    fotogramas: [0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3]
+
+  golpeado-peque:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 52
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+    fotogramas: [0,0,0,0,0,0,0,0,0]
+  
+  golpeado-medio:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 50
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+      - - posX: 51
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+      - - posX: 52
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+    fotogramas: [0,0,0,0,0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
+
+  bloqueando:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 51
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+      - - posX: 51
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+    fotogramas: [0,0,0,0,0,1,1,1,1]
+
+  ataque-especial:
+    bucle: "Sin bucle"
+    rectangulos:
+      -
+    fotogramas: []
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [7]
+    acciones: ["DERECHA", "DERECHA", "DERECHA", "ATACAR"]
