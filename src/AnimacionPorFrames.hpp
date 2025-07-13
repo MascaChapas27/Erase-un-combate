@@ -24,8 +24,8 @@ struct IngredientesAnimacionPorFrames{
     // Número de rectángulos distintos que tiene la animación
     int numRectangulos = 0;
     
-    // Textura de la animación
-    sf::Texture textura;
+    // Ruta de la textura de la animación
+    std::string rutaTextura = "";
     
     // Tipo de repetición en bucle
     TipoBucle tipoBucle = TipoBucle::NORMAL;

@@ -6,11 +6,12 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <typeinfo>
+#include "ContenedorDeRecursos.hpp"
 
 AnimacionPorFrames::AnimacionPorFrames(IngredientesAnimacionPorFrames &ingredientes) :
-    Animacion(ingredientes.textura) {
+    Animacion(ContenedorDeTexturas::unicaInstancia()->obtener(ingredientes.rutaTextura)) {
 
-    sprite.setTextureRect(sf::IntRect({0,0}, {static_cast<int>(ingredientes.textura.getSize().x/ingredientes.numRectangulos), static_cast<int>(ingredientes.textura.getSize().y)}));
+    sprite.setTextureRect(sf::IntRect({0,0}, {static_cast<int>(sprite.getTextureRect().size.x/ingredientes.numRectangulos), static_cast<int>(sprite.getTextureRect().size.y)}));
     sprite.setOrigin(ingredientes.origen);
     sprite.setPosition(ingredientes.posicion);
 

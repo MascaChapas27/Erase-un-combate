@@ -45,12 +45,13 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
         std::vector<Accion> accionesAtaqueEspecial;
         
         // Se abre el fichero con información del personaje actual
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Abriendo fichero " + entrada.path().generic_string());
         YAML::Node fichero = YAML::LoadFile(entrada.path().generic_string());
 
         // Aprovechando que tenemos la ruta del fichero podemos sacar el nombre del personaje
         std::string nombrePersonaje = entrada.path().stem().string();
 
-        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Abriendo fichero " + entrada.path().generic_string() + ", donde se encuentra la información del personaje " + nombrePersonaje);
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Extrayendo información del personaje " + nombrePersonaje);
 
         // Se consigue el nodo con la información del personaje y el nodo con los estados
         YAML::Node infoPersonaje = fichero["infoPersonaje"];
@@ -79,9 +80,9 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
             // Se saca el nombre de este estado
             std::string nombreEstado = itEstado->first.as<std::string>();
 
-            ingredientes.textura = ContenedorDeTexturas::unicaInstancia()->obtener("sprites/personajes/" + nombrePersonaje + "/" + nombreEstado + ".png");
+            ingredientes.rutaTextura = "sprites/personajes/" + nombrePersonaje + "/" + nombreEstado + ".png";
 
-            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Encontrado estado \"" + nombreEstado);
+            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Encontrado estado \"" + nombreEstado + "\".");
 
             // Dentro de este estado se sacan datos
             for(YAML::const_iterator itAtributoEstado = itEstado->second.begin(); itAtributoEstado != itEstado->second.end(); ++itAtributoEstado)
@@ -93,7 +94,7 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
 
                     ingredientes.tipoBucle = util::stringATipoBucle(nombreBucle);
 
-                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: El bucle es de tipo \"" + nombreBucle + "\"");
+                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: El bucle es de tipo \"" + nombreBucle + "\".");
                 }
                 
                 // Se saca la info de los rectángulos de la animación de este estado
@@ -108,15 +109,18 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
                     {
                         Bitacora::unicaInstancia()->escribir("Juan Cuesta: Rectángulo " + std::to_string(rectanguloActual));
                         
+                        // Se crea un vector de hitboxes vacío primero
+                        ingredientes.hitboxes[rectanguloActual].clear();
+                        
                         // Por cada rectángulo, se itera por sus hitboxes
                         for(size_t hitboxActual = 0; hitboxActual < itAtributoEstado->second[rectanguloActual].size(); hitboxActual++)
                         {
                             sf::Vector2i posicionHitbox({itAtributoEstado->second[rectanguloActual][hitboxActual]["posX"].as<int>(),itAtributoEstado->second[rectanguloActual][hitboxActual]["posY"].as<int>()});
                             sf::Vector2i tamanoHitbox({itAtributoEstado->second[rectanguloActual][hitboxActual]["ancho"].as<int>(),itAtributoEstado->second[rectanguloActual][hitboxActual]["alto"].as<int>()});
                             int ataqueHitbox = itAtributoEstado->second[rectanguloActual][hitboxActual]["ataque"].as<int>();
-                            bool ataqueBajo = nombreEstado == "ataque-bajo";
+                            bool ataqueBajo = nombreEstado == "ataque-agachado";
 
-                            ingredientes.hitboxes[hitboxActual].emplace_back(sf::IntRect(posicionHitbox,tamanoHitbox),ataqueHitbox,ataqueBajo);
+                            ingredientes.hitboxes[rectanguloActual].emplace_back(sf::IntRect(posicionHitbox,tamanoHitbox),ataqueHitbox,ataqueBajo);
 
                             Bitacora::unicaInstancia()->escribir("Juan Cuesta: Hitbox " + std::to_string(hitboxActual) + ". Posición (" + std::to_string(posicionHitbox.x) + "," + std::to_string(posicionHitbox.y) + "), tamaño " + std::to_string(tamanoHitbox.x) + "x" + std::to_string(tamanoHitbox.y) + ", ataque " + std::to_string(ataqueHitbox));
                         }
@@ -126,7 +130,7 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
                 // Se saca la info de en qué fotograma va cada rectángulo
                 else if(itAtributoEstado->first.as<std::string>() == "fotogramas")
                 {
-                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: Fotogramas encontrados: " + itAtributoEstado->second.as<std::string>() + ".");
+                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: Encontrados " + std::to_string(itAtributoEstado->second.size()) + " fotogramas.");
 
                     for(size_t frameActual = 0; frameActual < itAtributoEstado->second.size(); frameActual++)
                     {
@@ -163,13 +167,21 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
                     {
                         std::string nombreEfecto = itAtributoEstado->second[i]["efecto"].as<std::string>();
                         int fotogramaEfecto = itAtributoEstado->second[i]["fotograma"].as<int>();
-                        sf::Vector2i posicionEfecto({itAtributoEstado->second[i]["posX"].as<int>(), itAtributoEstado->second[i]["posY"].as<int>()});
+                        sf::Vector2f posicionEfecto({itAtributoEstado->second[i]["posX"].as<float>(), itAtributoEstado->second[i]["posY"].as<float>()});
                         sf::Vector2f velocidadInicialEfecto({itAtributoEstado->second[i]["velX"].as<float>(), itAtributoEstado->second[i]["velY"].as<float>()});
 
-                        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Efecto número " + std::to_string(i) + " de nombre \"" + nombreEfecto + "\"desencadenado en fotograma " + std::to_string(fotogramaEfecto) + ". Posición (" + std::to_string(posicionEfecto.x) + "," + std::to_string(posicionEfecto.y) + ") y velocidad inicial (" + std::to_string(velocidadInicialEfecto.x) + "," + std::to_string(velocidadInicialEfecto.y) + ")");
+                        IndicacionesSobreAnimacion indicacionesAnimacion;
+                        indicacionesAnimacion.necesitaVoltearse = false;
+                        indicacionesAnimacion.posicionInicial = posicionEfecto;
+                        indicacionesAnimacion.rutaAnimacion = nombreEfecto;
+                        indicacionesAnimacion.velocidadInicial = velocidadInicialEfecto;
+
+                        ingredientes.framesConAnimaciones[fotogramaEfecto] = indicacionesAnimacion;
+
+                        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Efecto número " + std::to_string(i) + " de nombre \"" + nombreEfecto + "\" desencadenado en fotograma " + std::to_string(fotogramaEfecto) + ". Posición (" + std::to_string(posicionEfecto.x) + "," + std::to_string(posicionEfecto.y) + ") y velocidad inicial (" + std::to_string(velocidadInicialEfecto.x) + "," + std::to_string(velocidadInicialEfecto.y) + ").");
                     }
                 }
-                else if(itAtributoEstado->first.as<std::string>() == "movimiento")
+                else if(itAtributoEstado->first.as<std::string>() == "movimientos")
                 {
                     Bitacora::unicaInstancia()->escribir("Juan Cuesta: Encontrados " + std::to_string(itAtributoEstado->second.size()) + " movimientos");
 
@@ -177,6 +189,8 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
                     {
                         int fotogramaMovimiento = itAtributoEstado->second[i]["fotograma"].as<int>();
                         sf::Vector2f velocidadMovimiento = {itAtributoEstado->second[i]["velX"].as<float>(),itAtributoEstado->second[i]["velY"].as<float>()};
+
+                        ingredientes.framesConMovimiento[fotogramaMovimiento] = velocidadMovimiento;
 
                         Bitacora::unicaInstancia()->escribir("Juan Cuesta: Movimiento número " + std::to_string(i) + " desencadenado en fotograma " + std::to_string(fotogramaMovimiento) + ". Movimiento de (" + std::to_string(velocidadMovimiento.x) + "," + std::to_string(velocidadMovimiento.y));
                     }
@@ -187,6 +201,7 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
 
                     for(size_t i = 0; i < itAtributoEstado->second.size(); i++)
                     {
+                        accionesAtaqueEspecial.push_back(util::stringAAccion(itAtributoEstado->second[i].as<std::string>()));
                         Bitacora::unicaInstancia()->escribir("Juan Cuesta: " + itAtributoEstado->second[i].as<std::string>());
                     }
                 }

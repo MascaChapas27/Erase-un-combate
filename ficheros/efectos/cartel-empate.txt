@@ -1,3 +1,0 @@
-Tipo:agrandable
-
-FramesEspera:-1

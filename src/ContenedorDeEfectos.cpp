@@ -89,21 +89,40 @@ void ContenedorDeEfectos::cargarTodosLosEfectos()
             // Estos serán los ingredientes para hacer la animación
             IngredientesAnimacionPorFrames ingredientes;
 
+            ingredientes.rutaTextura = "sprites/efectos/" + nombreEfecto + ".png";
+
             ingredientes.posicion = {0.f,0.f};
+
+            ingredientes.numRectangulos = fichero["rectangulos"].size();
+
+            // Una referencia a la textura para ahorrar espacio al calcular el origen
+            sf::Texture& textura = ContenedorDeTexturas::unicaInstancia()->obtener(ingredientes.rutaTextura);
+
+            ingredientes.origen = {(textura.getSize().x/ingredientes.numRectangulos)/2.f,textura.getSize().y/2.f};
 
             ingredientes.tipoBucle = util::stringATipoBucle(fichero["bucle"].as<std::string>());
 
-            ingredientes.numRectangulos = fichero["rectangulos"].size();
+            ingredientes.rutaTextura = "sprites/efectos/" + nombreEfecto + ".png";
+
+            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Tipo de bucle " + fichero["bucle"].as<std::string>() + ", y " + std::to_string(ingredientes.numRectangulos) + " rectángulos.");
+
+            // Se establece el tipo de bucle
+            ingredientes.tipoBucle = util::stringATipoBucle(fichero["bucle"].as<std::string>());
 
             // Se itera por cada rectángulo
             for(size_t i = 0; i < fichero["rectangulos"].size(); i++)
             {
+                // Se crea un vector de hitboxes vacío primero
+                ingredientes.hitboxes[i].clear();
+
                 // Se itera por cada hitbox del rectángulo
                 for(size_t j = 0; j < fichero["rectangulos"][i].size(); j++)
                 {
                     ingredientes.hitboxes[i].emplace_back(sf::IntRect({fichero["rectangulos"][i][j]["posX"].as<int>(),fichero["rectangulos"][i][j]["posY"].as<int>()},{fichero["rectangulos"][i][j]["ancho"].as<int>(),fichero["rectangulos"][i][j]["alto"].as<int>()}),fichero["rectangulos"][i][j]["ataque"].as<int>(),false);
                 }
             }
+
+            assert(ingredientes.numRectangulos == ingredientes.hitboxes.size());
 
             // Ahora se saca la correspondencia de fotogramas y rectángulos
             for(size_t i = 0; i < fichero["fotogramas"].size(); i++)
@@ -133,44 +152,14 @@ void ContenedorDeEfectos::cargarTodosLosEfectos()
 
             anim = std::make_shared<AnimacionPorFrames>(ingredientes);
         }
-        else if (tipoAnimacion == "gravedad")
+        else if (tipoAnimacion == "Gravedad")
         {
-
-            // Se salta una línea en blanco y se saca la hitbox
-            std::getline(fichero, linea);
-            std::getline(fichero, linea);
-
             Hitbox hitbox(sf::IntRect({-1, -1}, {-1, -1}), 0, false);
             bool hitboxValida = false;
 
-            auto vectorAux = util::separarString(linea, ':');
-
-            if (vectorAux[0] == "Hitbox")
-            {
-
-                if (vectorAux.size() > 1)
-                {
-                    // Se sacan los enteros (pero son strings)
-                    std::vector<std::string> enterosPeroSonStrings(util::separarString(vectorAux[1], ','));
-
-                    // Se sacan los enteros de verdad
-                    std::vector<int> enteros;
-                    for (std::string string : enterosPeroSonStrings)
-                    {
-                        enteros.push_back(std::stoi(string));
-                    }
-
-                    // Se crea la hitbox en base a muchas cosas
-                    hitbox = Hitbox(sf::IntRect({enteros[0], enteros[1]}, {enteros[2], enteros[3]}), enteros[4], false);
-                    hitboxValida = true;
-                }
-            }
-            else
-            {
-                Bitacora::unicaInstancia()->escribir("Juan Cuesta: Oye Emilio... esto de que el fichero " + entrada.path().string() + " tenga una línea de hitbox que no comienza por \"Hitbox\"... ¿Tú lo ves normal?");
-                Bitacora::unicaInstancia()->escribir("Emilio: Bueno, normal... es que después de vivir con mi padre ya no hay nada que me sorprenda.");
-                Bitacora::unicaInstancia()->escribir("Juan Cuesta: Pues no, no es normal. Qué follón... se suspende la junta.");
-                exit(EXIT_FAILURE);
+            if(fichero["Hitbox"]){
+                hitbox = Hitbox(sf::IntRect({fichero["Hitbox"]["posX"].as<int>(),fichero["Hitbox"]["posY"].as<int>()}, {fichero["Hitbox"]["ancho"].as<int>(),fichero["Hitbox"]["alto"].as<int>()}), fichero["Hitbox"]["ataque"].as<int>(), false);
+                hitboxValida = true;
             }
 
             // Esto es feísimo y tendría que mirármelo
@@ -178,50 +167,19 @@ void ContenedorDeEfectos::cargarTodosLosEfectos()
             if (hitboxValida)
                 ((AnimacionConGravedad *)anim.get())->setHitbox(hitbox);
         }
-        else if (tipoAnimacion == "agrandable")
+        else if (tipoAnimacion == "Agrandable")
         {
-            // Se salta una línea en blanco y se saca el número de frames de espera
-            std::getline(fichero, linea);
-            std::getline(fichero, linea);
-
             rutaSonido = "sonidos/efectos/" + nombreEfecto + ".ogg";
 
-            int framesEspera;
-
-            auto vectorAux = util::separarString(linea, ':');
-
-            if (vectorAux[0] == "FramesEspera")
-            {
-                framesEspera = std::stoi(vectorAux[1]);
-            }
-            else
-            {
-                Bitacora::unicaInstancia()->escribir("Emilio: mire señor Juan, mire lo que me he encontrado.");
-                Bitacora::unicaInstancia()->escribir("Juan Cuesta: pero si ahí debería poner \"FramesEspera\"... ¿qué clase de chapuza es esta?");
-                Bitacora::unicaInstancia()->escribir("Emilio: anda que... quien sea que hiciera el fichero " + entrada.path().string() + " se ha quedado a gusto.");
-                exit(EXIT_FAILURE);
-            }
+            int framesEspera = fichero["framesEspera"].as<int>();
 
             anim = std::make_shared<AnimacionAgrandable>(framesEspera, textura, rutaSonido);
         }
-        else if (tipoAnimacion == "desvaneciente")
-        {
-            // Se salta una línea en blanco y se saca la escala nueva
-            std::getline(fichero, linea);
-            std::getline(fichero, linea);
-            
-            float escalado;
+        else if (tipoAnimacion == "Desvaneciente")
+        {   
+            float escalado = fichero["escala"].as<float>();
 
-            std::vector<std::string> lineaSeparada(util::separarString(linea,':'));
-
-            if(lineaSeparada[0] != "Escala"){
-                Bitacora::unicaInstancia()->escribir("Juan Cuesta: esto es inaudito. En el fichero " + entrada.path().string() + " han escrito \"" + lineaSeparada[0] + "\" en vez de \"Escala\"... es imposible continuar en esas condiciones. Se suspende la junta.");
-                exit(EXIT_FAILURE);
-            } else {
-                escalado = std::stof(lineaSeparada[1]);
-            }
-
-            anim = std::make_shared<AnimacionDesvaneciente>(textura,escalado);
+            anim = std::make_shared<AnimacionDesvaneciente>(textura, escalado);
         }
 
         animaciones.insert(std::pair<std::string, std::shared_ptr<Animacion>>(nombreEfecto, anim));

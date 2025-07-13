@@ -20,9 +20,9 @@ namespace util{
     }
 
     TipoBucle stringATipoBucle(std::string string){
-        if(string == "normal")
+        if(string == "Normal")
             return TipoBucle::NORMAL;
-        if(string == "ping-pong")
+        if(string == "Ping pong")
             return TipoBucle::PING_PONG;
 
         return TipoBucle::SIN_BUCLE;
