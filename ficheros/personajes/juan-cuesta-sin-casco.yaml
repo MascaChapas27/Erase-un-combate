@@ -1,7 +1,7 @@
 infoPersonaje:
   vida: 60
   velocidad: 2.5
-  salto: 6
+  salto: 7
 
 estados:
   quieto:
@@ -531,7 +531,10 @@ estados:
         posY: 56
         velX: 0
         velY: 0
-  
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [0]
+      
   celebrando:
     bucle: "Sin bucle"
     rectangulos:

@@ -176,7 +176,7 @@ constexpr sf::Color COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_MANDOS = sf::Color(0,
 constexpr sf::Vector2f PERSONAJE_PLANTILLA_ORIGEN = sf::Vector2f(64, 100);
 
 // Gravedad del escenario
-constexpr float GRAVEDAD = 0.3;
+constexpr float GRAVEDAD = 0.4;
 
 // Valor máximo del medidor de súper de un personaje
 constexpr int MAX_MEDIDOR_SUPER = 50;
@@ -190,7 +190,7 @@ constexpr float VELOCIDAD_ANDAR_AUMENTO = 0.3;
 
 // Cuando un personaje GOLPEADO_BAJANDO choca el suelo con una velocidad menor a esta, pasa
 // a estar TIRADO
-constexpr float VELOCIDAD_PASAR_A_TIRADO = 3.2;
+constexpr float VELOCIDAD_PASAR_A_TIRADO = 4;
 
 // Posición en el eje Y del suelo
 constexpr float ALTURA_SUELO = VENTANA_ALTURA - 10;
