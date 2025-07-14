@@ -384,21 +384,11 @@ estados:
     bucle: "Sin bucle"
     rectangulos:
       - - posX: 51
-          posY: 38
-          ancho: 27
-          alto: 62
-          ataque: 0
-      - - posX: 51
-          posY: 37
-          ancho: 27
-          alto: 63
-          ataque: 0
-      - - posX: 51
           posY: 32
           ancho: 27
           alto: 68
           ataque: 0
-    fotogramas: [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
+    fotogramas: [0,0,0,0,0,0]
     sonido:
       tipo: "No repetir"
       fotogramas: [0]
