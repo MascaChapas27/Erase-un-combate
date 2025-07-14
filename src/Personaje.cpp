@@ -10,21 +10,11 @@
 #include "ReproductorDeSonidos.hpp"
 #include <iostream>
 
-Personaje::Personaje(std::map<EstadoPersonaje,std::shared_ptr<AnimacionPorFrames>> animaciones, std::string nombre, std::vector<Accion> accionesAtaqueEspecial) :
-    ataqueEspecial(accionesAtaqueEspecial)
+Personaje::Personaje(std::map<EstadoPersonaje,std::shared_ptr<AnimacionPorFrames>> animaciones, std::string nombre, int maxPuntosDeVida, float velocidadMaxima, float fuerzaSalto, std::vector<Accion> accionesAtaqueEspecial) :
+    puntosDeVida(maxPuntosDeVida), maxPuntosDeVida(maxPuntosDeVida), medidorSuper(0), velocidadMaxima(velocidadMaxima), fuerzaSalto(-fuerzaSalto), nombre(nombre), velocidad({0.f,0.f}),
+    escalaSprite({1.f,1.f}), contadorTumbado(0), contadorBlanco(0), contadorEsquiveSuper(0), estado(EstadoPersonaje::QUIETO), shader(std::make_shared<sf::Shader>()),
+    animaciones(animaciones), ataqueEspecial(accionesAtaqueEspecial)
 {
-    puntosDeVida = MAX_PUNTOS_DE_VIDA;
-    medidorSuper = 0;
-    velocidad.y = 0;
-    velocidad.x = 0;
-    escalaSprite = {1.f,1.f};
-    contadorTumbado = 0;
-    contadorBlanco = 0;
-    contadorEsquiveSuper = 0;
-    this->nombre = nombre;
-    this->animaciones = animaciones;
-    estado = EstadoPersonaje::QUIETO;
-    shader = std::make_shared<sf::Shader>();
     if(!shader->loadFromFile("shaders/blendColor.frag",sf::Shader::Type::Fragment)){
         Bitacora::unicaInstancia()->escribir("ERROR: no se pudo cargar el shader");
         exit(EXIT_FAILURE);
@@ -62,6 +52,14 @@ void Personaje::detenerAccion(Accion accion){
 
 int Personaje::getPuntosDeVida(){
     return puntosDeVida;
+}
+
+int Personaje::getMaxPuntosDeVida(){
+    return maxPuntosDeVida;
+}
+
+void Personaje::curarAlMaximo(){
+    puntosDeVida = maxPuntosDeVida;
 }
 
 void Personaje::setPuntosDeVida(int puntosDeVida){
@@ -138,15 +136,15 @@ void Personaje::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 void Personaje::moverseIzquierda(){
     // La velocidad disminuye un poco pero sin pasarse
     velocidad.x-=VELOCIDAD_ANDAR_AUMENTO;
-    if(velocidad.x <= -VELOCIDAD_ANDAR_MAX)
-        velocidad.x = -VELOCIDAD_ANDAR_MAX;
+    if(velocidad.x <= -velocidadMaxima)
+        velocidad.x = -velocidadMaxima;
 }
 
 void Personaje::moverseDerecha(){
     // La velocidad aumenta un poco pero sin pasarse
     velocidad.x+=VELOCIDAD_ANDAR_AUMENTO;
-    if(velocidad.x >= VELOCIDAD_ANDAR_MAX)
-        velocidad.x = VELOCIDAD_ANDAR_MAX;
+    if(velocidad.x >= velocidadMaxima)
+        velocidad.x = velocidadMaxima;
 }
 
 void Personaje::pararMovimiento(){
@@ -216,7 +214,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         }
         else if(accionesRealizadas[Accion::ARRIBA])
         {
-            velocidad.y = VELOCIDAD_SALTO;
+            velocidad.y = fuerzaSalto;
             accionesRealizadas[Accion::ARRIBA] = false;
             levantarPolvo(efectosInsertados);
             escalaSprite.x = (escalaSprite.x > 0) ? 0.8 : -0.8;
@@ -232,8 +230,8 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         else if (accionesRealizadas[Accion::DERECHA])
         {
             velocidad.x+=VELOCIDAD_ANDAR_AUMENTO;
-            if(velocidad.x >= VELOCIDAD_ANDAR_MAX)
-                velocidad.x = VELOCIDAD_ANDAR_MAX;
+            if(velocidad.x >= velocidadMaxima)
+                velocidad.x = velocidadMaxima;
 
             if((escalaSprite.x > 0))
                 cambiarEstado(EstadoPersonaje::ANDANDO_ACERCANDOSE);
@@ -244,8 +242,8 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         else if (accionesRealizadas[Accion::IZQUIERDA])
         {
             velocidad.x-=VELOCIDAD_ANDAR_AUMENTO;
-            if(velocidad.x <= -VELOCIDAD_ANDAR_MAX)
-                velocidad.x = -VELOCIDAD_ANDAR_MAX;
+            if(velocidad.x <= -velocidadMaxima)
+                velocidad.x = -velocidadMaxima;
 
             if(!(escalaSprite.x > 0))
                 cambiarEstado(EstadoPersonaje::ANDANDO_ACERCANDOSE);
@@ -273,7 +271,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         } else if (accionesRealizadas[Accion::ATACAR]){
             cambiarEstado(EstadoPersonaje::ATAQUE_NORMAL_1);
         } else if(accionesRealizadas[Accion::ARRIBA]){
-            velocidad.y = VELOCIDAD_SALTO;
+            velocidad.y = fuerzaSalto;
             accionesRealizadas[Accion::ARRIBA] = false;
             levantarPolvo(efectosInsertados);
             escalaSprite.x = (escalaSprite.x > 0) ? 0.8 : -0.8;
@@ -306,7 +304,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
             contadorEsquiveSuper=0;
             cambiarEstado(EstadoPersonaje::ATAQUE_NORMAL_1);
         } else if(accionesRealizadas[Accion::ARRIBA]){
-            velocidad.y = VELOCIDAD_SALTO;
+            velocidad.y = fuerzaSalto;
             accionesRealizadas[Accion::ARRIBA] = false;
             levantarPolvo(efectosInsertados);
             contadorEsquiveSuper=0;
@@ -543,7 +541,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
             }
 
             // Cuanto más dañado esté el personaje más le cuesta levantarse
-            if(contadorTumbado >= (MAX_CONTADOR_TUMBADO+(MAX_PUNTOS_DE_VIDA-puntosDeVida))){
+            if(contadorTumbado >= (MAX_CONTADOR_TUMBADO+(maxPuntosDeVida-puntosDeVida))){
                 contadorTumbado = 0;
                 cambiarEstado(EstadoPersonaje::LEVANTANDOSE);
             } else if (movido){
@@ -894,7 +892,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
                     cambiarEstado(EstadoPersonaje::GOLPEADO_PEQUE);
                 } else if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_MEDIO){
                     velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
-                    if(hitboxElegidaEnemigo.esAtaqueBajo() && puntosDeVida < MAX_PUNTOS_DE_VIDA/2){
+                    if(hitboxElegidaEnemigo.esAtaqueBajo() && puntosDeVida < maxPuntosDeVida/2){
                         velocidad.x/=2;
                         velocidad.y = IMPULSO_GOLPE_BAJO_MEDIO;
                         escalaSprite.x = (escalaSprite.x > 0) ? 0.9 : -0.9;
@@ -929,7 +927,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
                         escalaSprite.y = 1.05;
                         cambiarEstado(EstadoPersonaje::GOLPEADO_PEQUE);
                     } else if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_MEDIO){
-                        if(puntosDeVida < MAX_PUNTOS_DE_VIDA/2){
+                        if(puntosDeVida < maxPuntosDeVida/2){
                             velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
                             velocidad.x/=2;
                             velocidad.y = IMPULSO_GOLPE_BAJO_MEDIO;

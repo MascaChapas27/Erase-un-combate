@@ -178,9 +178,6 @@ constexpr sf::Vector2f PERSONAJE_PLANTILLA_ORIGEN = sf::Vector2f(64, 100);
 // Gravedad del escenario
 constexpr float GRAVEDAD = 0.3;
 
-// Puntos de vida máximos de un personaje
-constexpr int MAX_PUNTOS_DE_VIDA = 100;
-
 // Valor máximo del medidor de súper de un personaje
 constexpr int MAX_MEDIDOR_SUPER = 50;
 
@@ -188,14 +185,8 @@ constexpr int MAX_MEDIDOR_SUPER = 50;
 // de un personaje, para evitar que vaya muy rápido
 constexpr int MAX_RETRASO_MEDIDOR_VIDA_ATRASADO = 3;
 
-// Velocidad máxima en el eje X a la que se puede mover un personaje
-constexpr float VELOCIDAD_ANDAR_MAX = 2.5;
-
 // Aumento de velocidad cada frame al andar
 constexpr float VELOCIDAD_ANDAR_AUMENTO = 0.3;
-
-// Velocidad que se consigue en el eje Y al saltar
-constexpr float VELOCIDAD_SALTO = -6;
 
 // Cuando un personaje GOLPEADO_BAJANDO choca el suelo con una velocidad menor a esta, pasa
 // a estar TIRADO

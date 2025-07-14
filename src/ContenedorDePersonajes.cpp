@@ -214,7 +214,7 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
             Bitacora::unicaInstancia()->escribir("Juan Cuesta: Se terminó de cargar la animación para el estado " + nombreEstado + ".\n");
         }
 
-        personajes.insert(std::pair<std::string, Personaje>(nombrePersonaje, Personaje(animaciones, nombrePersonaje, accionesAtaqueEspecial)));
+        personajes.insert(std::pair<std::string, Personaje>(nombrePersonaje, Personaje(animaciones, nombrePersonaje, vidaPersonaje, velocidadPersonaje, fuerzaSaltoPersonaje, accionesAtaqueEspecial)));
 
         Bitacora::unicaInstancia()->escribir("Juan Cuesta: Concluye la inserción del personaje " + nombrePersonaje + ".\n");
     }

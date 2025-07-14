@@ -59,9 +59,9 @@ void Combate::resetear()
     personajeJugador2.setPosicion(2 * VENTANA_ANCHURA / 3, ALTURA_SUELO);
 
     // Los personajes se curan y se vacía su medidor se súper
-    personajeJugador1.setPuntosDeVida(MAX_PUNTOS_DE_VIDA);
+    personajeJugador1.curarAlMaximo();
     personajeJugador1.setMedidorSuper(0);
-    personajeJugador2.setPuntosDeVida(MAX_PUNTOS_DE_VIDA);
+    personajeJugador2.curarAlMaximo();
     personajeJugador2.setMedidorSuper(0);
 
     // Las GUIs se preparan para la siguiente ronda

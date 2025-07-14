@@ -24,8 +24,19 @@ class Personaje : public sf::Drawable {
         // Cantidad actual de puntos de vida
         int puntosDeVida;
 
+        // Cantidad máxima de puntos de vida
+        int maxPuntosDeVida;
+
         // Cantidad actual del medidor de súper
         int medidorSuper;
+
+        // Velocidad máxima del personaje en el eje X
+        float velocidadMaxima;
+
+        // Fuerza de salto del personaje (aunque en el fichero YAML
+        // se especifique un número positivo, fuerzaSalto será negativo
+        // ya que en SFML el eje Y va al revés)
+        float fuerzaSalto;
 
         // Nombre del personaje
         std::string nombre;
@@ -83,7 +94,7 @@ class Personaje : public sf::Drawable {
     public:
 
         // Construye el personaje desde cero
-        Personaje(std::map<EstadoPersonaje,std::shared_ptr<AnimacionPorFrames>> animaciones, std::string nombre, std::vector<Accion> accionesAtaqueEspecial);
+        Personaje(std::map<EstadoPersonaje,std::shared_ptr<AnimacionPorFrames>> animaciones, std::string nombre, int maxPuntosDeVida, float velocidadMaxima, float fuerzaSalto, std::vector<Accion> accionesAtaqueEspecial);
 
         // Indica que se está pulsando un botón
         void realizarAccion(Accion accion);
@@ -103,6 +114,12 @@ class Personaje : public sf::Drawable {
 
         // Devuelve los puntos de vida actuales
         int getPuntosDeVida();
+
+        // Devuelve la cantidad máxima de puntos de vida del personaje
+        int getMaxPuntosDeVida();
+
+        // Reestablece los puntos de vida del personaje a su máximo valor
+        void curarAlMaximo();
 
         // Establece la cantidad de puntos de vida
         void setPuntosDeVida(int puntosDeVida);

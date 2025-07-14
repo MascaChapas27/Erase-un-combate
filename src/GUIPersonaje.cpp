@@ -20,7 +20,7 @@ GUIPersonaje::GUIPersonaje(Personaje &personaje, bool parteIzquierda) : personaj
     rectanguloSuper.setSize(sf::Vector2f(0, TAMANO_BARRA_SUPER.y));
     rectanguloSuper.setFillColor(COLOR_BARRA_SUPER);
 
-    contadorVidaAtrasado = MAX_PUNTOS_DE_VIDA;
+    contadorVidaAtrasado = personaje.getMaxPuntosDeVida();
     retrasoContadorVidaAtrasado = 0;
 
     spritePortrait.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/personajes/" + personaje.nombre + "/portrait.png"));
@@ -124,8 +124,8 @@ void GUIPersonaje::actualizar()
         retrasoContadorVidaAtrasado--;
     }
 
-    rectanguloVidaReal.setSize(sf::Vector2f(((float)personaje.puntosDeVida / MAX_PUNTOS_DE_VIDA) * TAMANO_BARRA_VIDA.x, rectanguloVidaReal.getSize().y));
-    rectanguloVidaAtrasada.setSize(sf::Vector2f(((float)contadorVidaAtrasado / MAX_PUNTOS_DE_VIDA) * TAMANO_BARRA_VIDA.x, rectanguloVidaAtrasada.getSize().y));
+    rectanguloVidaReal.setSize(sf::Vector2f(((float)personaje.puntosDeVida / personaje.getMaxPuntosDeVida()) * TAMANO_BARRA_VIDA.x, rectanguloVidaReal.getSize().y));
+    rectanguloVidaAtrasada.setSize(sf::Vector2f(((float)contadorVidaAtrasado / personaje.getMaxPuntosDeVida()) * TAMANO_BARRA_VIDA.x, rectanguloVidaAtrasada.getSize().y));
 
     rectanguloSuper.setSize(sf::Vector2f(((float)personaje.medidorSuper / MAX_MEDIDOR_SUPER) * TAMANO_BARRA_SUPER.x, rectanguloSuper.getSize().y));
 
@@ -164,7 +164,7 @@ void GUIPersonaje::restablecerVida()
     vibracion = 0;
     contadorVibracion = CONTADOR_VIBRACION_MAX;
 
-    contadorVidaAtrasado = MAX_PUNTOS_DE_VIDA;
+    contadorVidaAtrasado = personaje.getMaxPuntosDeVida();
     retrasoContadorVidaAtrasado = 0;
 }
 

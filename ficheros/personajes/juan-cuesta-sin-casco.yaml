@@ -1,5 +1,5 @@
 infoPersonaje:
-  vida: 100
+  vida: 60
   velocidad: 2.5
   salto: 6
 
