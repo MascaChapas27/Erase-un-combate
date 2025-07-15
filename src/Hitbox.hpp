@@ -34,6 +34,9 @@ class Hitbox {
         // Devuelve la fuerza de ataque
         int getFuerzaAtaque() const;
 
+        // Establece la fuerza de ataque
+        void setFuerzaAtaque(int fuerzaAtaque);
+
         // Devuelve si el ataque es bajo
         bool esAtaqueBajo() const;
 

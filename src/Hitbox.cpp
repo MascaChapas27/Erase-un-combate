@@ -14,6 +14,11 @@ int Hitbox::getFuerzaAtaque() const{
     return fuerzaAtaque;
 }
 
+void Hitbox::setFuerzaAtaque(int fuerzaAtaque)
+{
+    this->fuerzaAtaque = fuerzaAtaque;
+}
+
 bool Hitbox::esAtaqueBajo() const{
     return bajo;
 }

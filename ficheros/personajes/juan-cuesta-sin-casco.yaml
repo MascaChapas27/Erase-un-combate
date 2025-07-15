@@ -148,7 +148,7 @@ estados:
           ancho: 27
           alto: 71
           ataque: 0
-    fotogramas: [0,0,0,0,1,2,2,2,2]
+    fotogramas: [0,0,0,0,1,1,2,2,2]
     sonido:
       tipo: "No repetir"
       fotogramas: [4]
@@ -181,7 +181,7 @@ estados:
           ancho: 27
           alto: 71
           ataque: 0
-    fotogramas: [0,0,0,0,1,2,2,2,2,3,3,3,3]
+    fotogramas: [0,0,0,0,1,1,2,2,2,3,3,3,3]
     sonido:
       tipo: "No repetir"
       fotogramas: [4]
@@ -214,7 +214,7 @@ estados:
           ancho: 27
           alto: 71
           ataque: 0
-    fotogramas: [0,0,0,0,1,2,2,2,2,3,3,3,3,3,3,3,3]
+    fotogramas: [0,0,0,0,1,1,2,2,2,3,3,3,3,3,3,3,3]
     sonido:
       tipo: "No repetir"
       fotogramas: [4]
@@ -246,7 +246,7 @@ estados:
           posY: 56
           ancho: 17
           alto: 17
-          ataque: 1
+          ataque: 2
       - - posX: 51
           posY: 29
           ancho: 27
@@ -256,7 +256,7 @@ estados:
           posY: 50
           ancho: 29
           alto: 29
-          ataque: 1
+          ataque: 2
       - - posX: 51
           posY: 29
           ancho: 27
@@ -266,7 +266,7 @@ estados:
           posY: 44
           ancho: 41
           alto: 41
-          ataque: 1
+          ataque: 2
       - - posX: 51
           posY: 29
           ancho: 27
@@ -375,7 +375,7 @@ estados:
           ancho: 27
           alto: 62
           ataque: 0
-    fotogramas: [0,0,0,0,0,0,0,0,1,2,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    fotogramas: [0,0,0,0,1,1,2,2,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0]
     sonido:
       tipo: "No repetir"
       fotogramas: [8]
@@ -451,7 +451,7 @@ estados:
           ancho: 23
           alto: 19
           ataque: 0
-    fotogramas: [0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
+    fotogramas: [0,0,0,0,0,0,0,0,0,0,0,1,1,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
     sonido:
       tipo: "No repetir"
       fotogramas: [11]

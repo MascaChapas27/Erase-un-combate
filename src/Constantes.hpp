@@ -232,6 +232,12 @@ constexpr int MAX_CONTADOR_ESQUIVE_SUPER = 4;
 // personaje del borde (siempre y cuando el otro personaje no esté también en el umbral)
 constexpr int ESCENARIO_UMBRAL_MOVIMIENTO = 20;
 
+// Altura en píxeles de las sombras
+constexpr int ALTURA_SOMBRA = 4;
+
+// Escala de la altura de la sombra de un sprite de un personaje durante un combate
+constexpr float ESCALA_ALTURA_SOMBRA_PERSONAJE = -0.1;
+
 /*
     CONSTANTES PARA LA GUI DE PERSONAJE
 */
