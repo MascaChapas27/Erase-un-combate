@@ -21,6 +21,7 @@ AnimacionPorFrames::AnimacionPorFrames(IngredientesAnimacionPorFrames &ingredien
     this->rutaSonido = ingredientes.rutaSonido;
     this->framesConSonido = ingredientes.framesConSonido;
     this->framesConMovimiento = ingredientes.framesConMovimiento;
+    this->framesConEstiramientos = ingredientes.framesConEstiramientos;
     this->framesConAnimaciones = ingredientes.framesConAnimaciones;
     this->repetirSonido = ingredientes.repetirSonido;
     this->tipoSombra = ingredientes.tipoSombra;
@@ -82,6 +83,10 @@ void AnimacionPorFrames::actualizar(std::list<std::shared_ptr<Animacion>> &nueva
         nuevasAnimaciones.push_back(anim);
     }
 
+    if(framesConEstiramientos.count(frameActual)){
+        sprite.scale(framesConEstiramientos[frameActual]);
+    }
+
     sprite.setTextureRect(sf::IntRect({rectanguloCorrespondiente[frameActual]*sprite.getTextureRect().size.x,0}, {sprite.getTextureRect().size.x,sprite.getTextureRect().size.y}));
 }
 
@@ -127,6 +132,11 @@ int AnimacionPorFrames::getNumeroRectangulo() {
 
 int AnimacionPorFrames::getNumeroFrame(){
     return frameActual;
+}
+
+sf::Vector2f AnimacionPorFrames::getEstiramientoFrameActual(){
+    if(framesConEstiramientos.count(frameActual)) return framesConEstiramientos[frameActual];
+    else return sf::Vector2f{1.f,1.f};
 }
 
 void AnimacionPorFrames::setTipoBucle(TipoBucle tipoBucle){

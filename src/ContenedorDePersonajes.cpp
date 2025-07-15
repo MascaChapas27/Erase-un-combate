@@ -194,7 +194,7 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
                 }
                 else if(itAtributoEstado->first.as<std::string>() == "movimientos")
                 {
-                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: Encontrados " + std::to_string(itAtributoEstado->second.size()) + " movimientos");
+                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: Encontrados " + std::to_string(itAtributoEstado->second.size()) + " movimientos.");
 
                     for(size_t i = 0; i < itAtributoEstado->second.size(); i++)
                     {
@@ -203,7 +203,21 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
 
                         ingredientes.framesConMovimiento[fotogramaMovimiento] = velocidadMovimiento;
 
-                        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Movimiento número " + std::to_string(i) + " desencadenado en fotograma " + std::to_string(fotogramaMovimiento) + ". Movimiento de (" + std::to_string(velocidadMovimiento.x) + "," + std::to_string(velocidadMovimiento.y));
+                        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Movimiento número " + std::to_string(i) + " desencadenado en fotograma " + std::to_string(fotogramaMovimiento) + ". Movimiento de (" + std::to_string(velocidadMovimiento.x) + "," + std::to_string(velocidadMovimiento.y) + ").");
+                    }
+                }
+                else if(itAtributoEstado->first.as<std::string>() == "estiramientos")
+                {
+                    Bitacora::unicaInstancia()->escribir("Juan Cuesta: Encontrados " + std::to_string(itAtributoEstado->second.size()) + " estiramientos.");
+
+                    for(size_t i = 0; i < itAtributoEstado->second.size(); i++)
+                    {
+                        int fotogramaEstiramiento = itAtributoEstado->second[i]["fotograma"].as<int>();
+                        sf::Vector2f escalaEstiramiento = {itAtributoEstado->second[i]["escalaX"].as<float>(),itAtributoEstado->second[i]["escalaY"].as<float>()};
+
+                        ingredientes.framesConEstiramientos[fotogramaEstiramiento] = escalaEstiramiento;
+
+                        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Estiramiento número " + std::to_string(i) + " desencadenado en fotograma " + std::to_string(fotogramaEstiramiento) + ". Estiramiento de (" + std::to_string(escalaEstiramiento.x) + "," + std::to_string(escalaEstiramiento.y) + ").");
                     }
                 }
                 else if(itEstado->first.as<std::string>() == "ataque-especial" && itAtributoEstado->first.as<std::string>() == "acciones")

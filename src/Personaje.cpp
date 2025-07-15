@@ -686,6 +686,10 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
     // Se actualiza la animación por frames del estado
     animaciones.at(estado)->actualizar(efectosInsertados);
 
+    // Se obtiene el estiramiento para este frame según diga la animaciónm
+    // y se multiplica a la escala calculada
+    escalaSprite = escalaSprite.componentWiseMul(animaciones.at(estado)->getEstiramientoFrameActual());
+
     // Se actualiza la escala del personaje
     animaciones[estado]->setEscala(escalaSprite);
 

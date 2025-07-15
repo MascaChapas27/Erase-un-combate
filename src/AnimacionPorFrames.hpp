@@ -42,6 +42,9 @@ struct IngredientesAnimacionPorFrames{
     // Indica qué frames tienen movimiento
     std::unordered_map<int,sf::Vector2f> framesConMovimiento;
 
+    // Indica qué frames tienen estiramientos
+    std::unordered_map<int,sf::Vector2f> framesConEstiramientos;
+
     // Indica qué frames hacen aparecer animaciones adicionales
     std::unordered_map<int,IndicacionesSobreAnimacion> framesConAnimaciones;
 
@@ -77,6 +80,9 @@ private:
 
     // Indica qué frames tienen movimiento
     std::unordered_map<int,sf::Vector2f> framesConMovimiento;
+
+    // Indica qué frames hacen que la animación se estire
+    std::unordered_map<int,sf::Vector2f> framesConEstiramientos;
 
     // Indica qué frames hacen aparecer animaciones adicionales
     std::unordered_map<int,IndicacionesSobreAnimacion> framesConAnimaciones;
@@ -115,6 +121,10 @@ public:
 
     // Devuelve qué frame se está mostrando actualmente
     int getNumeroFrame();
+
+    // Devuelve la escala a la que se debería estirar el sprite
+    // en el fotograma actual
+    sf::Vector2f getEstiramientoFrameActual();
 
     // Cambia el tipo de bucle para la animación
     void setTipoBucle(TipoBucle tipoBucle);
