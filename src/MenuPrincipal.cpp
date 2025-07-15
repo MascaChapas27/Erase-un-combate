@@ -92,7 +92,7 @@ Seleccion MenuPrincipal::comenzar(){
                 exit(EXIT_SUCCESS);
             } else if(!selectorPulsado) {
                 std::pair<Jugador,Accion> par = GestorDeControles::unicaInstancia()->comprobarEvento(evento);
-                if((evento->is<sf::Event::JoystickButtonPressed>() || evento->is<sf::Event::KeyPressed>())){
+                if((evento->is<sf::Event::JoystickButtonPressed>() || evento->is<sf::Event::KeyPressed>() || evento->is<sf::Event::JoystickMoved>())){
                     if(par.second == Accion::ARRIBA){
                         ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/cambiar-seleccion.ogg");
                         switch(seleccionActual){

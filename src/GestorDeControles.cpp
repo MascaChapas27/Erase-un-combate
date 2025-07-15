@@ -128,21 +128,25 @@ std::pair<Jugador,Accion> GestorDeControles::comprobarEvento(std::optional<sf::E
         // se hacen cosas
         pair.first = controlAJugador[control];
         if(pair.first != Jugador::NADIE){
+
+            // Se saca la posición del joystick de antemano
+            float posicionJoystick = evento->getIf<sf::Event::JoystickMoved>()->position;
+
             // Dependiendo del eje, se decide hacia dónde se mueve
             switch(evento->getIf<sf::Event::JoystickMoved>()->axis){
                 // PovX, X y R son los ejes X de tres posibles entradas
-                // PovX es la cruceta, X es el joystick izquierdo y R el joystick derecho
-                case sf::Joystick::Axis::PovX:
+                // PovX es la cruceta, X es el joystick izquierdo y R el joystick derecho.
                 case sf::Joystick::Axis::X:
                 case sf::Joystick::Axis::R:
+                case sf::Joystick::Axis::PovX:
 
-                    if(evento->getIf<sf::Event::JoystickMoved>()->position > UMBRAL_JOYSTICK && !jugadorRealizandoAccionJoystick[pair.first][Accion::DERECHA]){
+                    if(posicionJoystick > UMBRAL_JOYSTICK && !jugadorRealizandoAccionJoystick[pair.first][Accion::DERECHA]){
                         pair.second = Accion::DERECHA;
                         jugadorRealizandoAccionJoystick[pair.first][Accion::DERECHA] = true;
-                    } else if(evento->getIf<sf::Event::JoystickMoved>()->position < -UMBRAL_JOYSTICK && !jugadorRealizandoAccionJoystick[pair.first][Accion::IZQUIERDA]){
+                    } else if(posicionJoystick < -UMBRAL_JOYSTICK && !jugadorRealizandoAccionJoystick[pair.first][Accion::IZQUIERDA]){
                         pair.second = Accion::IZQUIERDA;
                         jugadorRealizandoAccionJoystick[pair.first][Accion::IZQUIERDA] = true;
-                    } else if (std::abs(evento->getIf<sf::Event::JoystickMoved>()->position) < UMBRAL_JOYSTICK){
+                    } else if (std::abs(posicionJoystick) < UMBRAL_JOYSTICK){
                         if(jugadorRealizandoAccionJoystick[pair.first][Accion::DERECHA]){
                             pair.second = Accion::DERECHA;
                             jugadorRealizandoAccionJoystick[pair.first][Accion::DERECHA] = false;
@@ -154,10 +158,13 @@ std::pair<Jugador,Accion> GestorDeControles::comprobarEvento(std::optional<sf::E
                     break;
 
                 // PovY, Y y U son los ejes Y de tres posibles entradas
-                // PovY es la cruceta, Y es el joystick izquierdo y U el joystick derecho
-                case sf::Joystick::Axis::PovY:
+                // PovY es la cruceta, Y es el joystick izquierdo y U el joystick derecho.
+                // Por algún motivo los ejes Y y U están invertidos, así que no queda otra
                 case sf::Joystick::Axis::Y:
                 case sf::Joystick::Axis::U:
+                    posicionJoystick = -posicionJoystick;
+
+                case sf::Joystick::Axis::PovY:
                     if(evento->getIf<sf::Event::JoystickMoved>()->position < -UMBRAL_JOYSTICK && !jugadorRealizandoAccionJoystick[pair.first][Accion::ABAJO]){
                         pair.second = Accion::ABAJO;
                         jugadorRealizandoAccionJoystick[pair.first][Accion::ABAJO] = true;
