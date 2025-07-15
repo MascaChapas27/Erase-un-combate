@@ -166,7 +166,7 @@ void Combate::recibirEntradaPlayerVSPlayerOffline()
                 
                 Personaje &personajeElegido = par.first == Jugador::JUGADOR1 ? personajeJugador1 : personajeJugador2;
 
-                if ((dynamic_cast<AnimacionAgrandable *>(cartelAPelear.get()))->haTerminadoDeAgrandarse())
+                if ((dynamic_cast<AnimacionAgrandable *>(cartelTodoListo.get()))->haTerminado())
                 {
                     if (evento->is<sf::Event::KeyPressed>() || evento->is<sf::Event::JoystickButtonPressed>() || (evento->is<sf::Event::JoystickMoved>() && std::abs(evento->getIf<sf::Event::JoystickMoved>()->position) > UMBRAL_JOYSTICK))
                     {

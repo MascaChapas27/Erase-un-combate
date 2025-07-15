@@ -51,6 +51,9 @@ struct IngredientesAnimacionPorFrames{
     // Indica si el sonido se debe repetir cada vez que vuelva a salir el frame o si una vez se
     // termine el bucle no hay que repetirlo
     bool repetirSonido = false;
+
+    // Indica el tipo de sombra para la animación
+    TipoSombra tipoSombra = TipoSombra::SIN_SOMBRA;
 };
 
 /*
@@ -91,6 +94,9 @@ private:
 
     // Indica si es el primer frame, para no ir al siguiente (si no, nunca se mostraría el primer frame al actualizarlo inmediatamente)
     bool primerFrame;
+
+    // Indica el tipo de sombra para esta animación
+    TipoSombra tipoSombra;
 
 public:
 

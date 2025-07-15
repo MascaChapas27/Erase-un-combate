@@ -23,6 +23,7 @@ AnimacionPorFrames::AnimacionPorFrames(IngredientesAnimacionPorFrames &ingredien
     this->framesConMovimiento = ingredientes.framesConMovimiento;
     this->framesConAnimaciones = ingredientes.framesConAnimaciones;
     this->repetirSonido = ingredientes.repetirSonido;
+    this->tipoSombra = ingredientes.tipoSombra;
 
     sonidoYaReproducido = false;
 
@@ -173,39 +174,43 @@ std::vector<Hitbox> AnimacionPorFrames::getHitboxes(){
     }
 }
 
-void AnimacionPorFrames::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-    // La sombra tendrá una anchura mayor y una sombra
-    // más oscura cuanto más cerca esté el objeto del suelo
-    float anchuraSombra = sprite.getTextureRect().size.x/3.f;
-    float alturaSombra = ALTURA_SOMBRA;
-    sf::Color colorSombra = sf::Color::Black;
-
-    if(sprite.getPosition().y < 3*ALTURA_SUELO/4)
+void AnimacionPorFrames::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    if(tipoSombra != TipoSombra::SIN_SOMBRA)
     {
-        anchuraSombra = 0;
-        alturaSombra = 0;
-        colorSombra = sf::Color::Transparent;
+        // La sombra tendrá una anchura mayor y una sombra
+        // más oscura cuanto más cerca esté el objeto del suelo
+        float anchuraSombra = sprite.getTextureRect().size.x/(tipoSombra == TipoSombra::LARGA ? 1.5f : 3.f);
+        float alturaSombra = ALTURA_SOMBRA;
+        sf::Color colorSombra = sf::Color::Black;
+
+        if(sprite.getPosition().y < ALTURA_SUELO/2)
+        {
+            anchuraSombra = 0;
+            alturaSombra = 0;
+            colorSombra = sf::Color::Transparent;
+        }
+        else
+        {
+            anchuraSombra *= (sprite.getPosition().y - ALTURA_SUELO/2) / (ALTURA_SUELO/2);
+            alturaSombra *= (sprite.getPosition().y - ALTURA_SUELO/2) / (ALTURA_SUELO/2);
+
+            // En el caso de la transparencia del color se divide entre (ALTURA_SUELO/2) para
+            // que el rango de transparencia esté entre 0 y 128 más menos para que la sombra
+            // sea más transparente y no sea completamente opaca
+            colorSombra.a *= (sprite.getPosition().y - ALTURA_SUELO/2) / (ALTURA_SUELO);
+        }
+
+        anchuraSombra *= (sprite.getPosition().y/ALTURA_SUELO);
+
+        sf::CircleShape sombra(1.f);
+        sombra.setOrigin({1.f,1.f});
+        sombra.setScale({anchuraSombra/2.f,alturaSombra/2.f});
+        sombra.setFillColor(colorSombra);
+        sombra.setPosition({sprite.getPosition().x,ALTURA_SUELO});
+
+        target.draw(sombra,states);
     }
-    else
-    {
-        anchuraSombra *= (sprite.getPosition().y - 3*ALTURA_SUELO/4) / (ALTURA_SUELO/4);
-        alturaSombra *= (sprite.getPosition().y - 3*ALTURA_SUELO/4) / (ALTURA_SUELO/4);
 
-        // En el caso de la transparencia del color se divide entre (ALTURA_SUELO/2) para
-        // que el rango de transparencia esté entre 0 y 128 más menos para que la sombra
-        // sea más transparente y no sea completamente opaca
-        colorSombra.a *= (sprite.getPosition().y - 3*ALTURA_SUELO/4) / (ALTURA_SUELO/2);
-    }
-
-    anchuraSombra *= (sprite.getPosition().y/ALTURA_SUELO);
-
-    sf::CircleShape sombra(1.f);
-    sombra.setOrigin({1.f,1.f});
-    sombra.setScale({anchuraSombra/2.f,alturaSombra/2.f});
-    sombra.setFillColor(colorSombra);
-    sombra.setPosition({sprite.getPosition().x,ALTURA_SUELO});
-
-    target.draw(sombra,states);
     target.draw(sprite,states);
 
     if(DEBUG){

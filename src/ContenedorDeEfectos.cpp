@@ -89,6 +89,9 @@ void ContenedorDeEfectos::cargarTodosLosEfectos()
             // Estos serán los ingredientes para hacer la animación
             IngredientesAnimacionPorFrames ingredientes;
 
+            // Los efectos con animaciones por fotogramas no tienen sombra
+            ingredientes.tipoSombra = TipoSombra::SIN_SOMBRA;
+
             ingredientes.rutaTextura = "sprites/efectos/" + nombreEfecto + ".png";
 
             ingredientes.posicion = {0.f,0.f};

@@ -70,15 +70,26 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
         // Ahora se saca la info de los estados del personaje
         for(YAML::const_iterator itEstado = estados.begin(); itEstado != estados.end(); ++itEstado)
         {
+            // Se saca el nombre de este estado
+            std::string nombreEstado = itEstado->first.as<std::string>();
+
             // Se preparan los ingredientes
             IngredientesAnimacionPorFrames ingredientes;
 
-            ingredientes.posicion = {0, 0};
+            // Los personajes sí tienen sombra
+            if(nombreEstado == "golpeado-subiendo" || nombreEstado == "golpeado-bajando" || nombreEstado == "tumbado")
+            {
+                ingredientes.tipoSombra = TipoSombra::LARGA;
+            }
+            else
+            {
+                ingredientes.tipoSombra = TipoSombra::NORMAL;
+            }
+            
+
+            ingredientes.posicion = {0.f, 0.f};
 
             ingredientes.origen = {PERSONAJE_PLANTILLA_ORIGEN.x, PERSONAJE_PLANTILLA_ORIGEN.y};
-
-            // Se saca el nombre de este estado
-            std::string nombreEstado = itEstado->first.as<std::string>();
 
             ingredientes.rutaTextura = "sprites/personajes/" + nombrePersonaje + "/" + nombreEstado + ".png";
 

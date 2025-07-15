@@ -155,7 +155,7 @@ void AnimacionConGravedad::draw(sf::RenderTarget& target, sf::RenderStates state
         float alturaSombra = ALTURA_SOMBRA;
         sf::Color colorSombra = sf::Color::Black;
 
-        if(sprite.getPosition().y < 3*ALTURA_SUELO/4)
+        if(sprite.getPosition().y < ALTURA_SUELO/2)
         {
             anchuraSombra = 0;
             alturaSombra = 0;
@@ -163,13 +163,13 @@ void AnimacionConGravedad::draw(sf::RenderTarget& target, sf::RenderStates state
         }
         else
         {
-            anchuraSombra *= (sprite.getPosition().y - 3*ALTURA_SUELO/4) / (ALTURA_SUELO/4);
-            alturaSombra *= (sprite.getPosition().y - 3*ALTURA_SUELO/4) / (ALTURA_SUELO/4);
+            anchuraSombra *= (sprite.getPosition().y - ALTURA_SUELO/2) / (ALTURA_SUELO/2);
+            alturaSombra *= (sprite.getPosition().y - ALTURA_SUELO/2) / (ALTURA_SUELO/2);
 
             // En el caso de la transparencia del color se divide entre (ALTURA_SUELO/2) para
             // que el rango de transparencia esté entre 0 y 128 más menos para que la sombra
             // sea más transparente y no sea completamente opaca
-            colorSombra.a *= (sprite.getPosition().y - 3*ALTURA_SUELO/4) / (ALTURA_SUELO/2);
+            colorSombra.a *= (sprite.getPosition().y - ALTURA_SUELO/2) / (ALTURA_SUELO);
         }
 
         anchuraSombra *= (sprite.getPosition().y/ALTURA_SUELO);

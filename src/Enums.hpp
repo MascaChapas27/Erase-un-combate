@@ -60,4 +60,9 @@ enum class Control{
     MANDO4, MANDO5, MANDO6, MANDO7
 };
 
-
+// Indica el tipo de la sombra para una AnimacionPorFrames
+enum class TipoSombra {
+    NORMAL,
+    LARGA,
+    SIN_SOMBRA
+};
