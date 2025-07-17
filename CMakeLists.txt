@@ -34,8 +34,35 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(yaml-cpp)
 
+# Se indica dónde están los hpp
+include_directories(src/animaciones src/combate src/general src/menus src/recursos)
+
 # Se ponen todos los ficheros .cpp
-add_executable(EraseUnCombate Animacion.cpp AnimacionAgrandable.cpp AnimacionConGravedad.cpp AnimacionDesvaneciente.cpp AnimacionPorFrames.cpp AtaqueEspecial.cpp Bitacora.cpp Combate.cpp ConectorOnline.cpp ContenedorDeEfectos.cpp ContenedorDePersonajes.cpp ContenedorDeRecursos.cpp Escenario.cpp GestorDeControles.cpp GUIPersonaje.cpp Hitbox.cpp main.cpp MenuPrincipal.cpp Personaje.cpp ReproductorDeMusica.cpp ReproductorDeSonidos.cpp SelectorJugadorParaMando.cpp Utilidades.cpp VentanaPrincipal.cpp)
+add_executable(EraseUnCombate
+src/animaciones/Animacion.cpp
+src/animaciones/AnimacionAgrandable.cpp
+src/animaciones/AnimacionConGravedad.cpp
+src/animaciones/AnimacionDesvaneciente.cpp
+src/animaciones/AnimacionPorFrames.cpp
+src/combate/AtaqueEspecial.cpp
+src/combate/Combate.cpp
+src/combate/ConectorOnline.cpp
+src/combate/Escenario.cpp
+src/combate/GUIPersonaje.cpp
+src/combate/Hitbox.cpp
+src/combate/Personaje.cpp
+src/general/Bitacora.cpp
+src/general/Utilidades.cpp
+src/general/VentanaPrincipal.cpp
+src/main.cpp
+src/menus/MenuPrincipal.cpp
+src/recursos/ContenedorDeEfectos.cpp
+src/recursos/ContenedorDePersonajes.cpp
+src/recursos/ContenedorDeRecursos.cpp
+src/recursos/GestorDeControles.cpp
+src/recursos/ReproductorDeMusica.cpp
+src/recursos/ReproductorDeSonidos.cpp
+src/recursos/SelectorJugadorParaMando.cpp)
 
 # Se especifica que el estándar de C++ que se quiere usar es el de 2020
 target_compile_features(EraseUnCombate PRIVATE cxx_std_20)
