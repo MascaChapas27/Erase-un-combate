@@ -41,6 +41,8 @@ namespace util{
             return EstadoPersonaje::ATAQUE_NORMAL_2;
         if(string == "ataque-normal-3")
             return EstadoPersonaje::ATAQUE_NORMAL_3;
+        if(string == "ataque-alejandose")
+            return EstadoPersonaje::ATAQUE_ALEJANDOSE;
         if(string == "ataque-aereo")
             return EstadoPersonaje::ATAQUE_AEREO;
         if(string == "ataque-especial")

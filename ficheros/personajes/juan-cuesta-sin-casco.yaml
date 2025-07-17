@@ -219,6 +219,19 @@ estados:
       tipo: "No repetir"
       fotogramas: [4]
   
+  ataque-alejandose:
+    bucle: "Sin bucle"
+    rectangulos:
+      -
+      -
+      -
+      -
+      -
+    fotogramas: [0,0,0,0,1,1,2,2,2,2,2,2,0,0,0,0,3,3,4,4,4,4,4,4,0,0,0,0]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [4,16]
+  
   ataque-especial:
     bucle: "Sin bucle"
     rectangulos:

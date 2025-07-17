@@ -302,7 +302,8 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
             cambiarEstado(EstadoPersonaje::ATAQUE_ESPECIAL);
         } else if (accionesRealizadas[Accion::ATACAR]){
             contadorEsquiveSuper=0;
-            cambiarEstado(EstadoPersonaje::ATAQUE_NORMAL_1);
+            cambiarEstado(EstadoPersonaje::ATAQUE_ALEJANDOSE);
+            accionesRealizadas[Accion::ATACAR] = false;
         } else if(accionesRealizadas[Accion::ARRIBA]){
             velocidad.y = fuerzaSalto;
             accionesRealizadas[Accion::ARRIBA] = false;
@@ -361,7 +362,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         if(accionesRealizadas[Accion::DERECHA]) moverseDerecha();
         else if (accionesRealizadas[Accion::IZQUIERDA]) moverseIzquierda();
 
-        if(animaciones.at(estado)->getPosicion().y > ALTURA_SUELO){
+        if(animaciones.at(estado)->getPosicion().y + velocidad.y > ALTURA_SUELO){
             animaciones.at(estado)->setPosicion(animaciones.at(estado)->getPosicion().x,ALTURA_SUELO);
             velocidad.y = 0;
             levantarPolvo(efectosInsertados);
@@ -400,9 +401,13 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
 
         if(animaciones.at(estado)->haTerminado()){
             if(accionesRealizadas[Accion::ATACAR])
+            {
                 cambiarEstado(EstadoPersonaje::ATAQUE_NORMAL_2);
+            }
             else
+            {
                 cambiarEstado(EstadoPersonaje::QUIETO);
+            }
         }
         break;
     case EstadoPersonaje::ATAQUE_NORMAL_2:
@@ -411,9 +416,13 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
 
         if(animaciones.at(estado)->haTerminado()){
             if(accionesRealizadas[Accion::ATACAR])
+            {
                 cambiarEstado(EstadoPersonaje::ATAQUE_NORMAL_3);
+            }
             else
+            {
                 cambiarEstado(EstadoPersonaje::QUIETO);
+            }
         }
         break;
     case EstadoPersonaje::ATAQUE_NORMAL_3:
@@ -423,6 +432,15 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         if(animaciones.at(estado)->haTerminado()){
             cambiarEstado(EstadoPersonaje::QUIETO);
             accionesRealizadas[Accion::ATACAR] = false;
+        }
+        break;
+
+    case EstadoPersonaje::ATAQUE_ALEJANDOSE:
+
+        pararMovimiento();
+
+        if(animaciones.at(estado)->haTerminado()){
+            cambiarEstado(EstadoPersonaje::QUIETO);
         }
         break;
     
@@ -653,6 +671,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         case EstadoPersonaje::ATAQUE_NORMAL_1:
         case EstadoPersonaje::ATAQUE_NORMAL_2:
         case EstadoPersonaje::ATAQUE_NORMAL_3:
+        case EstadoPersonaje::ATAQUE_ALEJANDOSE:
         case EstadoPersonaje::ATAQUE_ESPECIAL:
         case EstadoPersonaje::ATAQUE_AEREO:
         case EstadoPersonaje::ATAQUE_AGACHADO:
@@ -875,6 +894,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
             case EstadoPersonaje::ATAQUE_NORMAL_1:
             case EstadoPersonaje::ATAQUE_NORMAL_2:
             case EstadoPersonaje::ATAQUE_NORMAL_3:
+            case EstadoPersonaje::ATAQUE_ALEJANDOSE:
             case EstadoPersonaje::ATAQUE_ESPECIAL:
             case EstadoPersonaje::ATAQUE_AGACHADO:
             case EstadoPersonaje::TOCANDO_SUELO:
