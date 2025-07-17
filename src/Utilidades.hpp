@@ -46,5 +46,13 @@ namespace util{
     // Dados dos floats, devuelve una aproximación del primero al segundo, multiplicando el primero por
     // el factorPrimero y multiplicando el segundo por (1-factorPrimero), y sumando los dos resultados
     float aproximarFloat(const float& primerFloat, const float& segundoFloat, double factorPrimero);
+
+    // En base al estado en el que se encuentra un personaje, devuelve cuánta prioridad tiene a la hora
+    // de ser dibujado. Si un personaje tiene más prioridad que otro, significa que se dibujará encima,
+    // para que el personaje con menos prioridad esté más al fondo. Las prioridades son las siguientes:
+    // Prioridad 1 (baja): el personaje está tumbado o sufriendo un ataque.
+    // Prioridad 2 (media): el personaje está quieto o andando.
+    // Prioridad 3 (alta): el personaje está atacando, saltando o celebrando.
+    int getPrioridadDibujo(EstadoPersonaje estado);
 }
 

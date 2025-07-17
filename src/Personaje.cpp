@@ -887,8 +887,11 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         // los ataques medios y pequeños se pueden esquivar
         switch(estado){
 
-            // Atacando o sin moverse al revés del enemigo (todo te pega)
+            // Atacando, sin moverse al revés del enemigo, sufriendo un
+            // ataque o en general situaciones en las que el personaje está
+            // indefenso y todo le pega
             case EstadoPersonaje::GOLPEADO_PEQUE:
+            case EstadoPersonaje::GOLPEADO_MEDIO:
             case EstadoPersonaje::QUIETO:
             case EstadoPersonaje::ANDANDO_ACERCANDOSE:
             case EstadoPersonaje::ATAQUE_NORMAL_1:

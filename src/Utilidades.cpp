@@ -209,4 +209,45 @@ namespace util{
     {
         return primerFloat*factorPrimero + segundoFloat*(1-factorPrimero);
     }
+
+    int getPrioridadDibujo(EstadoPersonaje estado)
+    {
+        switch(estado)
+        {
+            // Prioridad 1 (baja)
+            case EstadoPersonaje::GOLPEADO_BAJANDO:
+            case EstadoPersonaje::GOLPEADO_SUBIENDO:
+            case EstadoPersonaje::TUMBADO:
+            case EstadoPersonaje::GOLPEADO_PEQUE:
+            case EstadoPersonaje::GOLPEADO_MEDIO:
+                return 1;
+                break;
+            
+            // Prioridad 2 (media)
+            case EstadoPersonaje::QUIETO:
+            case EstadoPersonaje::AGACHADO:
+            case EstadoPersonaje::ANDANDO_ACERCANDOSE:
+            case EstadoPersonaje::ANDANDO_ALEJANDOSE:
+            case EstadoPersonaje::BLOQUEANDO:
+            case EstadoPersonaje::ESQUIVE_SUPER:
+                return 2;
+                break;
+
+            // Prioridad 3 (alta)
+            case EstadoPersonaje::ATAQUE_AEREO:
+            case EstadoPersonaje::ATAQUE_AGACHADO:
+            case EstadoPersonaje::ATAQUE_ALEJANDOSE:
+            case EstadoPersonaje::ATAQUE_ESPECIAL:
+            case EstadoPersonaje::ATAQUE_NORMAL_1:
+            case EstadoPersonaje::ATAQUE_NORMAL_2:
+            case EstadoPersonaje::ATAQUE_NORMAL_3:
+            case EstadoPersonaje::ATAQUE_SUPER:
+            case EstadoPersonaje::PREPARANDO_SUPER:
+            case EstadoPersonaje::CELEBRANDO:
+                return 3;
+                break;
+        }
+
+        return 1;
+    }
 }

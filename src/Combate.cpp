@@ -437,8 +437,27 @@ void Combate::actualizarFrameNormal(std::list<std::shared_ptr<Animacion>> &efect
 
     ventana->clear(sf::Color(100, 100, 120));
     ventana->draw(escenario);
-    ventana->draw(personajeJugador1);
-    ventana->draw(personajeJugador2);
+
+    // Dependiendo de qué personaje esté atacando y cuál no, se dibuja uno
+    // antes de dibujar otro para que no sea siempre el jugador 2 el que tape
+    // al jugador 1
+    int prioridadDibujoJugador1 = util::getPrioridadDibujo(personajeJugador1.getEstado());
+    int prioridadDibujoJugador2 = util::getPrioridadDibujo(personajeJugador2.getEstado());
+
+    // Puede parecer raro que si el jugador 1 tiene más prioridad se dibuje
+    // después, pero esto ocurre porque, al dibujarse después, se dibuja encima
+    // del jugador 2, haciendo que el jugador 1 esté en frente. A eso se refiere
+    // la prioridad más bien
+    if(prioridadDibujoJugador1 > prioridadDibujoJugador2)
+    {
+        ventana->draw(personajeJugador2);
+        ventana->draw(personajeJugador1);
+    }
+    else
+    {
+        ventana->draw(personajeJugador1);
+        ventana->draw(personajeJugador2);
+    }
 
     for (auto iter = efectos.begin(); iter != efectos.end(); iter++)
     {

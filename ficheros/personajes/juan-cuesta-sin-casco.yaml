@@ -222,11 +222,41 @@ estados:
   ataque-alejandose:
     bucle: "Sin bucle"
     rectangulos:
-      -
-      -
-      -
-      -
-      -
+      - - posX: 51
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 53
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+        - posX: 89
+          posY: 58
+          ancho: 10
+          alto: 15
+          ataque: 3
+      - - posX: 53
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+      - - posX: 54
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
+        - posX: 98
+          posY: 59
+          ancho: 10
+          alto: 15
+          ataque: 3
+      - - posX: 54
+          posY: 29
+          ancho: 27
+          alto: 71
+          ataque: 0
     fotogramas: [0,0,0,0,1,1,2,2,2,2,2,2,0,0,0,0,3,3,4,4,4,4,4,4,0,0,0,0]
     sonido:
       tipo: "No repetir"
