@@ -28,6 +28,11 @@ private:
     // Volumen actual para los efectos de sonido (del 0 al 100)
     float volumenActual;
 
+    // Tono actual para los efectos de sonido (1 es un tono normal,
+    // entre 0 y 1 son tonos graves y entre 1 e infinito son tonos
+    // agudos)
+    float tonoActual;
+
 public:
     // Reproduce el sonido dado su identificador (ruta del fichero relativa al directorio donde
     // se ejecuta el programa). Se puede especificar un tono en el que se reproducirá el
@@ -42,6 +47,12 @@ public:
 
     // Establece el nuevo volumen para los efectos de sonido
     void setVolumen(float nuevoVolumen);
+
+    // Devuelve el tono de reproducción de los efectos de sonido
+    float getTono();
+
+    // Establece el nuevo tono para los efectos de sonido
+    void setTono(float nuevoTono);
 
     // Devuelve true si el efecto de sonido se está reproduciendo
     bool estaReproduciendo(std::string sonido);

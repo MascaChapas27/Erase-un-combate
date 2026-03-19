@@ -90,6 +90,17 @@ constexpr double VOLUMEN_MAXIMO_MUSICA = 100.0f;
 // Volumen máximo del reproductor de efectos de sonido
 constexpr double VOLUMEN_MAXIMO_SONIDOS = 100.0f;
 
+// Tono en el que se reproducen las canciones normalmente
+constexpr double TONO_MUSICA_NORMAL = 1.f;
+
+// Tono en el que se reproducen las canciones cuando está
+// activada la opción debug de aceleración
+constexpr double TONO_MUSICA_ACELERADA = 1.3f;
+
+// Tono en el que se reproducen las canciones cuando está
+// activada la opción debug de ralentización
+constexpr double TONO_MUSICA_RALENTIZADA = 0.7f;
+
 /*
     CONSTANTES PARA LOS FICHEROS
 */

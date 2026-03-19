@@ -3,6 +3,8 @@
 #include "SelectorJugadorParaMando.hpp"
 #include "Configuracion.hpp"
 #include "VentanaPrincipal.hpp"
+#include "ReproductorDeMusica.hpp"
+#include "ReproductorDeSonidos.hpp"
 #include <iostream>
 
 // La instancia es nula al principio
@@ -88,6 +90,10 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
 
     if(evento->is<sf::Event::JoystickButtonPressed>() || evento->is<sf::Event::JoystickButtonReleased>())
     {
+        // Esto es para debug. Se imprime el código asociado al botón pulsado
+        if(evento->is<sf::Event::JoystickButtonPressed>())
+            std::cerr << "Botón pulsado: " << evento->getIf<sf::Event::JoystickButtonPressed>()->button << "\n";
+
         // Alguien ha pulsado un botón de mando (el botón da igual, todos
         // hacen lo mismo). Se le suma 2 al numerito del control porque los dos
         // primeros controles son la parte izquierda del teclado y la parte derecha,
@@ -234,16 +240,32 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
                 {
                     case sf::Keyboard::Scancode::Num1:
                         if(Configuracion::unicaInstancia()->getFPS() != NUMERO_FPS_INICIAL/3)
+                        {
                             Configuracion::unicaInstancia()->setFPS(NUMERO_FPS_INICIAL/3);
+                            ReproductorDeMusica::unicaInstancia()->setTono(TONO_MUSICA_RALENTIZADA);
+                            ReproductorDeSonidos::unicaInstancia()->setTono(TONO_MUSICA_RALENTIZADA);
+                        }
                         else
+                        {
                             Configuracion::unicaInstancia()->setFPS(NUMERO_FPS_INICIAL);
+                            ReproductorDeMusica::unicaInstancia()->setTono(TONO_MUSICA_NORMAL);
+                            ReproductorDeSonidos::unicaInstancia()->setTono(TONO_MUSICA_NORMAL);
+                        }
                         break;
 
                     case sf::Keyboard::Scancode::Num2:
                         if(Configuracion::unicaInstancia()->getFPS() != NUMERO_FPS_INICIAL*3)
+                        {
                             Configuracion::unicaInstancia()->setFPS(NUMERO_FPS_INICIAL*3);
+                            ReproductorDeMusica::unicaInstancia()->setTono(TONO_MUSICA_ACELERADA);
+                            ReproductorDeSonidos::unicaInstancia()->setTono(TONO_MUSICA_ACELERADA);
+                        }
                         else
+                        {
                             Configuracion::unicaInstancia()->setFPS(NUMERO_FPS_INICIAL);
+                            ReproductorDeMusica::unicaInstancia()->setTono(TONO_MUSICA_NORMAL);
+                            ReproductorDeSonidos::unicaInstancia()->setTono(TONO_MUSICA_NORMAL);
+                        }
                         break;
                     
                     case sf::Keyboard::Scancode::Num3:

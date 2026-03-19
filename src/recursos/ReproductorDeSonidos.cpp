@@ -12,9 +12,9 @@ ReproductorDeSonidos *ReproductorDeSonidos::unicaInstancia()
     return reproductorDeSonidos;
 }
 
-ReproductorDeSonidos::ReproductorDeSonidos()
+ReproductorDeSonidos::ReproductorDeSonidos() : volumenActual(VOLUMEN_MAXIMO_SONIDOS), tonoActual(TONO_MUSICA_NORMAL)
 {
-    volumenActual = VOLUMEN_MAXIMO_SONIDOS;
+
 }
 
 ReproductorDeSonidos::~ReproductorDeSonidos()
@@ -34,7 +34,7 @@ void ReproductorDeSonidos::reproducir(std::string sonido, float tono)
 
     // Se reproduce el sonido requerido
     sonidos.at(sonido).setVolume(volumenActual);
-    sonidos.at(sonido).setPitch(tono);
+    sonidos.at(sonido).setPitch(tono*tonoActual);
     sonidos.at(sonido).play();
 }
 
@@ -48,6 +48,16 @@ void ReproductorDeSonidos::setVolumen(float nuevoVolumen)
     volumenActual = (nuevoVolumen > VOLUMEN_MAXIMO_MUSICA ? VOLUMEN_MAXIMO_MUSICA :
                      nuevoVolumen < 0 ? 0 :
                      nuevoVolumen);
+}
+
+float ReproductorDeSonidos::getTono()
+{
+    return tonoActual;
+}
+
+void ReproductorDeSonidos::setTono(float nuevoTono)
+{
+    tonoActual = nuevoTono;
 }
 
 bool ReproductorDeSonidos::estaReproduciendo(std::string sonido){

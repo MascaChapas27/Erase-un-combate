@@ -42,7 +42,7 @@ void AnimacionConGravedad::actualizar(std::list<std::shared_ptr<Animacion>> &nue
 
         velocidadGiro = velocidad.x*2;
 
-        velocidad.x /= 1.2;
+        velocidad.x /= 1.1;
         
         sprite.setPosition({sprite.getPosition().x,ALTURA_SUELO-std::min(sprite.getTextureRect().size.y,sprite.getTextureRect().size.x)/2.f});
 

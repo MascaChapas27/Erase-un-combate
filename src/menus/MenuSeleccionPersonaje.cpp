@@ -158,7 +158,7 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
                             personajesElegidos[Jugador::JUGADOR1] = selectoresPersonajeJugador1[indiceJugador1].getNombrePersonaje();
                         }
                     }
-                    else
+                    else if(!saliendo)
                     {
                         ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/jugador-1-rechazar.ogg");
                         personajesElegidos.erase(Jugador::JUGADOR1);
@@ -184,7 +184,7 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
                             personajesElegidos[Jugador::JUGADOR2] = selectoresPersonajeJugador2[indiceJugador2].getNombrePersonaje();
                         }
                     }
-                    else
+                    else if(!saliendo)
                     {
                         ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/jugador-2-rechazar.ogg");
                         personajesElegidos.erase(Jugador::JUGADOR2);

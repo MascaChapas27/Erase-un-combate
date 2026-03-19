@@ -449,7 +449,7 @@ estados:
           ancho: 27
           alto: 71
           ataque: 0
-    fotogramas: [0,0,0,0,0,0,0,0]
+    fotogramas: [0,0,0,0,0,0,0,0,0,0]
   
   golpeado-medio:
     bucle: "Sin bucle"
@@ -693,7 +693,7 @@ estados:
       - fotograma: 0
         efecto: "disparo-juan-cuesta"
         posX: 118
-        posY: 56
+        posY: 57
         velX: 0
         velY: 0
     sonido:

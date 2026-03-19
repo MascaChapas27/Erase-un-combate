@@ -15,9 +15,8 @@ ReproductorDeMusica::~ReproductorDeMusica(){
     if(reproductorDeMusica != nullptr) delete reproductorDeMusica;
 }
 
-ReproductorDeMusica::ReproductorDeMusica(){
-    volumenActual = VOLUMEN_MAXIMO_MUSICA;
-
+ReproductorDeMusica::ReproductorDeMusica() : volumenActual(VOLUMEN_MAXIMO_MUSICA), tonoActual(TONO_MUSICA_NORMAL)
+{
     if(!std::filesystem::is_directory("musica/combate")){
         Bitacora::unicaInstancia()->escribir("Juan Cuesta: Oye Emilio... he notado que el directorio musica/combate es más liviano de lo habitial, ¿no crees?");
         Bitacora::unicaInstancia()->escribir("Emilio: Y tanto liviano, directamente no existe");
@@ -50,6 +49,7 @@ void ReproductorDeMusica::reproducir(std::string cancion, bool bucle)
 
     canciones[cancion].setLooping(bucle);
     canciones[cancion].setVolume(volumenActual);
+    canciones[cancion].setPitch(tonoActual);
     canciones[cancion].play();
 
     cancionActual = cancion;
@@ -93,4 +93,15 @@ void ReproductorDeMusica::setVolumen(float nuevoVolumen)
 {
     volumenActual = (nuevoVolumen > VOLUMEN_MAXIMO_MUSICA ? VOLUMEN_MAXIMO_MUSICA : nuevoVolumen < 0 ? 0 : nuevoVolumen);
     if(cancionActual != "") canciones[cancionActual].setVolume(volumenActual);
+}
+
+float ReproductorDeMusica::getTono()
+{
+    return this->tonoActual;
+}
+
+void ReproductorDeMusica::setTono(float nuevoTono)
+{
+    tonoActual = nuevoTono;
+    if(cancionActual != "") canciones[cancionActual].setPitch(tonoActual);
 }
