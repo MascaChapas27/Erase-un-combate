@@ -132,7 +132,7 @@ bool SelectorPersonaje::seleccionar(std::list<std::shared_ptr<Animacion>>& nueva
 {
     // Si el selector aún se está moviendo (y, por tanto, aún tiene un
     // tamaño más pequeño que el que debería), no se puede seleccionar
-    if(std::fabsf(spriteSelector.getScale().x) < 0.95f || std::fabsf(spriteSelector.getScale().y) < 0.95f)
+    if(std::abs(spriteSelector.getScale().x) < 0.95f || std::abs(spriteSelector.getScale().y) < 0.95f)
         return false;
 
     std::shared_ptr<Animacion> anim = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("menu-seleccion-personaje-destello-selector");

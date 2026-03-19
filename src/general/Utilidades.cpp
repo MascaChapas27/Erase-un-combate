@@ -252,6 +252,6 @@ namespace util{
 
     bool floatsIguales(float float1, float float2)
     {
-        return std::fabsf(float1-float2) < UMBRAL_FLOAT;
+        return std::abs(float1-float2) < UMBRAL_FLOAT;
     }
 }
