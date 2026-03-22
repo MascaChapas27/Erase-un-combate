@@ -655,7 +655,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         else if (accionesRealizadas[Accion::IZQUIERDA])
             moverseIzquierda();
 
-        if (animaciones.at(estado)->getPosicion().y > ALTURA_SUELO)
+        if (animaciones.at(estado)->getPosicion().y + velocidad.y > ALTURA_SUELO)
         {
             animaciones.at(estado)->setPosicion(animaciones.at(estado)->getPosicion().x, ALTURA_SUELO);
             velocidad.y = 0;
@@ -951,7 +951,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
             {
                 cambiarEstado(velocidad.y >= 0 ? EstadoPersonaje::SALTANDO_BAJANDO : EstadoPersonaje::SALTANDO_SUBIENDO);
             }
-            else if (animaciones.at(estado)->getPosicion().y >= ALTURA_SUELO)
+            else if (animaciones.at(estado)->getPosicion().y  + velocidad.y > ALTURA_SUELO)
             {
                 animaciones.at(estado)->setPosicion(animaciones.at(estado)->getPosicion().x, ALTURA_SUELO);
                 velocidad.y = 0;
