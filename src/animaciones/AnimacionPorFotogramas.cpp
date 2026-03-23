@@ -237,8 +237,11 @@ void AnimacionPorFotogramas::draw(sf::RenderTarget& target, sf::RenderStates sta
 
     if(Configuracion::unicaInstancia()->isHitboxesVisibles()){
         for(Hitbox h : hitboxes.at(rectanguloCorrespondiente.at(fotogramaActual))){
-            sf::RectangleShape rectanguloHitbox(sf::Vector2f(h.getRectangulo().size.x,h.getRectangulo().size.y));
-            rectanguloHitbox.setPosition({(float)h.getRectangulo().position.x,(float)h.getRectangulo().position.y});
+            // Aquí hay que hacer un trucazo porque el borde se dibuja por fuera de la hitbox,
+            // por lo que se dibuja la hitbox ligeramente más pequeña y se reposiciona para que
+            // el borde forme parte de la hitbox como debe ser
+            sf::RectangleShape rectanguloHitbox(sf::Vector2f(h.getRectangulo().size.x-2,h.getRectangulo().size.y-2));
+            rectanguloHitbox.setPosition({(float)h.getRectangulo().position.x+1,(float)h.getRectangulo().position.y+1});
             rectanguloHitbox.move(getPosicionEsqSupIzq());
             rectanguloHitbox.setFillColor(sf::Color::Transparent);
             rectanguloHitbox.setOutlineThickness(1);

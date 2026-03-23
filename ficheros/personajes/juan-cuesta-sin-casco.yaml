@@ -524,7 +524,7 @@ estados:
           alto: 14
           ataque: 5
           bajo: true
-      - - posX: 51
+      - - posX: 52
           posY: 38
           ancho: 27
           alto: 62
