@@ -211,7 +211,7 @@ void AnimacionPorFotogramas::draw(sf::RenderTarget& target, sf::RenderStates sta
             anchuraSombra *= (sprite.getPosition().y - ALTURA_SUELO/2) / (ALTURA_SUELO/2);
             alturaSombra *= (sprite.getPosition().y - ALTURA_SUELO/2) / (ALTURA_SUELO/2);
 
-            // En el caso de la transparencia del color se divide entre (ALTURA_SUELO/2) para
+            // En el caso de la transparencia del color se divide entre ALTURA_SUELO para
             // que el rango de transparencia esté entre 0 y 128 más menos para que la sombra
             // sea más transparente y no sea completamente opaca
             colorSombra.a *= (sprite.getPosition().y - ALTURA_SUELO/2) / (ALTURA_SUELO);

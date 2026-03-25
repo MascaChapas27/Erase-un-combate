@@ -49,3 +49,5 @@ add-compressed-data
 autoclose-archive
 in-memory
 zip*
+
+.vscode

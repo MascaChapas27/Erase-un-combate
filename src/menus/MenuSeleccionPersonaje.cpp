@@ -27,6 +27,7 @@ MenuSeleccionPersonaje::~MenuSeleccionPersonaje(){
 MenuSeleccionPersonaje::MenuSeleccionPersonaje() :
 indiceJugador1(0), indiceJugador2(1), personajeElegidoJugador1(false), personajeElegidoJugador2(false),
 spriteMarco(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/marco.png")),
+fondoCuadriculado(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-cuadricula.png"),Direccion::ARRIBA_IZQUIERDA),
 rectanguloNegro({VENTANA_ANCHURA,VENTANA_ALTURA})
 {
     rectanguloNegro.setFillColor(sf::Color::Black);
@@ -72,6 +73,8 @@ void MenuSeleccionPersonaje::resetear()
         fondosPersonajeJugador1[i].resetear(i-indiceJugador1);
         fondosPersonajeJugador2[i].resetear(i-indiceJugador2);
     }
+
+    fondoCuadriculado.resetear();
 }
 
 std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccionDoble()
@@ -236,6 +239,9 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
             a->actualizar(nuevasAnimaciones);
         }
 
+        // Se actualiza el fondo cuadriculado
+        fondoCuadriculado.actualizar(nuevasAnimaciones);
+
         // Se itera por cada animación de la lista de animaciones y se van
         // eliminando las que hayan terminado
         std::list<std::shared_ptr<Animacion>>::iterator it = animaciones.begin();
@@ -249,6 +255,8 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
         }
 
         ventana->clear(sf::Color(0,0,0));
+        
+        ventana->draw(fondoCuadriculado);
 
         for(int i=0;i<fondosPersonajeJugador1.size();i++)
         {

@@ -3,6 +3,7 @@
 #include "SelectorPersonaje.hpp"
 #include "FondoPersonaje.hpp"
 #include "Enums.hpp"
+#include "AnimacionFondoBucleLineal.hpp"
 
 #include <vector>
 #include <string>
@@ -39,6 +40,9 @@ class MenuSeleccionPersonaje {
 
         // El sprite del marco principal del menú de selección de personajes
         sf::Sprite spriteMarco;
+
+        // El fondo super chulo cuadriculado que sale por detrás
+        AnimacionFondoBucleLineal fondoCuadriculado;
 
         // Rectángulo que tapa el menú al entrar y al salir, lo típico
         sf::RectangleShape rectanguloNegro;

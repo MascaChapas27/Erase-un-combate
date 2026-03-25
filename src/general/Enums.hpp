@@ -75,3 +75,10 @@ enum class TipoSombra {
 enum class TipoSelectorMenuPrincipal {
     MODO_HISTORIA, BATALLA_VS, OPCIONES,
 };
+
+// Especifica en qué dirección se mueven los AnimacionFondoBucleLineal
+enum class Direccion {
+    ARRIBA_IZQUIERDA,   ARRIBA,     ARRIBA_DERECHA,
+    IZQUIERDA,                      DERECHA,
+    ABAJO_IZQUIERDA,    ABAJO,      ABAJO_DERECHA
+};

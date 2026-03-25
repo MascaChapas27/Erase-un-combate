@@ -81,6 +81,7 @@ src/animaciones/AnimacionConGravedad.cpp
 src/animaciones/AnimacionDesvaneciente.cpp
 src/animaciones/AnimacionParticulaLineal.cpp
 src/animaciones/AnimacionPorFotogramas.cpp
+src/animaciones/AnimacionFondoBucleLineal.cpp
 
 src/combate/AtaqueEspecial.cpp
 src/combate/Combate.cpp

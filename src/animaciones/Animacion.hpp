@@ -35,6 +35,22 @@ class Animacion : public sf::Drawable {
         // Le da la vuelta a la animación
         virtual void voltear() = 0;
 
+        // Devuelve un vector con las hitboxes
+        virtual std::vector<Hitbox> getHitboxes() = 0;
+
+        // Determina si una animación ha terminado
+        virtual bool haTerminado() = 0;
+
+        // Devuelve un clon de la animación
+        virtual std::shared_ptr<Animacion> clonar() = 0;
+
+        // Indica a la animación que acaba de chocar contra una hitbox (SE SUPONE QUE
+        // LA HITBOX VIENE CON SU POSICION RELATIVA A LA PARTE DE ARRIBA A LA IZQUIERDA)
+        virtual void chocar(Hitbox hitbox);
+
+        // Las clases que heredan de sf::Drawable deben implementar draw
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
         // Coloca el sprite en la posición indicada con respecto a la esquina superior
         // izquierda de la ventana
         void setPosicion(float x, float y);
@@ -60,23 +76,7 @@ class Animacion : public sf::Drawable {
         // cuenta el origen que pueda tener)
         sf::Vector2f getPosicionEsqSupIzq() const;
 
-        // Devuelve un vector con las hitboxes
-        virtual std::vector<Hitbox> getHitboxes() = 0;
-
         // Mueve la posición del sprite con respecto a la posición actual
         void mover(float x, float y);
         void mover(sf::Vector2f diferencia);
-
-        // Determina si una animación ha terminado
-        virtual bool haTerminado() = 0;
-
-        // Devuelve un clon de la animación
-        virtual std::shared_ptr<Animacion> clonar() = 0;
-
-        // Indica a la animación que acaba de chocar contra una hitbox (SE SUPONE QUE
-        // LA HITBOX VIENE CON SU POSICION RELATIVA A LA PARTE DE ARRIBA A LA IZQUIERDA)
-        virtual void chocar(Hitbox hitbox);
-
-        // Las clases que heredan de sf::Drawable deben implementar draw
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
