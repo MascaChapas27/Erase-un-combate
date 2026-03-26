@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Animacion.hpp"
+#include "AnimacionFondoBucleLineal.hpp"
 #include <memory>
 #include <vector>
 
@@ -35,8 +36,8 @@ class MenuPrincipal {
         std::shared_ptr<Animacion> cartelTitulo;
 
         // El efecto que hay a la izquierda que es como dientes de sierra oscuros
-        sf::Sprite dientesSierraArriba;
-        sf::Sprite dientesSierraAbajo;
+        AnimacionFondoBucleLineal dientesSierraArriba;
+        AnimacionFondoBucleLineal dientesSierraAbajo;
 
         // Si está a true, significa que se ha pulsado un selector y es necesario salir
         // lo antes posible del menú principal

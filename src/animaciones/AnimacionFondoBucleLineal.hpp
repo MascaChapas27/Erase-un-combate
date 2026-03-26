@@ -13,7 +13,7 @@ class AnimacionFondoBucleLineal : public Animacion
     private:
         // Dirección en la que se mueve el fondo
         Direccion direccionBucle;
-        
+
         // Aquí se almacena el movimiento que realiza el
         // sprite del fondo tanto horizontalmente como
         // verticalmente
@@ -23,7 +23,7 @@ class AnimacionFondoBucleLineal : public Animacion
     public:
         // Constructor que toma la textura para el fondo y la
         // dirección en la que se moverá
-        AnimacionFondoBucleLineal(sf::Texture& texturaFondo, const Direccion direccionBucle);
+        AnimacionFondoBucleLineal(sf::Texture& texturaFondo, const Direccion direccionBucle, const float velocidad);
 
         // Actualiza la animación, moviéndola un poco en la dirección correcta. En nuevasAnimaciones
         // se deberían colocar animaciones generadas por el fondo, pero como no genera ninguna, lo

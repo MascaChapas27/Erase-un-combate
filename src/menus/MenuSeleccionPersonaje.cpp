@@ -27,7 +27,7 @@ MenuSeleccionPersonaje::~MenuSeleccionPersonaje(){
 MenuSeleccionPersonaje::MenuSeleccionPersonaje() :
 indiceJugador1(0), indiceJugador2(1), personajeElegidoJugador1(false), personajeElegidoJugador2(false),
 spriteMarco(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/marco.png")),
-fondoCuadriculado(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-cuadricula.png"),Direccion::ARRIBA_IZQUIERDA),
+fondoCuadriculado(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-cuadricula.png"),Direccion::ARRIBA_IZQUIERDA,VELOCIDAD_FONDO_CUADRICULADO_SELECCION_PERSONAJE),
 rectanguloNegro({VENTANA_ANCHURA,VENTANA_ALTURA})
 {
     rectanguloNegro.setFillColor(sf::Color::Black);

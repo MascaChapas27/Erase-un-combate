@@ -169,9 +169,6 @@ constexpr int LONGITUD_MOVIMIENTO_PARTICULA_LINEAL_ATAQUE_MEDIO = 25;
 // empezado a moverse, y 1 significa que ya ha terminado)
 constexpr float PROPORCION_RECORRIDO_MENGUAR_PARTICULA_LINEAL = 0.9;
 
-// La cantidad de píxeles que se mueve una AnimacionFondoBucleLineal cada frame
-constexpr float ANIMACION_FONDO_BUCLE_LINEAL_PIXELES_POR_FRAME = 1.f/10.f;
-
 /*
     CONSTANTES PARA EL MENÚ PRINCIPAL
 */
@@ -216,6 +213,10 @@ constexpr sf::Color COLOR_FONDO_SELECTOR_MENU_PRINCIPAL_SELECCIONADO = sf::Color
 // hasta que la pantalla empieza a fundirse en negro para ir al menú de esa opción
 constexpr int FRAMES_ESPERA_SALIR_MENU_PRINCIPAL = 60;
 
+// La cantidad de píxeles que se mueven los fondos de dientes
+// de sierra oscuros cada frame
+constexpr float DIENTES_SIERRA_MENU_PRINCIPAL_VELOCIDAD = 1.f/5.f;
+
 
 /*
     CONSTANTES PARA EL MENÚ DE SELECCIÓN DE PERSONAJE
@@ -259,6 +260,9 @@ constexpr float DIFERENCIA_ESCALA_SELECTOR_PERSONAJE = 0.4f;
 
 // Color para el fondo del personaje que se está seleccionado actualmente
 constexpr sf::Color COLOR_FONDO_PERSONAJE_POSICION_RELATIVA_0 = sf::Color(255,255,255,255);
+
+// La cantidad de píxeles que se mueve el fondo cuadriculado cada frame
+constexpr float VELOCIDAD_FONDO_CUADRICULADO_SELECCION_PERSONAJE = 1.f/10.f;
 
 
 

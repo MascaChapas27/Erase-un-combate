@@ -1,10 +1,9 @@
 #include "AnimacionFondoBucleLineal.hpp"
 #include "Constantes.hpp"
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include <numbers>
 
-AnimacionFondoBucleLineal::AnimacionFondoBucleLineal(sf::Texture& texturaFondo, const Direccion direccionBucle) :
+AnimacionFondoBucleLineal::AnimacionFondoBucleLineal(sf::Texture& texturaFondo, const Direccion direccionBucle, const float velocidad) :
 Animacion(texturaFondo), direccionBucle(direccionBucle)
 {
     // La textura del fondo se repite
@@ -31,10 +30,6 @@ Animacion(texturaFondo), direccionBucle(direccionBucle)
             sprite.setTextureRect(sf::IntRect({0,0},{VENTANA_ANCHURA+static_cast<int>(texturaFondo.getSize().x),VENTANA_ALTURA+static_cast<int>(texturaFondo.getSize().y)}));
             break;
     }
-
-    // La longitud del vector de movimiento (la guardo aquí
-    // para que no se haga tan largo el nombre)
-    float longitud = ANIMACION_FONDO_BUCLE_LINEAL_PIXELES_POR_FRAME;
 
     // El ángulo del vector que indica el movimiento a realizar
     float angulo = 0.f;
@@ -82,8 +77,8 @@ Animacion(texturaFondo), direccionBucle(direccionBucle)
 
     // Ahora que se tiene el ángulo, se calcula el movimiento
     // en los ejes X e Y
-    this->movimientoHorizontal = longitud * std::cosf(angulo);
-    this->movimientoVertical = -longitud * std::sinf(angulo);
+    this->movimientoHorizontal = velocidad * std::cosf(angulo);
+    this->movimientoVertical = -velocidad * std::sinf(angulo);
 }
 
 void AnimacionFondoBucleLineal::actualizar(std::list<std::shared_ptr<Animacion>>& nuevasAnimaciones)
@@ -94,24 +89,30 @@ void AnimacionFondoBucleLineal::actualizar(std::list<std::shared_ptr<Animacion>>
 
     // Si el sprite se va muy hacia la izquierda o hacia la derecha,
     // se devuelve a su sitio
-    if(-sprite.getPosition().x > sprite.getTexture().getSize().x)
+    if(direccionBucle != Direccion::ARRIBA && direccionBucle != Direccion::ABAJO)
     {
-        sprite.move(sf::Vector2f(static_cast<float>(sprite.getTexture().getSize().x),0.f));
-    }
-    else if(sprite.getPosition().x > 0.f)
-    {
-        sprite.move(sf::Vector2f(-static_cast<float>(sprite.getTexture().getSize().x),0.f));
+        if(-sprite.getPosition().x > static_cast<float>(sprite.getTexture().getSize().x))
+        {
+            sprite.move(sf::Vector2f(static_cast<float>(sprite.getTexture().getSize().x),0.f));
+        }
+        else if(sprite.getPosition().x > 0.f)
+        {
+            sprite.move(sf::Vector2f(-static_cast<float>(sprite.getTexture().getSize().x),0.f));
+        }
     }
 
     // Si el sprite se va muy hacia arriba o hacia abajo,
     // se devuelve a su sitio
-    if(-sprite.getPosition().y > sprite.getTexture().getSize().y)
+    if(direccionBucle != Direccion::IZQUIERDA && direccionBucle != Direccion::DERECHA)
     {
-        sprite.move(sf::Vector2f(0.f,static_cast<float>(sprite.getTexture().getSize().y)));
-    }
-    else if(sprite.getPosition().y > 0.f)
-    {
-        sprite.move(sf::Vector2f(0.f,-static_cast<float>(sprite.getTexture().getSize().y)));
+        if(-sprite.getPosition().y > static_cast<float>(sprite.getTexture().getSize().y))
+        {
+            sprite.move(sf::Vector2f(0.f,static_cast<float>(sprite.getTexture().getSize().y)));
+        }
+        else if(sprite.getPosition().y > 0.f)
+        {
+            sprite.move(sf::Vector2f(0.f,-static_cast<float>(sprite.getTexture().getSize().y)));
+        }
     }
 }
 

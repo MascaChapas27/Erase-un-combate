@@ -2,7 +2,8 @@
 #include "Constantes.hpp"
 
 Animacion::Animacion(sf::Texture &textura) : sprite(textura) {
-
+    // Se inicializa la posición en el 0,0
+    sprite.setPosition({0.f,0.f});
 }
 
 void Animacion::setPosicion(float x, float y){

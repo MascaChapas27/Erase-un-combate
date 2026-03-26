@@ -25,8 +25,8 @@ MenuPrincipal::~MenuPrincipal(){
 
 MenuPrincipal::MenuPrincipal() : seleccionActual(0),
                                  cartelTitulo(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("titulo")),
-                                 dientesSierraArriba(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png")),
-                                 dientesSierraAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png")),
+                                 dientesSierraArriba(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png"),Direccion::ARRIBA,DIENTES_SIERRA_MENU_PRINCIPAL_VELOCIDAD),
+                                 dientesSierraAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png"),Direccion::ABAJO,DIENTES_SIERRA_MENU_PRINCIPAL_VELOCIDAD),
                                  selectorPulsado(false), rectanguloNegro({VENTANA_ANCHURA,VENTANA_ALTURA}){
     // Se coloca todo en su posición inicial
     resetear();
@@ -55,8 +55,6 @@ MenuPrincipal::MenuPrincipal() : seleccionActual(0),
 
 void MenuPrincipal::resetear() {
     cartelTitulo->setPosicion(POSICION_TITULO);
-    dientesSierraArriba.setPosition({0,0});
-    dientesSierraAbajo.setPosition({0,-58});
 
     for(SelectorMenuPrincipal& selector : selectores)
     {
@@ -158,13 +156,9 @@ TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
             rectanguloNegro.setFillColor(sf::Color(rectanguloNegro.getFillColor().r, rectanguloNegro.getFillColor().g, rectanguloNegro.getFillColor().b, rectanguloNegro.getFillColor().a+5));
         }
 
-        dientesSierraArriba.move({0,-0.2});
-
-        if(dientesSierraArriba.getPosition().y <= -58) dientesSierraArriba.setPosition({0,0});
-
-        dientesSierraAbajo.move({0,0.2});
-
-        if(dientesSierraAbajo.getPosition().y >= 0) dientesSierraAbajo.setPosition({0,-58});
+        // Se mueven los fondos de dientes de sierra
+        dientesSierraArriba.actualizar(nuevasAnimaciones);
+        dientesSierraAbajo.actualizar(nuevasAnimaciones);
 
         for(std::shared_ptr<Animacion> &nA : nuevasAnimaciones){
             animaciones.push_back(nA);
