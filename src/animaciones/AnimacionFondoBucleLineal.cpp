@@ -1,6 +1,8 @@
 #include "AnimacionFondoBucleLineal.hpp"
 #include "Constantes.hpp"
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <numbers>
 
 AnimacionFondoBucleLineal::AnimacionFondoBucleLineal(sf::Texture& texturaFondo, const Direccion direccionBucle) :
 Animacion(texturaFondo), direccionBucle(direccionBucle)
@@ -29,26 +31,87 @@ Animacion(texturaFondo), direccionBucle(direccionBucle)
             sprite.setTextureRect(sf::IntRect({0,0},{VENTANA_ANCHURA+static_cast<int>(texturaFondo.getSize().x),VENTANA_ALTURA+static_cast<int>(texturaFondo.getSize().y)}));
             break;
     }
-}
 
-void AnimacionFondoBucleLineal::actualizar(std::list<std::shared_ptr<Animacion>>& nuevasAnimaciones)
-{
+    // La longitud del vector de movimiento (la guardo aquí
+    // para que no se haga tan largo el nombre)
+    float longitud = ANIMACION_FONDO_BUCLE_LINEAL_PIXELES_POR_FRAME;
+
+    // El ángulo del vector que indica el movimiento a realizar
+    float angulo = 0.f;
+
+    // El número pi para que no se haga tan largo el nombre
+    float pi = std::numbers::pi;
+
     switch(direccionBucle)
     {
+        case Direccion::DERECHA:
+            angulo = 0.f;
+            break;
+
+        case Direccion::ARRIBA_DERECHA:
+            angulo = pi/4.f;
+            break;
+        
+        case Direccion::ARRIBA:
+            angulo = pi/2.f;
+            break;
+
         case Direccion::ARRIBA_IZQUIERDA:
-            // El fondo se mueve hacia la izquierda y hacia arriba hasta que se sale
-            // de los límites y comienza otra vez desde el principio, pareciendo así
-            // que es infinito
-            sprite.move({-static_cast<float>(sprite.getTexture().getSize().x/static_cast<float>(sprite.getTexture().getSize().y))/10.f,-1/10.f});
-            
-            if(-sprite.getPosition().x >= sprite.getTexture().getSize().x)
-            {
-                sprite.move(sf::Vector2f(sprite.getTexture().getSize()));
-            }
+            angulo = 3.f*pi/4.f;
+            break;
+        
+        case Direccion::IZQUIERDA:
+            angulo = pi;
+            break;
+
+        case Direccion::ABAJO_IZQUIERDA:
+            angulo = 5.f*pi/4.f;
+            break;
+        
+        case Direccion::ABAJO:
+            angulo = 3.f*pi/2.f;
+            break;
+
+        case Direccion::ABAJO_DERECHA:
+            angulo = 7.f*pi/4.f;
             break;
         
         default:
             break;
+    }
+
+    // Ahora que se tiene el ángulo, se calcula el movimiento
+    // en los ejes X e Y
+    this->movimientoHorizontal = longitud * std::cosf(angulo);
+    this->movimientoVertical = -longitud * std::sinf(angulo);
+}
+
+void AnimacionFondoBucleLineal::actualizar(std::list<std::shared_ptr<Animacion>>& nuevasAnimaciones)
+{
+    // Se mueve el sprite del fondo según los valores
+    // que se calcularon en el constructor en su momento
+    sprite.move({movimientoHorizontal,movimientoVertical});
+
+    // Si el sprite se va muy hacia la izquierda o hacia la derecha,
+    // se devuelve a su sitio
+    if(-sprite.getPosition().x > sprite.getTexture().getSize().x)
+    {
+        sprite.move(sf::Vector2f(static_cast<float>(sprite.getTexture().getSize().x),0.f));
+    }
+    else if(sprite.getPosition().x > 0.f)
+    {
+        sprite.move(sf::Vector2f(-static_cast<float>(sprite.getTexture().getSize().x),0.f));
+    }
+
+    // Si el sprite se va muy hacia arriba o hacia abajo,
+    // se devuelve a su sitio
+    if(-sprite.getPosition().y > sprite.getTexture().getSize().y)
+    {
+        sprite.move(sf::Vector2f(0.f,static_cast<float>(sprite.getTexture().getSize().y)));
+    }
+    else if(sprite.getPosition().y > 0.f)
+    {
+        sprite.move(sf::Vector2f(0.f,-static_cast<float>(sprite.getTexture().getSize().y)));
     }
 }
 

@@ -169,6 +169,9 @@ constexpr int LONGITUD_MOVIMIENTO_PARTICULA_LINEAL_ATAQUE_MEDIO = 25;
 // empezado a moverse, y 1 significa que ya ha terminado)
 constexpr float PROPORCION_RECORRIDO_MENGUAR_PARTICULA_LINEAL = 0.9;
 
+// La cantidad de píxeles que se mueve una AnimacionFondoBucleLineal cada frame
+constexpr float ANIMACION_FONDO_BUCLE_LINEAL_PIXELES_POR_FRAME = 1.f/10.f;
+
 /*
     CONSTANTES PARA EL MENÚ PRINCIPAL
 */
@@ -268,6 +271,8 @@ constexpr sf::Color COLOR_INICIAL_RECTANGULO_OSCURO_SELECTOR_MANDOS = sf::Color(
 
 // Color final del rectángulo que cubre el fondo en el menú de selección de jugador para el mando
 constexpr sf::Color COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_MANDOS = sf::Color(0,0,0,125);
+
+
 
 /*
     CONSTANTES PARA LOS PERSONAJES

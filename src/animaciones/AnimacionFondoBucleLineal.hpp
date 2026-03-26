@@ -13,6 +13,12 @@ class AnimacionFondoBucleLineal : public Animacion
     private:
         // Dirección en la que se mueve el fondo
         Direccion direccionBucle;
+        
+        // Aquí se almacena el movimiento que realiza el
+        // sprite del fondo tanto horizontalmente como
+        // verticalmente
+        float movimientoHorizontal;
+        float movimientoVertical;
 
     public:
         // Constructor que toma la textura para el fondo y la
