@@ -3,11 +3,16 @@
 #include <SFML/Graphics.hpp>
 #include <numbers>
 
-AnimacionFondoBucleLineal::AnimacionFondoBucleLineal(sf::Texture& texturaFondo, const Direccion direccionBucle, const float velocidad) :
+AnimacionFondoBucleLineal::AnimacionFondoBucleLineal(sf::Texture& texturaFondo, const Direccion direccionBucle, const float velocidad, const sf::Vector2i tamanoFondo) :
 Animacion(texturaFondo), direccionBucle(direccionBucle)
 {
     // La textura del fondo se repite
     texturaFondo.setRepeated(true);
+
+    // Este es el ancho y el alto del sprite. Se declararán
+    // dentro del switch
+    int ancho;
+    int alto;
 
     // El fondo se expande de forma que abarque todo
     // lo necesario para poder funcionar correctamente
@@ -16,18 +21,24 @@ Animacion(texturaFondo), direccionBucle(direccionBucle)
         // Arriba y abajo
         case Direccion::ABAJO:
         case Direccion::ARRIBA:
-            sprite.setTextureRect(sf::IntRect({0,0},{VENTANA_ANCHURA,VENTANA_ALTURA+static_cast<int>(texturaFondo.getSize().y)}));
+            ancho = tamanoFondo.x == 0.f ? VENTANA_ANCHURA : tamanoFondo.x;
+            alto = VENTANA_ALTURA+static_cast<int>(texturaFondo.getSize().y);
+            sprite.setTextureRect(sf::IntRect({0,0},{ancho,alto}));
             break;
         
         // Izquierda y derecha
         case Direccion::IZQUIERDA:
         case Direccion::DERECHA:
-            sprite.setTextureRect(sf::IntRect({0,0},{VENTANA_ANCHURA+static_cast<int>(texturaFondo.getSize().x),VENTANA_ALTURA}));
+            ancho = VENTANA_ANCHURA+static_cast<int>(texturaFondo.getSize().x);
+            alto = tamanoFondo.y == 0.f ? VENTANA_ALTURA : tamanoFondo.y;
+            sprite.setTextureRect(sf::IntRect({0,0},{ancho,alto}));
             break;
 
         // Direcciones diagonales
         default:
-            sprite.setTextureRect(sf::IntRect({0,0},{VENTANA_ANCHURA+static_cast<int>(texturaFondo.getSize().x),VENTANA_ALTURA+static_cast<int>(texturaFondo.getSize().y)}));
+            ancho = VENTANA_ANCHURA+static_cast<int>(texturaFondo.getSize().x);
+            alto = VENTANA_ALTURA+static_cast<int>(texturaFondo.getSize().y);
+            sprite.setTextureRect(sf::IntRect({0,0},{ancho,alto}));
             break;
     }
 

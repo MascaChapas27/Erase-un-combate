@@ -22,8 +22,10 @@ class AnimacionFondoBucleLineal : public Animacion
 
     public:
         // Constructor que toma la textura para el fondo y la
-        // dirección en la que se moverá
-        AnimacionFondoBucleLineal(sf::Texture& texturaFondo, const Direccion direccionBucle, const float velocidad);
+        // dirección en la que se moverá. También se puede establecer
+        // el tamaño para el sprite, pero esto es opcional. Si se deja
+        // en (0,0), el constructor se encargará de poner un tamaño correcto
+        AnimacionFondoBucleLineal(sf::Texture& texturaFondo, const Direccion direccionBucle, const float velocidad, const sf::Vector2i tamanoFondo = sf::Vector2i(0,0));
 
         // Actualiza la animación, moviéndola un poco en la dirección correcta. En nuevasAnimaciones
         // se deberían colocar animaciones generadas por el fondo, pero como no genera ninguna, lo

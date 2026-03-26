@@ -264,6 +264,10 @@ constexpr sf::Color COLOR_FONDO_PERSONAJE_POSICION_RELATIVA_0 = sf::Color(255,25
 // La cantidad de píxeles que se mueve el fondo cuadriculado cada frame
 constexpr float VELOCIDAD_FONDO_CUADRICULADO_SELECCION_PERSONAJE = 1.f/10.f;
 
+// La cantidad de píxeles que se mueve cada frame el fondo colorido que aparece
+// detrás de las imágenes grandes de los personajes cuando se seleccionan
+constexpr float VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO = 1.f/2.f;
+
 
 
 /*

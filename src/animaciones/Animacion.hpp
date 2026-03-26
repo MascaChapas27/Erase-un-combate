@@ -56,6 +56,9 @@ class Animacion : public sf::Drawable {
         void setPosicion(float x, float y);
         void setPosicion(sf::Vector2f posicion);
 
+        // Cambia el origen del sprite de la animación
+        void setOrigen(sf::Vector2f origen);
+
         // Establece la rotación del sprite en grados sexagesimales
         void setRotacion(double angulo);
 

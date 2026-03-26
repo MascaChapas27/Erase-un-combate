@@ -28,9 +28,18 @@ MenuSeleccionPersonaje::MenuSeleccionPersonaje() :
 indiceJugador1(0), indiceJugador2(1), personajeElegidoJugador1(false), personajeElegidoJugador2(false),
 spriteMarco(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/marco.png")),
 fondoCuadriculado(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-cuadricula.png"),Direccion::ARRIBA_IZQUIERDA,VELOCIDAD_FONDO_CUADRICULADO_SELECCION_PERSONAJE),
+fondoJ1Elegido(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-j1-seleccionado.png"),Direccion::ARRIBA,VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO,sf::Vector2i(VENTANA_ANCHURA/2,0)),
+fondoJ2Elegido(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-j2-seleccionado.png"),Direccion::ARRIBA,VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO,sf::Vector2i(VENTANA_ANCHURA/2,0)),
+fondoJ1ElegidoBolitas(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-j1-seleccionado-bolitas.png"),Direccion::ARRIBA,VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO*2.f,sf::Vector2i(VENTANA_ANCHURA/2,0)),
+fondoJ2ElegidoBolitas(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-j2-seleccionado-bolitas.png"),Direccion::ARRIBA,VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO*2.f,sf::Vector2i(VENTANA_ANCHURA/2,0)),
 rectanguloNegro({VENTANA_ANCHURA,VENTANA_ALTURA})
 {
     rectanguloNegro.setFillColor(sf::Color::Black);
+
+    fondoJ2Elegido.setOrigen({-VENTANA_ANCHURA/2.f, 0.f});
+    fondoJ2Elegido.setPosicion({0.f,0.f});
+    fondoJ2ElegidoBolitas.setOrigen({-VENTANA_ANCHURA/2.f, 0.f});
+    fondoJ2ElegidoBolitas.setPosicion({0.f,0.f});
 
     // A la hora de colocar los selectores de personaje, la posición relativa
     // del primero para el jugador 1 será 0, y la posición relativa del primero
@@ -242,6 +251,13 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
         // Se actualiza el fondo cuadriculado
         fondoCuadriculado.actualizar(nuevasAnimaciones);
 
+        // Se actualizan los fondos que salen cuando se eligen
+        //  los personajes
+        fondoJ1Elegido.actualizar(nuevasAnimaciones);
+        fondoJ2Elegido.actualizar(nuevasAnimaciones);
+        fondoJ1ElegidoBolitas.actualizar(nuevasAnimaciones);
+        fondoJ2ElegidoBolitas.actualizar(nuevasAnimaciones);
+
         // Se itera por cada animación de la lista de animaciones y se van
         // eliminando las que hayan terminado
         std::list<std::shared_ptr<Animacion>>::iterator it = animaciones.begin();
@@ -257,6 +273,18 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
         ventana->clear(sf::Color(0,0,0));
         
         ventana->draw(fondoCuadriculado);
+
+        if(personajeElegidoJugador1)
+        {
+            ventana->draw(fondoJ1Elegido);
+            ventana->draw(fondoJ1ElegidoBolitas);
+        }
+
+        if(personajeElegidoJugador2)
+        {
+            ventana->draw(fondoJ2Elegido);
+            ventana->draw(fondoJ2ElegidoBolitas);
+        }
 
         for(int i=0;i<fondosPersonajeJugador1.size();i++)
         {

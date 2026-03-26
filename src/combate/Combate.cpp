@@ -227,7 +227,7 @@ void Combate::recibirEntradaPlayerVSBot()
 
     if ((dynamic_cast<AnimacionAgrandable *>(cartelTodoListo.get()))->haTerminado())
     {
-        if (rand() % 2 == 0)
+        if (std::rand() % 2 == 0)
         {
             personajeJugador2.realizarAccion(Accion::ATACAR);
         }
@@ -236,7 +236,7 @@ void Combate::recibirEntradaPlayerVSBot()
             personajeJugador2.detenerAccion(Accion::ATACAR);
         }
 
-        if (rand() % 10 == 0)
+        if (std::rand() % 10 == 0)
         {
             personajeJugador2.realizarAccion(Accion::ARRIBA);
         }
@@ -245,7 +245,7 @@ void Combate::recibirEntradaPlayerVSBot()
             personajeJugador2.detenerAccion(Accion::ARRIBA);
         }
 
-        if (rand() % 8 == 0)
+        if (std::rand() % 8 == 0)
         {
             if (personajeJugador2.isMirandoDerecha())
             {
@@ -259,7 +259,7 @@ void Combate::recibirEntradaPlayerVSBot()
             }
         }
 
-        if (rand() % 8 == 0)
+        if (std::rand() % 8 == 0)
         {
             personajeJugador2.realizarAccion(Accion::ABAJO);
         }

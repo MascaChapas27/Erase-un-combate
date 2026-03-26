@@ -60,7 +60,7 @@ void ReproductorDeMusica::reproducirCancionCombate(){
     // Si no hay canciones de combate, no se reproduce nada
     if(cancionesCombate.empty()) return;
 
-    int indiceCancion = rand() % (cancionesCombate.size());
+    int indiceCancion = std::rand() % (cancionesCombate.size());
 
     reproducir(cancionesCombate[indiceCancion]);
 }

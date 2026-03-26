@@ -44,6 +44,15 @@ class MenuSeleccionPersonaje {
         // El fondo super chulo cuadriculado que sale por detrás
         AnimacionFondoBucleLineal fondoCuadriculado;
 
+        // El fondo que sale cuando cada jugador elige a su personaje
+        AnimacionFondoBucleLineal fondoJ1Elegido;
+        AnimacionFondoBucleLineal fondoJ2Elegido;
+
+        // El efecto como de bolitas que sale por encima del fondo
+        // que aparece al seleccionar personajes
+        AnimacionFondoBucleLineal fondoJ1ElegidoBolitas;
+        AnimacionFondoBucleLineal fondoJ2ElegidoBolitas;
+
         // Rectángulo que tapa el menú al entrar y al salir, lo típico
         sf::RectangleShape rectanguloNegro;
 
