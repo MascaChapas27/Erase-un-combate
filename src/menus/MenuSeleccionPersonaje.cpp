@@ -64,6 +64,14 @@ rectanguloNegro({VENTANA_ANCHURA,VENTANA_ALTURA})
         posicionRelativaJugador2++;
     }
 
+    rectanguloBlancoJ1.setFillColor(sf::Color(255,255,255,0));
+    rectanguloBlancoJ1.setSize(sf::Vector2f(fondosPersonajeJugador1[0].getSprite().getTextureRect().size));
+    rectanguloBlancoJ1.setPosition({POSICION_X_FONDO_PERSONAJE_J1,POSICION_Y_FONDO_PERSONAJE});
+
+    rectanguloBlancoJ2.setFillColor(sf::Color(255,255,255,0));
+    rectanguloBlancoJ2.setSize(sf::Vector2f(fondosPersonajeJugador2[0].getSprite().getTextureRect().size));
+    rectanguloBlancoJ2.setPosition({POSICION_X_FONDO_PERSONAJE_J2,POSICION_Y_FONDO_PERSONAJE});
+
     resetear();
 }
 
@@ -84,6 +92,9 @@ void MenuSeleccionPersonaje::resetear()
     }
 
     fondoCuadriculado.resetear();
+
+    rectanguloBlancoJ1.setFillColor(sf::Color(255,255,255,0));
+    rectanguloBlancoJ2.setFillColor(sf::Color(255,255,255,0));
 }
 
 std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccionDoble()
@@ -165,6 +176,10 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
                         {
                             fondosPersonajeJugador1[indiceJugador1].seleccionar();
 
+                            sf::Color nuevoColor = rectanguloBlancoJ1.getFillColor();
+                            nuevoColor.a = 125;
+                            rectanguloBlancoJ1.setFillColor(nuevoColor);
+
                             ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/jugador-1-elegir.ogg");
                             
                             personajesElegidos[Jugador::JUGADOR1] = selectoresPersonajeJugador1[indiceJugador1].getNombrePersonaje();
@@ -190,6 +205,10 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
                         if(personajeElegidoJugador2)
                         {
                             fondosPersonajeJugador2[indiceJugador2].seleccionar();
+
+                            sf::Color nuevoColor = rectanguloBlancoJ2.getFillColor();
+                            nuevoColor.a = 125;
+                            rectanguloBlancoJ2.setFillColor(nuevoColor);
 
                             ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/jugador-2-elegir.ogg");
                             
@@ -252,11 +271,25 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
         fondoCuadriculado.actualizar(nuevasAnimaciones);
 
         // Se actualizan los fondos que salen cuando se eligen
-        //  los personajes
+        // los personajes
         fondoJ1Elegido.actualizar(nuevasAnimaciones);
         fondoJ2Elegido.actualizar(nuevasAnimaciones);
         fondoJ1ElegidoBolitas.actualizar(nuevasAnimaciones);
         fondoJ2ElegidoBolitas.actualizar(nuevasAnimaciones);
+
+        // Se transparenta el rectángulo blanco de cada jugador si su
+        // transparencia no es 0
+        if(rectanguloBlancoJ1.getFillColor().a > 0){
+            sf::Color nuevoColor = rectanguloBlancoJ1.getFillColor();
+            nuevoColor.a -= 5;
+            rectanguloBlancoJ1.setFillColor(nuevoColor);
+        }
+
+        if(rectanguloBlancoJ2.getFillColor().a > 0){
+            sf::Color nuevoColor = rectanguloBlancoJ2.getFillColor();
+            nuevoColor.a -= 5;
+            rectanguloBlancoJ2.setFillColor(nuevoColor);
+        }
 
         // Se itera por cada animación de la lista de animaciones y se van
         // eliminando las que hayan terminado
@@ -291,6 +324,9 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
             ventana->draw(fondosPersonajeJugador1[i]);
             ventana->draw(fondosPersonajeJugador2[i]);
         }
+
+        ventana->draw(rectanguloBlancoJ1);
+        ventana->draw(rectanguloBlancoJ2);
 
         ventana->draw(spriteMarco);
 

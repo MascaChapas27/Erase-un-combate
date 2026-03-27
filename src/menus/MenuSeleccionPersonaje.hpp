@@ -53,6 +53,11 @@ class MenuSeleccionPersonaje {
         AnimacionFondoBucleLineal fondoJ1ElegidoBolitas;
         AnimacionFondoBucleLineal fondoJ2ElegidoBolitas;
 
+        // El rectángulo blanco que aparece encima del fondo de personaje
+        // de cada jugador cuando lo selecciona
+        sf::RectangleShape rectanguloBlancoJ1;
+        sf::RectangleShape rectanguloBlancoJ2;
+
         // Rectángulo que tapa el menú al entrar y al salir, lo típico
         sf::RectangleShape rectanguloNegro;
 
