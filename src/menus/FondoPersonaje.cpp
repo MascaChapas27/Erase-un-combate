@@ -6,13 +6,21 @@
 #include <algorithm>
 
 FondoPersonaje::FondoPersonaje(const sf::Texture& texturaFondo, const std::string& nombrePersonaje, Jugador jugador, int posicionRelativa) :
-spriteFondo(texturaFondo), nombrePersonaje(nombrePersonaje), posicionRelativa(posicionRelativa), jugador(jugador)
+spriteFondo(texturaFondo), nombrePersonaje(nombrePersonaje), posicionRelativa(posicionRelativa), jugador(jugador), seleccionado(false)
 {
     if(jugador == Jugador::JUGADOR2)
     {
         spriteFondo.setScale({-1.f,1.f});
         spriteFondo.setOrigin({static_cast<float>(spriteFondo.getTextureRect().size.x),0.f});
     }
+
+    if (!shader.loadFromFile("shaders/blendColor.frag", sf::Shader::Type::Fragment))
+    {
+        Bitacora::unicaInstancia()->escribir("ERROR: no se pudo cargar el shader");
+        exit(EXIT_FAILURE);
+    }
+
+    shader.setUniform("amount", 255.f);
     
     resetear(posicionRelativa);
 }
@@ -67,9 +75,18 @@ void FondoPersonaje::seleccionar()
         spriteFondo.setPosition({POSICION_X_FONDO_PERSONAJE_J2,POSICION_Y_FONDO_PERSONAJE});
 
     spriteFondo.setColor(COLOR_FONDO_PERSONAJE_POSICION_RELATIVA_0);
+
+    // El shader hace que el sprite se vuelva blanco
+    seleccionado = true;
+}
+
+void FondoPersonaje::quitarSeleccion()
+{
+    seleccionado = false;
 }
 
 void FondoPersonaje::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    if(seleccionado) states.shader = &shader;
     target.draw(spriteFondo,states);
 }

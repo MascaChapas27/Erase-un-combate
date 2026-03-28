@@ -104,21 +104,6 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
     // Se resetea todo antes de empezar por si acaso
     resetear();
 
-    // Este es el shader que permite hacer que un sprite se pueda
-    // pintar entero de blanco. Se usa también para cuando un personaje
-    // hace su ataque súper
-    sf::Shader shader;
-
-    if (!shader.loadFromFile("shaders/blendColor.frag", sf::Shader::Type::Fragment))
-    {
-        Bitacora::unicaInstancia()->escribir("ERROR: no se pudo cargar el shader");
-        exit(EXIT_FAILURE);
-    }
-
-    // Esto hace que los sprites que se dibujen usando este shader
-    // estén completamente blancos
-    shader.setUniform("amount", 255.f);
-
     ReproductorDeMusica::unicaInstancia()->reproducir("musica/menu-eleccion-personaje.ogg");
 
     sf::RenderWindow * ventana = VentanaPrincipal::unicaInstancia();
@@ -197,7 +182,7 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
                             nuevoColor.a = 125;
                             rectanguloBlancoJ1.setFillColor(nuevoColor);
 
-                            fondoAdicionalBlancoJugador1 = std::make_shared<sf::Sprite>(fondosPersonajeJugador1[indiceJugador1].getSprite());
+                            fondoAdicionalCopiaJugador1 = std::make_shared<sf::Sprite>(fondosPersonajeJugador1[indiceJugador1].getSprite());
                             fondoAdicionalNegroJugador1 = std::make_shared<sf::Sprite>(fondosPersonajeJugador1[indiceJugador1].getSprite());
                             fondoAdicionalNegroJugador1->setColor(sf::Color::Black);
 
@@ -212,7 +197,8 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
                         personajesElegidos.erase(Jugador::JUGADOR1);
                         personajeElegidoJugador1 = false;
                         fondoAdicionalNegroJugador1.reset();
-                        fondoAdicionalBlancoJugador1.reset();
+                        fondoAdicionalCopiaJugador1.reset();
+                        fondosPersonajeJugador1[indiceJugador1].quitarSeleccion();
                     }
                 }
                 else if(infoEvento.jugador == Jugador::JUGADOR2)
@@ -233,7 +219,7 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
                             nuevoColor.a = 125;
                             rectanguloBlancoJ2.setFillColor(nuevoColor);
 
-                            fondoAdicionalBlancoJugador2 = std::make_shared<sf::Sprite>(fondosPersonajeJugador2[indiceJugador2].getSprite());
+                            fondoAdicionalCopiaJugador2 = std::make_shared<sf::Sprite>(fondosPersonajeJugador2[indiceJugador2].getSprite());
                             fondoAdicionalNegroJugador2 = std::make_shared<sf::Sprite>(fondosPersonajeJugador2[indiceJugador2].getSprite());
                             fondoAdicionalNegroJugador2->setColor(sf::Color::Black);
 
@@ -248,7 +234,8 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
                         personajesElegidos.erase(Jugador::JUGADOR2);
                         personajeElegidoJugador2 = false;
                         fondoAdicionalNegroJugador2.reset();
-                        fondoAdicionalBlancoJugador2.reset();
+                        fondoAdicionalCopiaJugador2.reset();
+                        fondosPersonajeJugador2[indiceJugador2].quitarSeleccion();
                     }
                 }
             }
@@ -308,9 +295,9 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
 
         // Se acercan los fondos adicionales del jugador 1 a su sitio
         if(personajeElegidoJugador1){
-            sf::Vector2f posicionActual = fondoAdicionalBlancoJugador1->getPosition();
-            posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador1[indiceJugador1].getSprite().getPosition().x-OFFSET_X_FONDO_ADICIONAL_BLANCO,0.95);
-            fondoAdicionalBlancoJugador1->setPosition(posicionActual);
+            sf::Vector2f posicionActual = fondoAdicionalCopiaJugador1->getPosition();
+            posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador1[indiceJugador1].getSprite().getPosition().x-OFFSET_X_FONDO_ADICIONAL_COPIA,0.95);
+            fondoAdicionalCopiaJugador1->setPosition(posicionActual);
 
             posicionActual = fondoAdicionalNegroJugador1->getPosition();
             posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador1[indiceJugador1].getSprite().getPosition().x-OFFSET_X_FONDO_ADICIONAL_NEGRO,0.95);
@@ -319,9 +306,9 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
 
         // Lo mismo con los fondos adicionales del jugador 2
         if(personajeElegidoJugador2){
-            sf::Vector2f posicionActual = fondoAdicionalBlancoJugador2->getPosition();
-            posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador2[indiceJugador2].getSprite().getPosition().x+OFFSET_X_FONDO_ADICIONAL_BLANCO,0.95);
-            fondoAdicionalBlancoJugador2->setPosition(posicionActual);
+            sf::Vector2f posicionActual = fondoAdicionalCopiaJugador2->getPosition();
+            posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador2[indiceJugador2].getSprite().getPosition().x+OFFSET_X_FONDO_ADICIONAL_COPIA,0.95);
+            fondoAdicionalCopiaJugador2->setPosition(posicionActual);
 
             posicionActual = fondoAdicionalNegroJugador2->getPosition();
             posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador2[indiceJugador2].getSprite().getPosition().x+OFFSET_X_FONDO_ADICIONAL_NEGRO,0.95);
@@ -363,11 +350,7 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
             ventana->draw(fondoJ1Elegido);
             ventana->draw(fondoJ1ElegidoBolitas);
 
-            sf::RenderStates states;
-            states.shader = &shader;
-            ventana->draw(*fondoAdicionalBlancoJugador1,states);
-            ventana->draw(*fondoAdicionalNegroJugador1,states);
-            
+            ventana->draw(*fondoAdicionalNegroJugador1);
         }
 
         if(personajeElegidoJugador2)
@@ -375,17 +358,23 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
             ventana->draw(fondoJ2Elegido);
             ventana->draw(fondoJ2ElegidoBolitas);
 
-            sf::RenderStates states;
-            states.shader = &shader;
-            ventana->draw(*fondoAdicionalBlancoJugador2,states);
-            ventana->draw(*fondoAdicionalNegroJugador2,states);
-            
+            ventana->draw(*fondoAdicionalNegroJugador2);
         }
 
         for(int i=0;i<fondosPersonajeJugador1.size();i++)
         {
             ventana->draw(fondosPersonajeJugador1[i]);
             ventana->draw(fondosPersonajeJugador2[i]);
+        }
+
+        if(personajeElegidoJugador1)
+        {
+            ventana->draw(*fondoAdicionalCopiaJugador1);
+        }
+
+        if(personajeElegidoJugador2)
+        {
+            ventana->draw(*fondoAdicionalCopiaJugador2);
         }
 
         ventana->draw(rectanguloBlancoJ1);

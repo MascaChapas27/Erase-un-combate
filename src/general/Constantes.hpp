@@ -268,9 +268,9 @@ constexpr float VELOCIDAD_FONDO_CUADRICULADO_SELECCION_PERSONAJE = 1.f/10.f;
 // detrás de las imágenes grandes de los personajes cuando se seleccionan
 constexpr float VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO = 1.f/2.f;
 
-// La cantidad de píxeles que está desplazado el fondo adicional blanco con respecto
-// al fondo de personaje original que está replicando
-constexpr float OFFSET_X_FONDO_ADICIONAL_BLANCO = 10.f;
+// La cantidad de píxeles que está desplazado el fondo adicional que copia al
+// original con respecto al fondo de personaje original que está replicando
+constexpr float OFFSET_X_FONDO_ADICIONAL_COPIA = -5.f;
 
 // La cantidad de píxeles que está desplazado el fondo adicional negro con respecto
 // al fondo de personaje original que está replicando

@@ -23,6 +23,12 @@ class FondoPersonaje : public sf::Drawable
 
         // El jugador al que pertenece este fondo
         Jugador jugador;
+
+        // El shader usado para que el fondo se vuelva blanco al estar seleccionado
+        sf::Shader shader;
+
+        // Indica si el selector asociado al fondo fue seleccionado o no
+        bool seleccionado;
     
     public:
         // Se crea el fondo
@@ -34,6 +40,9 @@ class FondoPersonaje : public sf::Drawable
 
         // Se elige el selector asociado al fondo
         void seleccionar();
+
+        // Se cancela la elección del selector asociado al fondo
+        void quitarSeleccion();
 
         // Se actualiza la posición y la transparencia del fondo
         void actualizar();
