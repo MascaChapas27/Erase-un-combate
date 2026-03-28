@@ -296,22 +296,22 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
         // Se acercan los fondos adicionales del jugador 1 a su sitio
         if(personajeElegidoJugador1){
             sf::Vector2f posicionActual = fondoAdicionalCopiaJugador1->getPosition();
-            posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador1[indiceJugador1].getSprite().getPosition().x-OFFSET_X_FONDO_ADICIONAL_COPIA,0.95);
+            posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador1[indiceJugador1].getSprite().getPosition().x-OFFSET_X_FONDO_ADICIONAL_COPIA,0.9);
             fondoAdicionalCopiaJugador1->setPosition(posicionActual);
 
             posicionActual = fondoAdicionalNegroJugador1->getPosition();
-            posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador1[indiceJugador1].getSprite().getPosition().x-OFFSET_X_FONDO_ADICIONAL_NEGRO,0.95);
+            posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador1[indiceJugador1].getSprite().getPosition().x-OFFSET_X_FONDO_ADICIONAL_NEGRO,0.9);
             fondoAdicionalNegroJugador1->setPosition(posicionActual);
         }
 
         // Lo mismo con los fondos adicionales del jugador 2
         if(personajeElegidoJugador2){
             sf::Vector2f posicionActual = fondoAdicionalCopiaJugador2->getPosition();
-            posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador2[indiceJugador2].getSprite().getPosition().x+OFFSET_X_FONDO_ADICIONAL_COPIA,0.95);
+            posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador2[indiceJugador2].getSprite().getPosition().x+OFFSET_X_FONDO_ADICIONAL_COPIA,0.9);
             fondoAdicionalCopiaJugador2->setPosition(posicionActual);
 
             posicionActual = fondoAdicionalNegroJugador2->getPosition();
-            posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador2[indiceJugador2].getSprite().getPosition().x+OFFSET_X_FONDO_ADICIONAL_NEGRO,0.95);
+            posicionActual.x = util::aproximarFloat(posicionActual.x,fondosPersonajeJugador2[indiceJugador2].getSprite().getPosition().x+OFFSET_X_FONDO_ADICIONAL_NEGRO,0.9);
             fondoAdicionalNegroJugador2->setPosition(posicionActual);
         }
 
