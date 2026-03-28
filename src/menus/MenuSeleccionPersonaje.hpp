@@ -69,6 +69,13 @@ class MenuSeleccionPersonaje {
         std::vector<FondoPersonaje> fondosPersonajeJugador1;
         std::vector<FondoPersonaje> fondosPersonajeJugador2;
 
+        // Los dos fondos adicionales que se crean para cada jugador
+        // al elegir un personaje
+        std::shared_ptr<sf::Sprite> fondoAdicionalBlancoJugador1;
+        std::shared_ptr<sf::Sprite> fondoAdicionalNegroJugador1;
+        std::shared_ptr<sf::Sprite> fondoAdicionalBlancoJugador2;
+        std::shared_ptr<sf::Sprite> fondoAdicionalNegroJugador2;
+
         // Se devuelve todo a su posición inicial
         void resetear();
 

@@ -60,7 +60,13 @@ void FondoPersonaje::actualizar()
 
 void FondoPersonaje::seleccionar()
 {
-    
+    // Se actualiza el color y la posición directamente
+    if(jugador == Jugador::JUGADOR1)
+        spriteFondo.setPosition({POSICION_X_FONDO_PERSONAJE_J1,POSICION_Y_FONDO_PERSONAJE});
+    else
+        spriteFondo.setPosition({POSICION_X_FONDO_PERSONAJE_J2,POSICION_Y_FONDO_PERSONAJE});
+
+    spriteFondo.setColor(COLOR_FONDO_PERSONAJE_POSICION_RELATIVA_0);
 }
 
 void FondoPersonaje::draw(sf::RenderTarget& target, sf::RenderStates states) const
