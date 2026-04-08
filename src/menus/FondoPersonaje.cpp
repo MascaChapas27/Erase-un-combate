@@ -27,6 +27,8 @@ spriteFondo(texturaFondo), nombrePersonaje(nombrePersonaje), posicionRelativa(po
 
 void FondoPersonaje::resetear(int posicionRelativa)
 {
+    quitarSeleccion();
+    
     this->posicionRelativa = posicionRelativa;
 
     // Se pone el fondo en la posición correcta

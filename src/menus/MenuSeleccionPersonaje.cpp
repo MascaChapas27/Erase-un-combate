@@ -135,6 +135,7 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
             {
                 saliendo = true;
                 ReproductorDeMusica::unicaInstancia()->detener();
+                ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/salir.ogg");
             }
             else if(infoEvento.accion == Accion::DERECHA && infoEvento.realizada)
             {
@@ -260,9 +261,15 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
         }
 
         // Si ambos jugadores han elegido ya a su personaje, nos vamos yendo
-        if(personajeElegidoJugador1 && personajeElegidoJugador2)
+        if(!saliendo && personajeElegidoJugador1 && personajeElegidoJugador2)
         {
             ReproductorDeMusica::unicaInstancia()->detener();
+
+            // Puede que se hayan elegido los personajes demasiado rápido y no
+            // haya dado tiempo a que el rectángulo negro se vuelva transparente
+            // del todo, así que se pone transpa
+            sf::Color nuevoColor = rectanguloNegro.getFillColor();
+
             saliendo = true;
         }
 
