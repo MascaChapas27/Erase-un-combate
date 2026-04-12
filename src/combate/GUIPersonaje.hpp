@@ -37,6 +37,10 @@ class GUIPersonaje : public sf::Drawable {
         // Sprite para el "portrait" del personaje (una foto que aparece en la esquina)
         sf::Sprite spritePortrait;
 
+        // Los sprites que indican los movimientos que hay que hacer para
+        // hacer el ataque especial del personaje
+        std::vector<sf::Sprite> spritesEspecial;
+
         // Cantidad de puntos de vida que está mostrando actualmente el medidor
         // de vida atrasado
         int contadorVidaAtrasado;
@@ -65,6 +69,11 @@ class GUIPersonaje : public sf::Drawable {
         // así que se puede poner el efecto de destello cuando 
         bool medidorDeSuperLleno;
 
+        // Indica si la GUI piensa que el jugador está mirando hacia la derecha
+        // o no. Esto permite darle la vuelta a las flechitas del cartel de ataque
+        // especial cuando el personaje se da la vuelta
+        bool personajeMirandoDerecha;
+
         // Los efectos generados por la GUI tienen que ir aquí o si no los
         // efectos se moverán con la pantalla y queda raro
         std::list<std::shared_ptr<Animacion>> efectos;
@@ -89,6 +98,10 @@ class GUIPersonaje : public sf::Drawable {
         // contador de rondas ganadas. Se usa cuando se cambia de ronda y los personajes vuelven a
         // tener todos sus puntos de vida
         void restablecerVida();
+
+        // Le da la vuelta a los simbolitos de flechas del cartel que indica las
+        // acciones que hay que llevar a cabo para poder realizar el ataque especial
+        void voltear();
 
         // Dibuja la GUI en pantalla
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

@@ -42,5 +42,8 @@ class AtaqueEspecial {
         // que hacer movimientos distintos para hacer ataques especiales
         // dependiendo de si está mirando hacia un lado o hacia otro
         void voltear();
+
+        // Devuelve las acciones necesarias para realizar el ataque especial
+        std::vector<Accion> getAcciones();
 };
 

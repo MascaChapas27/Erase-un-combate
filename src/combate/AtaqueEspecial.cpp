@@ -67,3 +67,8 @@ void AtaqueEspecial::voltear()
         else if(*it == Accion::IZQUIERDA) *it = Accion::DERECHA;
     }
 }
+
+std::vector<Accion> AtaqueEspecial::getAcciones()
+{
+    return acciones;
+}

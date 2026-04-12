@@ -122,6 +122,16 @@ EstadoPersonaje Personaje::getEstado()
     return estado;
 }
 
+std::vector<Accion> Personaje::getAccionesAtaqueEspecial()
+{
+    return ataqueEspecial.getAcciones();
+}
+
+std::string Personaje::getNombre()
+{
+    return nombre;
+}
+
 void Personaje::mover(float offsetX, float offsetY)
 {
     animaciones.at(estado)->mover(offsetX, offsetY);

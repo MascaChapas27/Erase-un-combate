@@ -10,7 +10,7 @@ GUIPersonaje::GUIPersonaje(Personaje &personaje, bool parteIzquierda) : personaj
                                                                         vibracion(0), contadorVibracion(CONTADOR_VIBRACION_MAX),
                                                                         spritePrincipalBase(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/base-izquierda-0.png")),
                                                                         spritePrincipalFrente(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/frente-izquierda.png")),
-                                                                        rondasGanadas(0), medidorDeSuperLleno(false)
+                                                                        rondasGanadas(0), medidorDeSuperLleno(false), personajeMirandoDerecha(personaje.isMirandoDerecha())
 {
     rectanguloVidaReal.setSize(TAMANO_BARRA_VIDA);
     rectanguloVidaReal.setFillColor(COLOR_BARRA_VIDA_REAL);
@@ -78,10 +78,97 @@ GUIPersonaje::GUIPersonaje(Personaje &personaje, bool parteIzquierda) : personaj
         spritePrincipalBase.setPosition(posicionGUI);
         spritePrincipalFrente.setPosition(posicionGUI);
     }
+
+    // Por último, se colocan los sprites del cartelito que te dice las
+    // acciones que tienes que hacer para hacer el ataque especial
+    if(parteIzquierda)
+    {
+        spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-inicio-izquierda.png"));
+        spritesEspecial[0].setPosition(POSICION_CARTEL_ESPECIAL_GUI_IZQUIERDA);
+    }
+    else
+    {
+        spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-inicio-derecha.png"));
+        spritesEspecial[0].setOrigin({static_cast<float>(spritesEspecial[0].getTextureRect().size.x),0.f});
+        spritesEspecial[0].setPosition(POSICION_CARTEL_ESPECIAL_GUI_DERECHA);
+    }
+
+    float posicionEjeX;
+    float posicionEjeY = spritesEspecial[0].getPosition().y;
+
+    if(parteIzquierda)
+        posicionEjeX = spritesEspecial[0].getPosition().x + spritesEspecial[0].getTextureRect().size.x;
+    else
+        posicionEjeX = spritesEspecial[0].getPosition().x - spritesEspecial[0].getTextureRect().size.x;
+
+    int indice = 1;
+    for(Accion a : personaje.getAccionesAtaqueEspecial())
+    {
+        switch(a)
+        {
+            case Accion::ARRIBA:
+                spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-arriba.png"));
+                break;
+            
+            case Accion::ABAJO:
+                spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-abajo.png"));
+                break;
+            
+            case Accion::IZQUIERDA:
+                spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-izquierda.png"));
+                break;
+            
+            case Accion::DERECHA:
+                spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-derecha.png"));
+                break;
+            
+            case Accion::ATACAR:
+                spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-atacar.png"));
+                break;
+            
+            default:
+                std::string nombreAccion = a == Accion::ESCAPE ? "ESCAPE" : "NADA";
+                Bitacora::unicaInstancia()->escribir("Emilio: Señor Juan, ¿puede venir un momento?");
+                Bitacora::unicaInstancia()->escribir("Juan Cuesta: ¿Qué pasa, Emilio?");
+                Bitacora::unicaInstancia()->escribir("Emilio: No, que estaba aquí haciendo el cartelito este que indica lo que tiene que hacer " + personaje.getNombre() + " para hacer el ataque especial, y me he encontrado con la acción " + nombreAccion + ". ¿Cómo lo ve usted?");
+                Bitacora::unicaInstancia()->escribir("Juan Cuesta: Pero bueno, ¿cómo lo voy a ver? Eso es una irregularidad en toda regla, rompe por completo con las mecánicas definidas para este, nuestro juego. Cancela la fabricación del cartel, esto no puede seguir así.");
+                exit(EXIT_FAILURE);
+                break;
+        }
+        
+        if(!parteIzquierda)
+            spritesEspecial[indice].setOrigin({static_cast<float>(spritesEspecial[indice].getTextureRect().size.x),0.f});
+
+        spritesEspecial[indice].setPosition({posicionEjeX,posicionEjeY});
+
+        if(parteIzquierda)
+            posicionEjeX += spritesEspecial[indice].getTextureRect().size.x;
+        else
+            posicionEjeX -= spritesEspecial[indice].getTextureRect().size.x;
+
+        indice++;
+    }
+
+    if(parteIzquierda)
+        spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-fin-izquierda.png"));
+    else
+    {
+        spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-fin-derecha.png"));
+        spritesEspecial[indice].setOrigin({static_cast<float>(spritesEspecial[indice].getTextureRect().size.x),0.f});
+    }
+    spritesEspecial[indice].setPosition({posicionEjeX,posicionEjeY});
 }
 
 void GUIPersonaje::actualizar()
 {
+    // Si el personaje se ha volteado, la GUI también se
+    // debería voltear
+    if(personaje.isMirandoDerecha() != personajeMirandoDerecha)
+    {
+        personajeMirandoDerecha = personaje.isMirandoDerecha();
+        voltear();
+    }
+
     // Se alterna la vibración lentamente
     if (--contadorVibracion <= 0)
     {
@@ -191,6 +278,17 @@ void GUIPersonaje::restablecerVida()
     retrasoContadorVidaAtrasado = 0;
 }
 
+void GUIPersonaje::voltear()
+{
+    for(int i=0;i<personaje.getAccionesAtaqueEspecial().size();i++)
+    {
+        if(personaje.getAccionesAtaqueEspecial()[i] == Accion::DERECHA)
+            spritesEspecial[i+1].setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-derecha.png"));
+        else if(personaje.getAccionesAtaqueEspecial()[i] == Accion::IZQUIERDA)
+            spritesEspecial[i+1].setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-izquierda.png"));
+    }
+}
+
 void GUIPersonaje::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     sf::Transform mover;
@@ -204,6 +302,11 @@ void GUIPersonaje::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(spriteNombre, states);
     target.draw(spritePortrait, states);
     target.draw(spritePrincipalFrente, states);
+
+    for(const sf::Sprite& s : spritesEspecial)
+    {
+        target.draw(s, states);
+    }
 
     for(std::shared_ptr<Animacion> efecto : efectos)
     {

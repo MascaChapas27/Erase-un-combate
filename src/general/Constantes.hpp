@@ -427,7 +427,6 @@ constexpr int CONTADOR_VIBRACION_MAX = 2;
 constexpr sf::Vector2f POSICION_TEMPORIZADOR = {VENTANA_ANCHURA/2.f, 8.f*VENTANA_ALTURA/40.f};
 
 // La posición del texto del temporizador con respecto a la posición del temporizador
-
 constexpr sf::Vector2f POSICION_TEXTO_TEMPORIZADOR = {0.f,2.5f};
 
 // Indica cuántos fotogramas tienen que pasar para que el contador baje en uno
@@ -445,8 +444,17 @@ constexpr sf::Color COLOR_RELLENO_NUMEROS_TEMPORIZADOR = sf::Color::White;
 // Indica el color del borde de los números del temporizador
 constexpr sf::Color COLOR_BORDE_NUMEROS_TEMPORIZADOR = sf::Color::Black;
 
-// Inidica la anchura del borde de los números del temporizador
+// Indica la anchura del borde de los números del temporizador
 constexpr float ANCHURA_BORDE_NUMEROS_TEMPORIZADOR = 1.f;
+
+// La posición del cartel de ataque especial de la izquierda
+constexpr sf::Vector2f POSICION_CARTEL_ESPECIAL_GUI_IZQUIERDA = POSICION_GUI_IZQUIERDA + sf::Vector2f(0,41);
+
+// La posición del cartel de ataque especial de la derecha. El +2 en
+// el eje X es por la sombra que tienen, que anda que no da por saco
+// ni na
+constexpr sf::Vector2f POSICION_CARTEL_ESPECIAL_GUI_DERECHA = sf::Vector2f(VENTANA_ANCHURA-POSICION_GUI_IZQUIERDA.x+2,POSICION_GUI_IZQUIERDA.y+41);
+
 
 /*
     CONSTANTES PARA LOS COMBOS
@@ -511,7 +519,7 @@ constexpr sf::Vector2f MOVIMIENTO_INFO_COMBO_CONTINUAR = {0.f,-5.f};
 */
 
 // El puerto utilizado por el líder para aceptar conexiones de invitados
-constexpr unsigned short NUMERO_PUERTO = 21107;
+constexpr unsigned short NUMERO_PUERTO = 17284;
 
 // Bit que indica que el otro jugador se ha movido a la izquierda
 constexpr uint8_t BIT_IZQUIERDA = 1;

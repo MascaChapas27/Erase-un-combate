@@ -153,6 +153,12 @@ class Personaje : public sf::Drawable {
         // Devuelve el estado actual del personaje
         EstadoPersonaje getEstado();
 
+        // Devuelve las acciones necesarias para hacer el ataque especial
+        std::vector<Accion> getAccionesAtaqueEspecial();
+
+        // Devuelve el nombre del personaje
+        std::string getNombre();
+
         // Establece el jugador asociado
         void setJugador(Jugador jugador);
 
