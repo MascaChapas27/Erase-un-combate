@@ -211,9 +211,6 @@ namespace util{
         switch(estado)
         {
             // Prioridad 1 (baja)
-            case EstadoPersonaje::GOLPEADO_BAJANDO:
-            case EstadoPersonaje::GOLPEADO_SUBIENDO:
-            case EstadoPersonaje::TUMBADO:
             case EstadoPersonaje::GOLPEADO_PEQUE:
             case EstadoPersonaje::GOLPEADO_MEDIO:
             case EstadoPersonaje::DERROTA:
@@ -244,6 +241,14 @@ namespace util{
             case EstadoPersonaje::PREPARANDO_SUPER:
             case EstadoPersonaje::CELEBRANDO:
                 return 3;
+                break;
+            
+            // Prioridad 4 (altísima)
+            case EstadoPersonaje::GOLPEADO_BAJANDO:
+            case EstadoPersonaje::GOLPEADO_SUBIENDO:
+            case EstadoPersonaje::TUMBADO:
+            case EstadoPersonaje::LEVANTANDOSE:
+                return 4;
                 break;
         }
 

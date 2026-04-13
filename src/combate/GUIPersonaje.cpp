@@ -3,6 +3,7 @@
 #include "ContenedorDeRecursos.hpp"
 #include "ContenedorDeEfectos.hpp"
 #include <string>
+#include <iostream>
 
 GUIPersonaje::GUIPersonaje(Personaje &personaje, bool parteIzquierda) : personaje(personaje), parteIzquierda(parteIzquierda),
                                                                         spriteNombre(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/personajes/" + personaje.nombre + "/nombre.png")),
@@ -101,28 +102,42 @@ GUIPersonaje::GUIPersonaje(Personaje &personaje, bool parteIzquierda) : personaj
     else
         posicionEjeX = spritesEspecial[0].getPosition().x - spritesEspecial[0].getTextureRect().size.x;
 
-    int indice = 1;
-    for(Accion a : personaje.getAccionesAtaqueEspecial())
+    int indice;
+    if(parteIzquierda)
+        indice = 0;
+    else
+        indice = personaje.getAccionesAtaqueEspecial().size()-1;
+
+    std::cout << "Preparando GUI para el personaje de la " << (parteIzquierda ? "izquierda" : "derecha") << "\n";
+
+    while(indice >= 0 && indice < personaje.getAccionesAtaqueEspecial().size())
     {
+        Accion a = personaje.getAccionesAtaqueEspecial()[indice];
+
         switch(a)
         {
             case Accion::ARRIBA:
+                std::cout << "ARRIBA\n";
                 spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-arriba.png"));
                 break;
             
             case Accion::ABAJO:
+                std::cout << "ABAJO\n";
                 spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-abajo.png"));
                 break;
             
             case Accion::IZQUIERDA:
+                std::cout << "IZQUIERDA\n";
                 spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-izquierda.png"));
                 break;
             
             case Accion::DERECHA:
+                std::cout << "DERECHA\n";
                 spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-derecha.png"));
                 break;
             
             case Accion::ATACAR:
+                std::cout << "ATACAR\n";
                 spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-atacar.png"));
                 break;
             
@@ -135,18 +150,20 @@ GUIPersonaje::GUIPersonaje(Personaje &personaje, bool parteIzquierda) : personaj
                 exit(EXIT_FAILURE);
                 break;
         }
+
+        spritesEspecial.back().setPosition({posicionEjeX,posicionEjeY});
         
-        if(!parteIzquierda)
-            spritesEspecial[indice].setOrigin({static_cast<float>(spritesEspecial[indice].getTextureRect().size.x),0.f});
-
-        spritesEspecial[indice].setPosition({posicionEjeX,posicionEjeY});
-
         if(parteIzquierda)
-            posicionEjeX += spritesEspecial[indice].getTextureRect().size.x;
+        {
+            posicionEjeX += spritesEspecial.back().getTextureRect().size.x;
+            indice++;
+        }
         else
-            posicionEjeX -= spritesEspecial[indice].getTextureRect().size.x;
-
-        indice++;
+        {
+            spritesEspecial.back().setOrigin({static_cast<float>(spritesEspecial.back().getTextureRect().size.x),0.f});
+            posicionEjeX -= spritesEspecial.back().getTextureRect().size.x;
+            indice--;
+        }
     }
 
     if(parteIzquierda)
@@ -154,9 +171,9 @@ GUIPersonaje::GUIPersonaje(Personaje &personaje, bool parteIzquierda) : personaj
     else
     {
         spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-fin-derecha.png"));
-        spritesEspecial[indice].setOrigin({static_cast<float>(spritesEspecial[indice].getTextureRect().size.x),0.f});
+        spritesEspecial.back().setOrigin({static_cast<float>(spritesEspecial.back().getTextureRect().size.x),0.f});
     }
-    spritesEspecial[indice].setPosition({posicionEjeX,posicionEjeY});
+    spritesEspecial.back().setPosition({posicionEjeX,posicionEjeY});
 }
 
 void GUIPersonaje::actualizar()
@@ -280,12 +297,46 @@ void GUIPersonaje::restablecerVida()
 
 void GUIPersonaje::voltear()
 {
+    std::cout << "Volteando GUI para el personaje de la " << (parteIzquierda ? "izquierda" : "derecha") << "\n";
+
     for(int i=0;i<personaje.getAccionesAtaqueEspecial().size();i++)
     {
+        switch(personaje.getAccionesAtaqueEspecial()[i])
+        {
+            case Accion::IZQUIERDA:
+                std::cout << "IZQUIERDA\n";
+                break;
+            
+            case Accion::ARRIBA:
+                std::cout << "ARRIBA\n";
+                break;
+            
+            case Accion::DERECHA:
+                std::cout << "DERECHA\n";
+                break;
+            
+            case Accion::ABAJO:
+                std::cout << "ABAJO\n";
+                break;
+            
+            case Accion::ATACAR:
+                std::cout << "ATACAR\n";
+                break;
+        }
         if(personaje.getAccionesAtaqueEspecial()[i] == Accion::DERECHA)
-            spritesEspecial[i+1].setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-derecha.png"));
+        {
+            if(parteIzquierda)
+                spritesEspecial[i+1].setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-derecha.png"));
+            else
+                spritesEspecial[personaje.getAccionesAtaqueEspecial().size()-i].setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-derecha.png"));
+        }
         else if(personaje.getAccionesAtaqueEspecial()[i] == Accion::IZQUIERDA)
-            spritesEspecial[i+1].setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-izquierda.png"));
+        {
+            if(parteIzquierda)
+                spritesEspecial[i+1].setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-izquierda.png"));
+            else
+                spritesEspecial[personaje.getAccionesAtaqueEspecial().size()-i].setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-izquierda.png"));
+        }
     }
 }
 
