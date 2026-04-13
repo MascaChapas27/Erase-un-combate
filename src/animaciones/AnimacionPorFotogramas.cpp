@@ -165,7 +165,7 @@ std::shared_ptr<Animacion> AnimacionPorFotogramas::clonar(){
 
 std::vector<Hitbox> AnimacionPorFotogramas::getHitboxes(){
     // Cuando un rectángulo tiene una hitbox con daño, solo el primer fotograma de ese rectángulo hará
-    // realmente daño. Esto hace que si un rectángulo cn hitbox dañina dura varios fotogramas, solo el
+    // realmente daño. Esto hace que si un rectángulo con hitbox dañina dura varios fotogramas, solo el
     // primero sea el que cause daño, mientras que los siguientes son para que la animación se vea
     // más bonita y dé tiempo a verla, y así no pase demasiado rápido
     if(fotogramaActual > 0 && rectanguloCorrespondiente[fotogramaActual] == rectanguloCorrespondiente[fotogramaActual-1])

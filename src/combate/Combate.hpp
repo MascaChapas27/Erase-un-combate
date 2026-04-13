@@ -40,6 +40,17 @@ class Combate{
         // Ronda actual
         int numeroRonda;
 
+        // Esta variable define un contador que permite pausar ciertos
+        // aspectos del juego durante una breve cantidad de fotogramas
+        // cuando un personaje le cruje el ato a otro. Los frikis llaman
+        // a esto Hitstop, y si bien es cierto que se suele hacer una
+        // distinción entre Hitstop (cuando es un golpe de verdad) y
+        // Blockstop (cuando el ataque se bloquea), aquí se usa
+        // para ambos propósitos indistintamente. Si quieres consultar
+        // más info, puedes encontrarla en el siguiente enlace:
+        // https://glossary.infil.net/?t=Hitstop
+        unsigned int contadorHitstop;
+
         // Cartel que aparece al principio de la ronda en el que pone "¿Todo listo?"
         std::shared_ptr<Animacion> cartelTodoListo;
 

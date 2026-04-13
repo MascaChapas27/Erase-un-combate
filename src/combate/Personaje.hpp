@@ -65,6 +65,9 @@ class Personaje : public sf::Drawable {
         // hacia el enemigo antes de que se termine la cuenta atrás, pasará a correr en vez de andar
         int cuentaAtrasCorrer;
 
+        // Un puntero al contador de Hitstop del objeto de clase combate
+        unsigned int* punteroHitstop;
+
         // Jugador al que está asociado el personaje
         Jugador jugador;
 
@@ -135,6 +138,10 @@ class Personaje : public sf::Drawable {
         // Establece la posición del personaje
         void setPosicion(float x, float y);
         void setPosicion(sf::Vector2f posicion);
+
+        // Establece el puntero donde vive el número que
+        // representa el contador de Hitstop
+        void setPunteroHitstop(unsigned int* punteroHitstop);
 
         // Devuelve la posición del personaje
         sf::Vector2f getPosicion();

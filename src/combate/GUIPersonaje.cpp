@@ -108,8 +108,6 @@ GUIPersonaje::GUIPersonaje(Personaje &personaje, bool parteIzquierda) : personaj
     else
         indice = personaje.getAccionesAtaqueEspecial().size()-1;
 
-    std::cout << "Preparando GUI para el personaje de la " << (parteIzquierda ? "izquierda" : "derecha") << "\n";
-
     while(indice >= 0 && indice < personaje.getAccionesAtaqueEspecial().size())
     {
         Accion a = personaje.getAccionesAtaqueEspecial()[indice];
@@ -117,27 +115,22 @@ GUIPersonaje::GUIPersonaje(Personaje &personaje, bool parteIzquierda) : personaj
         switch(a)
         {
             case Accion::ARRIBA:
-                std::cout << "ARRIBA\n";
                 spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-arriba.png"));
                 break;
             
             case Accion::ABAJO:
-                std::cout << "ABAJO\n";
                 spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-abajo.png"));
                 break;
             
             case Accion::IZQUIERDA:
-                std::cout << "IZQUIERDA\n";
                 spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-izquierda.png"));
                 break;
             
             case Accion::DERECHA:
-                std::cout << "DERECHA\n";
                 spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-derecha.png"));
                 break;
             
             case Accion::ATACAR:
-                std::cout << "ATACAR\n";
                 spritesEspecial.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/spec-atacar.png"));
                 break;
             
@@ -297,30 +290,23 @@ void GUIPersonaje::restablecerVida()
 
 void GUIPersonaje::voltear()
 {
-    std::cout << "Volteando GUI para el personaje de la " << (parteIzquierda ? "izquierda" : "derecha") << "\n";
-
     for(int i=0;i<personaje.getAccionesAtaqueEspecial().size();i++)
     {
         switch(personaje.getAccionesAtaqueEspecial()[i])
         {
             case Accion::IZQUIERDA:
-                std::cout << "IZQUIERDA\n";
                 break;
             
             case Accion::ARRIBA:
-                std::cout << "ARRIBA\n";
                 break;
             
             case Accion::DERECHA:
-                std::cout << "DERECHA\n";
                 break;
             
             case Accion::ABAJO:
-                std::cout << "ABAJO\n";
                 break;
             
             case Accion::ATACAR:
-                std::cout << "ATACAR\n";
                 break;
         }
         if(personaje.getAccionesAtaqueEspecial()[i] == Accion::DERECHA)

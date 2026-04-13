@@ -18,7 +18,7 @@ Personaje::Personaje(std::unordered_map<EstadoPersonaje, std::shared_ptr<Animaci
 :
 puntosDeVida(maxPuntosDeVida), maxPuntosDeVida(maxPuntosDeVida), medidorSuper(0), velocidadMaxima(velocidadMaxima),
 fuerzaSalto(-fuerzaSalto), nombre(nombre), velocidad({0.f, 0.f}), escalaSprite({1.f, 1.f}), contadorTumbado(0),
-contadorBlanco(0), contadorEsquiveSuper(0), cuentaAtrasCorrer(0), estado(EstadoPersonaje::QUIETO),
+contadorBlanco(0), contadorEsquiveSuper(0), cuentaAtrasCorrer(0), punteroHitstop(nullptr), estado(EstadoPersonaje::QUIETO),
 shader(std::make_shared<sf::Shader>()), animaciones(animaciones), ataqueEspecial(accionesAtaqueEspecial)
 {
     if (!shader->loadFromFile("shaders/blendColor.frag", sf::Shader::Type::Fragment))
@@ -95,6 +95,11 @@ void Personaje::setPosicion(float x, float y)
 void Personaje::setPosicion(sf::Vector2f posicion)
 {
     animaciones.at(estado)->setPosicion(posicion);
+}
+
+void Personaje::setPunteroHitstop(unsigned int* punteroHitstop)
+{
+    this->punteroHitstop = punteroHitstop;
 }
 
 sf::Vector2f Personaje::getPosicion()
@@ -280,6 +285,11 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
             acciones.insert(par.first);
         }
     }
+
+    // Si el contador de hitstop es mayor a 0, no se
+    // actualiza el personaje
+    if(*punteroHitstop != 0)
+        return;
 
     // Se comprueba si se han pulsado los botones necesarios para hacer el ataque especial
     bool realizarAtaqueEspecial = ataqueEspecial.actualizar(acciones);
@@ -1142,6 +1152,11 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
 
 void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> &animaciones, std::list<std::shared_ptr<Animacion>> &efectosInsertados)
 {
+    // Si el contador de hitstop no es 0,
+    // no se comprueban colisiones
+    if(*punteroHitstop != 0)
+        return;
+
     // Se sacan las hitboxes de la animación del estado actual
     std::vector<Hitbox> hitboxes = this->animaciones.at(estado)->getHitboxes();
 
@@ -1655,6 +1670,11 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
     // que se haya esquivado)
     if (estado != EstadoPersonaje::ESQUIVE_SUPER)
         puntosDeVida -= fuerzaAtaque;
+    
+    // Además, la fuerza de ataque se convierte en fotogramas para el hitstop.
+    // Se multiplica porque si no es muy poco y ni se nota, pero tampoco quiero
+    // que se pase y dure 3 minutos cada hitstop
+    *punteroHitstop+=fuerzaAtaque*2;
 
     // En caso de que hayamos bloqueado o esquivado, el combo del otro
     // jugador se rompe

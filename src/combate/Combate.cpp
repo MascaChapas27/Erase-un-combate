@@ -17,6 +17,7 @@ Combate::Combate(std::string nombrePersonajeJ1, std::string nombrePersonajeJ2, s
                                                                                                                                                      personajeJugador2(ContenedorDePersonajes::unicaInstancia()->obtenerPersonaje(nombrePersonajeJ2)),
                                                                                                                                                      GUIJugador1(personajeJugador1, true), GUIJugador2(personajeJugador2, false),
                                                                                                                                                      escenario(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/escenarios/" + nombreEscenario + ".png")),
+                                                                                                                                                     contadorHitstop(0),
                                                                                                                                                      cartelTodoListo(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-todo-listo")),
                                                                                                                                                      cartelAPelear(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-a-pelear")),
                                                                                                                                                      cartelJugador1Gana(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-jugador-1-gana")),
@@ -26,6 +27,9 @@ Combate::Combate(std::string nombrePersonajeJ1, std::string nombrePersonajeJ2, s
                                                                                                                                                      cartelEmpate(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-empate")),
                                                                                                                                                      temporizador(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/temporizador.png"),ContenedorDeFuentes::unicaInstancia()->obtener("fuentes/daniela.ttf"),FOTOGRAMAS_POR_TICK_TEMPORIZADOR,TICKS_CONTADOR_TEMPORIZADOR)
 {
+    personajeJugador1.setPunteroHitstop(&contadorHitstop);
+    personajeJugador2.setPunteroHitstop(&contadorHitstop);
+
     rectanguloOscuro.setPosition({0, 0});
     rectanguloOscuro.setSize(sf::Vector2f(VENTANA_ANCHURA, VENTANA_ALTURA));
     rectanguloOscuro.setOutlineThickness(0);
@@ -446,6 +450,11 @@ void Combate::actualizarFotogramaNormal(std::list<std::shared_ptr<Animacion>> &e
         }
     }
 
+    // Si el contador de Hitstop es mayor que 0, se baja en 1
+    if(contadorHitstop > 0){
+        contadorHitstop--;
+    }
+
     // bool golpeadoMedioDespues = personajeJugador1.getEstado() == EstadoPersonaje::GOLPEADO_MEDIO || personajeJugador2.getEstado() == EstadoPersonaje::GOLPEADO_MEDIO;
 
     // Se añaden los efectos del jugador 2 a los del jugador 1 y así tenemos solo una lista
@@ -602,6 +611,11 @@ void Combate::actualizarFotogramaCelebracion(std::list<std::shared_ptr<Animacion
             #pragma omp task
             personajeJugador2.comprobarColisiones(efectosB, nuevosEfectosB);
         }
+    }
+
+    // Si el contador de Hitstop es mayor que 0, se baja en 1
+    if(contadorHitstop > 0){
+        contadorHitstop--;
     }
 
     // bool golpeadoMedioDespues = personajeJugador1.getEstado() == EstadoPersonaje::GOLPEADO_MEDIO || personajeJugador2.getEstado() == EstadoPersonaje::GOLPEADO_MEDIO;
