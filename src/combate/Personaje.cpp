@@ -1516,6 +1516,14 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
     // Ahora, se calcula la fuerza del ataque realizado por el enemigo
     int fuerzaAtaque = hitboxElegidaEnemigo.getFuerzaAtaque();
 
+    // La fuerza de ataque se convierte en fotogramas para el hitstop.
+    // Se multiplica porque si no es muy poco y ni se nota, pero tampoco
+    // quiero que se pase y dure 3 minutos cada hitstop
+    if(estado == EstadoPersonaje::BLOQUEANDO)
+        *punteroHitstop+=fuerzaAtaque;
+    else if (estado != EstadoPersonaje::ESQUIVE_SUPER)
+        *punteroHitstop+=fuerzaAtaque*2;
+
     // Si estamos bloqueando, el daño se reduce
     if (estado == EstadoPersonaje::BLOQUEANDO)
     {
@@ -1670,11 +1678,6 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
     // que se haya esquivado)
     if (estado != EstadoPersonaje::ESQUIVE_SUPER)
         puntosDeVida -= fuerzaAtaque;
-    
-    // Además, la fuerza de ataque se convierte en fotogramas para el hitstop.
-    // Se multiplica porque si no es muy poco y ni se nota, pero tampoco quiero
-    // que se pase y dure 3 minutos cada hitstop
-    *punteroHitstop+=fuerzaAtaque*2;
 
     // En caso de que hayamos bloqueado o esquivado, el combo del otro
     // jugador se rompe

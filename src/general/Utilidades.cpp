@@ -219,6 +219,9 @@ namespace util{
             
             // Prioridad 2 (media)
             case EstadoPersonaje::QUIETO:
+            case EstadoPersonaje::SALTANDO_SUBIENDO:
+            case EstadoPersonaje::SALTANDO_BAJANDO:
+            case EstadoPersonaje::TOCANDO_SUELO:
             case EstadoPersonaje::AGACHADO:
             case EstadoPersonaje::ANDANDO_ACERCANDOSE:
             case EstadoPersonaje::ANDANDO_ALEJANDOSE:
@@ -232,6 +235,7 @@ namespace util{
             case EstadoPersonaje::ATAQUE_AEREO:
             case EstadoPersonaje::ATAQUE_AGACHADO:
             case EstadoPersonaje::ATAQUE_ALEJANDOSE:
+            case EstadoPersonaje::ATAQUE_ACERCANDOSE:
             case EstadoPersonaje::ATAQUE_ESPECIAL:
             case EstadoPersonaje::ATAQUE_NORMAL_1:
             case EstadoPersonaje::ATAQUE_NORMAL_2:
@@ -251,6 +255,13 @@ namespace util{
                 return 4;
                 break;
         }
+
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Pero bueno, Emilio, ¿se puede saber qué es esto?");
+        Bitacora::unicaInstancia()->escribir("Emilio: ¿Qué ha hecho mi padre ahora? Le juro que en cuanto pueda le meto en una residencia, es que se me van todas de presupuesto.");
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: No, no es eso... es que he estado intentando encontrar la prioridad de un EstadoPersonaje, pero... no sé cuál es. ¿Te suena el número "+std::to_string(static_cast<int>(estado))+"?");
+        Bitacora::unicaInstancia()->escribir("Emilio: ¿El "+std::to_string(static_cast<int>(estado))+"...? Pues, que yo sepa no, vamos, pero tendría que hacer memoria.");
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Qué follón...");
+        exit(EXIT_FAILURE);
 
         return 1;
     }
