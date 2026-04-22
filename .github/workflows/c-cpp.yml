@@ -1,23 +1,24 @@
-name: C/C++ CI
+# Source - https://stackoverflow.com/a/69849731
+# Posted by vre, modified by community. See post 'Timeline' for change history
+# Retrieved 2026-04-22, License - CC BY-SA 4.0
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+name: Compilar al hacer push
+on: [push]
 jobs:
-  build:
-
-    runs-on: windows-latest
-
+  compilar-ubuntu:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Create build directory
-      run: mkdir build
-    - name: Change directory to build directory
-      run: cd build
-    - name: Create ninja.build using CMake
-      run: cmake .. -G Ninja
-    - name: Compile using ninja
-      run: ninja
+      - uses: actions/checkout@v2
+      - name: "Crear directorio build y ejecutar CMake"
+        run: cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release
+      - name: "Compilar proyecto" 
+        run: cmake --build build --target all --config Release -- -j4
+        
+  compilar-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Crear directorio build y ejecutar CMake"
+        run: cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release
+      - name: "Compilar proyecto" 
+        run: cmake --build build --target all --config Release -- -j4 
