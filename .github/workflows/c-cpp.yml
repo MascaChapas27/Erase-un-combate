@@ -9,16 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: "Instalar paquete xorg-dev"
+        run: apt -y install xorg-dev
       - name: "Crear directorio build y ejecutar CMake"
         run: cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release
       - name: "Compilar proyecto" 
         run: cmake --build build --target all --config Release -- -j4
-        
-  compilar-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: "Crear directorio build y ejecutar CMake"
-        run: cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release
-      - name: "Compilar proyecto" 
-        run: cmake --build build --target all --config Release -- -j4 
