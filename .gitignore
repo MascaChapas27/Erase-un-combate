@@ -50,4 +50,7 @@ autoclose-archive
 in-memory
 zip*
 
+# Additional libraries
+lib
+
 .vscode

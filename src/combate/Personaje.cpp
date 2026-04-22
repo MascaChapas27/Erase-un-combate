@@ -449,7 +449,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         else if (accionesRealizadas[Accion::ATACAR])
         {
             detenerAccion(Accion::ATACAR);
-            cambiarEstado(EstadoPersonaje::ATAQUE_ACERCANDOSE);
+            cambiarEstado(EstadoPersonaje::ATAQUE_CORRIENDO);
         }
         else if (accionesRealizadas[Accion::ARRIBA])
         {
@@ -487,6 +487,22 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
             levantarPolvo(efectosInsertados);
         }
 
+        break;
+    
+    case EstadoPersonaje::ATAQUE_CORRIENDO:
+
+        pararMovimiento();
+
+        if (realizarAtaqueEspecial)
+        {
+            ataqueEspecial.resetear();
+            detenerAccion(Accion::ATACAR);
+            cambiarEstado(EstadoPersonaje::ATAQUE_ESPECIAL);
+        }
+        else if (animaciones.at(estado)->haTerminado())
+        {
+            cambiarEstado(EstadoPersonaje::QUIETO);
+        }
         break;
 
     case EstadoPersonaje::FRENANDO:
@@ -1070,6 +1086,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
     case EstadoPersonaje::ATAQUE_AEREO:
     case EstadoPersonaje::ATAQUE_AGACHADO:
     case EstadoPersonaje::ATAQUE_SUPER:
+    case EstadoPersonaje::ATAQUE_CORRIENDO:
     case EstadoPersonaje::CORRIENDO:
     case EstadoPersonaje::FRENANDO:
     case EstadoPersonaje::GOLPEADO_BAJANDO:
@@ -1082,6 +1099,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
     case EstadoPersonaje::PREPARANDO_SUPER:
     case EstadoPersonaje::SALTANDO_BAJANDO:
     case EstadoPersonaje::SALTANDO_SUBIENDO:
+        // NO se voltea
         break;
 
     case EstadoPersonaje::AGACHADO:
@@ -1091,6 +1109,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
     case EstadoPersonaje::TOCANDO_SUELO:
     case EstadoPersonaje::GOLPEADO_PEQUE:
     case EstadoPersonaje::GOLPEADO_MEDIO:
+        // SÍ se voltea
         if ((animaciones.at(estado)->getPosicion().x < posicionEnemigo.x && !(escalaSprite.x > 0)) ||
             (animaciones.at(estado)->getPosicion().x > posicionEnemigo.x && (escalaSprite.x > 0)))
         {
@@ -1341,6 +1360,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         case EstadoPersonaje::ATAQUE_NORMAL_3:
         case EstadoPersonaje::ATAQUE_ALEJANDOSE:
         case EstadoPersonaje::ATAQUE_ACERCANDOSE:
+        case EstadoPersonaje::ATAQUE_CORRIENDO:
         case EstadoPersonaje::ATAQUE_ESPECIAL:
         case EstadoPersonaje::ATAQUE_AGACHADO:
         case EstadoPersonaje::TOCANDO_SUELO:

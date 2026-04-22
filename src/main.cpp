@@ -1,3 +1,5 @@
+#define DISCORDPP_IMPLEMENTATION
+#include "ClienteDiscord.hpp"
 #include "ContenedorDePersonajes.hpp"
 #include "ContenedorDeEfectos.hpp"
 #include "MenuPrincipal.hpp"
@@ -10,7 +12,9 @@
 
 #include <unistd.h>
 
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[])
+{
+    ClienteDiscord::unicaInstancia()->inicializar();
 
     // Los personajes y efectos son recursos que se tienen que cargar desde un principio.
     // Los recursos más sencillos (efectos de sonido, fuentes, texturas) se pueden cargar al vuelo según se

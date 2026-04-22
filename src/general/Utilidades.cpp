@@ -236,6 +236,7 @@ namespace util{
             case EstadoPersonaje::ATAQUE_AGACHADO:
             case EstadoPersonaje::ATAQUE_ALEJANDOSE:
             case EstadoPersonaje::ATAQUE_ACERCANDOSE:
+            case EstadoPersonaje::ATAQUE_CORRIENDO:
             case EstadoPersonaje::ATAQUE_ESPECIAL:
             case EstadoPersonaje::ATAQUE_NORMAL_1:
             case EstadoPersonaje::ATAQUE_NORMAL_2:

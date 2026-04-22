@@ -7,6 +7,7 @@
 #include "Utilidades.hpp"
 #include "ContenedorDePersonajes.hpp"
 #include "ReproductorDeSonidos.hpp"
+#include "ClienteDiscord.hpp"
 
 #include <algorithm>
 
@@ -101,6 +102,8 @@ void MenuSeleccionPersonaje::resetear()
 
 std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccionDoble()
 {
+    ClienteDiscord::unicaInstancia()->actualizarRichPresence("En una Batalla VS","Eligiendo personajes...");
+
     // Se resetea todo antes de empezar por si acaso
     resetear();
 

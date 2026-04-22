@@ -8,6 +8,16 @@
 cmake_minimum_required(VERSION 3.28)
 project(EraseUnCombate LANGUAGES CXX)
 
+# Se especifica que el estándar de C++ que se va a utilizar es el de 2020
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Variables de utilidad para el SDK de Discord
+set(DISCORD_SDK_ROOT "${CMAKE_SOURCE_DIR}/lib/discord_social_sdk")
+set(DISCORD_SDK_LIB_DIR "${DISCORD_SDK_ROOT}/lib/release")
+set(DISCORD_SDK_BIN_DIR "${DISCORD_SDK_ROOT}/bin/release")
+set(DISCORD_SDK_INCLUDE_DIR "${DISCORD_SDK_ROOT}/include")
+
 # El programa se creará en el directorio raíz del proyecto
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
 
@@ -69,8 +79,21 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(libzip)
 
-# Se indica dónde están los hpp
-include_directories(src/animaciones src/combate src/general src/menus src/recursos)
+# Se indica dónde están los headers
+include_directories(src/animaciones src/combate src/general src/menus src/recursos src/discord)
+
+# Dependiendo de la plataforma se especifica dónde están
+# las bibliotecas necesarias para el SDK de Discord
+if(WIN32)
+    set(DISCORD_LIB_PATH "${DISCORD_SDK_LIB_DIR}/discord_partner_sdk.lib")
+    set(DISCORD_SHARED_LIB "${DISCORD_SDK_BIN_DIR}/discord_partner_sdk.dll")
+elseif(APPLE)
+    set(DISCORD_LIB_PATH "${DISCORD_SDK_LIB_DIR}/libdiscord_partner_sdk.dylib")
+    set(DISCORD_SHARED_LIB "${DISCORD_SDK_LIB_DIR}/libdiscord_partner_sdk.dylib")
+else() # Linux
+    set(DISCORD_LIB_PATH "${DISCORD_SDK_LIB_DIR}/libdiscord_partner_sdk.so")
+    set(DISCORD_SHARED_LIB "${DISCORD_SDK_LIB_DIR}/libdiscord_partner_sdk.so")
+endif()
 
 # Se ponen todos los ficheros .cpp
 add_executable(EraseUnCombate
@@ -93,6 +116,8 @@ src/combate/Hitbox.cpp
 src/combate/InfoCombo.cpp
 src/combate/Personaje.cpp
 src/combate/Temporizador.cpp
+
+src/discord/ClienteDiscord.cpp
 
 src/general/Bitacora.cpp
 src/general/Configuracion.cpp
@@ -122,10 +147,6 @@ src/recursos/SelectorJugadorParaMando.cpp
 add_executable(EraseUnActualizador
 src/actualizador/main.cpp)
 
-# Se especifica que el estándar de C++ que se quiere usar es el de 2020
-target_compile_features(EraseUnCombate PRIVATE cxx_std_20)
-# target_compile_features(EraseUnActualizador PRIVATE cxx_std_20)
-
 # Se especifican directorios de include específicos al actualizador
 target_include_directories(EraseUnActualizador PRIVATE
     ${zlib_SOURCE_DIR}
@@ -133,9 +154,27 @@ target_include_directories(EraseUnActualizador PRIVATE
     ${minizip_SOURCE_DIR}/lib
 )
 
+# Se indica dónde están los headers del SKD de Discord
+target_include_directories(EraseUnCombate PRIVATE ${DISCORD_SDK_INCLUDE_DIR})
+
 # Se especifican los cinco módulos de SFML y el módulo de yaml-cpp
 target_link_libraries(EraseUnCombate PRIVATE SFML::Graphics SFML::Network SFML::Window SFML::System SFML::Audio yaml-cpp::yaml-cpp)
 target_link_libraries(EraseUnActualizador PRIVATE SFML::Graphics SFML::Network SFML::Window SFML::System SFML::Audio cpr::cpr nlohmann_json::nlohmann_json zip)
+
+# Se especifica la biblioteca del SDK de Discord
+target_link_libraries(EraseUnCombate PRIVATE ${DISCORD_LIB_PATH})
+
+# Se especifica la ruta en la que se buscarán las cosillas necesarias
+# durante la ejecución (RPATH) para Linux y macOS
+if(UNIX)
+    # Se usa RPATH al compilar
+    set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+    # El RPATH usará el directorio lib relativo al ejecutable
+    set(CMAKE_INSTALL_RPATH "$ORIGIN")
+    if(APPLE)
+        set(CMAKE_INSTALL_RPATH "@executable_path")
+    endif()
+endif()
 
 # Se especifica que el juego no debería tener una ventana de consola de comandos (pero
 # del actualizador no se dice nada porque este sí debería tener)
@@ -143,3 +182,14 @@ target_link_options(EraseUnCombate PRIVATE) # -mwindows)
 
 # Opciones de compilación para que salgan warnings
 add_compile_options(-Wall -Wextra -Wpedantic)
+
+set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
+set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
+
+# Se copia la biblioteca compartida del SDK de Discord para que esté
+# disponible durante la ejecución
+add_custom_command(TARGET EraseUnCombate POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${DISCORD_SHARED_LIB}"
+    $<TARGET_FILE_DIR:EraseUnCombate>
+)

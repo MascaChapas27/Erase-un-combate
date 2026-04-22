@@ -8,6 +8,7 @@
 #include "ReproductorDeSonidos.hpp"
 #include "Configuracion.hpp"
 #include "Utilidades.hpp"
+#include "ClienteDiscord.hpp"
 
 // La instancia es nula al principio
 MenuPrincipal * MenuPrincipal::menuPrincipal = nullptr;
@@ -82,6 +83,8 @@ void MenuPrincipal::cambiarPosicionRelativa()
 
 TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
 
+    ClienteDiscord::unicaInstancia()->actualizarRichPresence("En el menú principal", "Eligiendo un modo de juego...");
+
     resetear();
 
     ReproductorDeMusica::unicaInstancia()->reproducir("musica/menu-principal.ogg");
@@ -106,6 +109,8 @@ TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
 
         if(selectorPulsado)
             contadorSelectorPulsado++;
+        
+        discordpp::RunCallbacks();
 
         while(const std::optional evento = ventana->pollEvent()){
             if(evento->is<sf::Event::Closed>()){

@@ -26,6 +26,7 @@ enum class EstadoPersonaje {
     ATAQUE_ALEJANDOSE,  // Está atacando mientras anda al revés del enemigo
     ATAQUE_ACERCANDOSE, // Está atacando mientras anda hacia el enemigo
     ATAQUE_AEREO,       // Está atacando en el aire
+    ATAQUE_CORRIENDO,   // Está atacando tras correr
     ATAQUE_ESPECIAL,    // Está haciendo el ataque especial
     GOLPEADO_PEQUE,     // Ha sufrido un ataque pequeño
     GOLPEADO_MEDIO,     // Ha sufrido un ataque medio

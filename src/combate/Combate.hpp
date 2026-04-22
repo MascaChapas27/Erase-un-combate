@@ -108,6 +108,9 @@ class Combate{
         // Como recibirEntradaPlayerVSPlayerOffline() pero esta vez el jugador 2 es un bot
         void recibirEntradaPlayerVSBot();
 
+        // Permite actualizar la Rich Presence de Discord
+        void actualizarRichPresence();
+
     public:
         // Construye el combate en base a los nombres de los personajes
         // y del escenario en el que se va a pelear. También es necesario especificar la dirección IP del jugador

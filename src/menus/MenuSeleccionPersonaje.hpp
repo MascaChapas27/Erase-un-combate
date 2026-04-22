@@ -26,9 +26,6 @@ class MenuSeleccionPersonaje {
         // La única instancia
         static MenuSeleccionPersonaje * menuSeleccionPersonaje;
 
-        // Un vector con todos los nombres de personajes que hay disponibles
-        std::vector<std::string> nombresPersonajes;
-
         // El índice del vector nombresPersonajes donde está el nombre del
         // personaje que está seleccionando cada jugador
         unsigned int indiceJugador1;

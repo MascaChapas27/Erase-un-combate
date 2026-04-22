@@ -10,22 +10,24 @@
 #include <omp.h>
 #include <iostream>
 #include <list>
+#include <ClienteDiscord.hpp>
 
 // Al usar initializer lists o como se diga en españolo me evito que se creen los
 // personajes usando el constructor vacío para nada (porque se queja el g++ más que nada)
-Combate::Combate(std::string nombrePersonajeJ1, std::string nombrePersonajeJ2, std::string nombreEscenario, sf::IpAddress direccionIP, bool lider) : personajeJugador1(ContenedorDePersonajes::unicaInstancia()->obtenerPersonaje(nombrePersonajeJ1)),
-                                                                                                                                                     personajeJugador2(ContenedorDePersonajes::unicaInstancia()->obtenerPersonaje(nombrePersonajeJ2)),
-                                                                                                                                                     GUIJugador1(personajeJugador1, true), GUIJugador2(personajeJugador2, false),
-                                                                                                                                                     escenario(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/escenarios/" + nombreEscenario + ".png")),
-                                                                                                                                                     contadorHitstop(0),
-                                                                                                                                                     cartelTodoListo(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-todo-listo")),
-                                                                                                                                                     cartelAPelear(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-a-pelear")),
-                                                                                                                                                     cartelJugador1Gana(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-jugador-1-gana")),
-                                                                                                                                                     cartelJugador1Perfecto(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-jugador-1-perfecto")),
-                                                                                                                                                     cartelJugador2Gana(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-jugador-2-gana")),
-                                                                                                                                                     cartelJugador2Perfecto(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-jugador-2-perfecto")),
-                                                                                                                                                     cartelEmpate(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-empate")),
-                                                                                                                                                     temporizador(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/temporizador.png"),ContenedorDeFuentes::unicaInstancia()->obtener("fuentes/daniela.ttf"),FOTOGRAMAS_POR_TICK_TEMPORIZADOR,TICKS_CONTADOR_TEMPORIZADOR)
+Combate::Combate(std::string nombrePersonajeJ1, std::string nombrePersonajeJ2, std::string nombreEscenario, sf::IpAddress direccionIP, bool lider) :
+    personajeJugador1(ContenedorDePersonajes::unicaInstancia()->obtenerPersonaje(nombrePersonajeJ1)),
+    personajeJugador2(ContenedorDePersonajes::unicaInstancia()->obtenerPersonaje(nombrePersonajeJ2)),
+    GUIJugador1(personajeJugador1, true), GUIJugador2(personajeJugador2, false),
+    escenario(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/escenarios/" + nombreEscenario + ".png")),
+    contadorHitstop(0),
+    cartelTodoListo(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-todo-listo")),
+    cartelAPelear(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-a-pelear")),
+    cartelJugador1Gana(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-jugador-1-gana")),
+    cartelJugador1Perfecto(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-jugador-1-perfecto")),
+    cartelJugador2Gana(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-jugador-2-gana")),
+    cartelJugador2Perfecto(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-jugador-2-perfecto")),
+    cartelEmpate(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("cartel-empate")),
+    temporizador(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/gui/temporizador.png"),ContenedorDeFuentes::unicaInstancia()->obtener("fuentes/daniela.ttf"),FOTOGRAMAS_POR_TICK_TEMPORIZADOR,TICKS_CONTADOR_TEMPORIZADOR)
 {
     personajeJugador1.setPunteroHitstop(&contadorHitstop);
     personajeJugador2.setPunteroHitstop(&contadorHitstop);
@@ -679,6 +681,7 @@ void Combate::actualizarFotogramaCelebracion(std::list<std::shared_ptr<Animacion
                 GUIJugador1.ganarRonda();
             else
                 GUIJugador2.ganarRonda();
+            actualizarRichPresence();
         }
         // Si ya se le ha dicho que celebre, se oscurece el rectángulo si ha terminado de celebrar
         else if (ganador.getEstado() == EstadoPersonaje::CELEBRANDO && ganador.getAnimacionSegunEstado(EstadoPersonaje::CELEBRANDO)->haTerminado() &&
@@ -758,8 +761,15 @@ void Combate::actualizarFotogramaCelebracion(std::list<std::shared_ptr<Animacion
     ventana->display();
 }
 
+void Combate::actualizarRichPresence()
+{
+    ClienteDiscord::unicaInstancia()->actualizarRichPresence("En una Batalla VS","J1: "+std::to_string(GUIJugador1.getRondasGanadas())+" - J2: "+std::to_string(GUIJugador2.getRondasGanadas()));
+}
+
 void Combate::comenzar()
 {
+    actualizarRichPresence();
+
     // En esta lista hay efectos como objetos voladores o efectos de golpe
     std::list<std::shared_ptr<Animacion>> efectos;
 

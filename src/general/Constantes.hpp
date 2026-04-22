@@ -536,6 +536,14 @@ constexpr uint8_t BIT_ABAJO = 8;
 // Bit que indica que el otro jugador ha atacado
 constexpr uint8_t BIT_ATAQUE = 16;
 
+
+/*
+    CONSTANTES PARA DISCORD
+*/
+
+// Identificador de la aplicación de Discord
+const uint64_t APPLICATION_ID = 1496122803756208279;
+
 /*
     CONSTANTES AUXILIARES PARA COSAS DE C++
 */
