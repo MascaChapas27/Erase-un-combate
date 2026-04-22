@@ -1,0 +1,23 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Create build directory
+      run: mkdir build
+    - name: Change directory to build directory
+      run: cd build
+    - name: Create ninja.build using CMake
+      run: cmake .. -G Ninja
+    - name: Compile using ninja
+      run: ninja
