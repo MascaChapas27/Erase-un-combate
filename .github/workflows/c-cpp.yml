@@ -9,18 +9,10 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
-    - name: List contents of current directory
-      run: ls
-    - name: Clone repository
-      run: git clone https://github.com/MascaChapas27/Erase-un-combate
-    - name: Change directory to the repository directory
-      run: cd Erase-un-combate
-    - name: List contents of repository
-      run: ls
     - name: Create build directory
       run: mkdir build
     - name: Change directory to build directory
