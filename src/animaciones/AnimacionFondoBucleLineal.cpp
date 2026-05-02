@@ -160,8 +160,3 @@ std::shared_ptr<Animacion> AnimacionFondoBucleLineal::clonar()
 {
     return std::make_shared<AnimacionFondoBucleLineal>(*this);
 }
-
-void AnimacionFondoBucleLineal::chocar(Hitbox hitbox)
-{
-    
-}

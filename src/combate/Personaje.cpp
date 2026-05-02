@@ -1226,13 +1226,16 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
     // saltando al colisionar
     bool colisionVoladora = false;
 
+    // Aquí se almacenará la animación cuya hitbox ha sido elegida para golpear
+    // al personaje
+    std::shared_ptr<Animacion> animacionElegida;
+
     for (std::shared_ptr<Animacion> anim : animaciones)
     {
         for (Hitbox hEnemigo : anim->getHitboxes())
         {
             for (Hitbox hPropia : hitboxes)
             {
-
                 sf::IntRect rectEnemigo = hEnemigo.getRectangulo();
                 rectEnemigo.position.x += anim->getPosicionEsqSupIzq().x;
                 rectEnemigo.position.y += anim->getPosicionEsqSupIzq().y;
@@ -1246,6 +1249,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
                 if (hayInterseccion && hEnemigo.getFuerzaAtaque() > hitboxElegidaEnemigo.getFuerzaAtaque())
                 {
                     hitboxElegidaEnemigo = Hitbox(rectEnemigo, hEnemigo.getFuerzaAtaque(), hEnemigo.esAtaqueBajo());
+                    animacionElegida = anim;
                     hitboxElegidaPropia = Hitbox(rectPropio, hPropia.getFuerzaAtaque(), hPropia.esAtaqueBajo());
                 }
                 else if (hayInterseccion && hEnemigo.getFuerzaAtaque() == 0)
@@ -1316,7 +1320,10 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         return;
     }
 
-    // Si sí que hubo golpe, depende ya de cómo le pille al personaje
+    // Si sí que hubo golpe, depende ya de cómo le pille al personaje. Primero,
+    // se le avisa a la animación elegida de que ha golpeado a nuestro
+    // personaje
+    animacionElegida->chocar();
 
     // El ataque súper es inesquivablemente mortal
     if (hitboxElegidaEnemigo.getFuerzaAtaque() > MAX_ATAQUE_MEDIO)

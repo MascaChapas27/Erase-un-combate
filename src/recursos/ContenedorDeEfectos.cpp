@@ -137,6 +137,24 @@ void ContenedorDeEfectos::cargarTodosLosEfectos()
             for(size_t i = 0; i < fichero["fotogramas"].size(); i++)
             {
                 ingredientes.rectanguloCorrespondiente[i] = fichero["fotogramas"][i].as<int>();
+
+                // Por defecto, todos los fotogramas pertenecen al grupo de colisión 0
+                ingredientes.fotogramaAGrupoDeColision[i] = 0;
+            }
+
+            // Por defecto, solo hay un grupo de colisión (el 0)
+            ingredientes.numGruposDeColision = 1;
+
+            // Se sacan los grupos de colisión adicionales. Se itera por
+            // cada grupo de colisión
+            for(size_t i = 0; i < fichero["grupos-de-colision"].size(); i++)
+            {
+                ingredientes.numGruposDeColision++;
+                Bitacora::unicaInstancia()->escribir("Juan Cuesta: Encontrado nuevo grupo de colisión. Ahora hay "+std::to_string(ingredientes.numGruposDeColision)+" grupos.");
+                // Y dentro de cada grupo de colisión se itera por cada fotograma
+                for(size_t j = 0; j < fichero["grupos-de-colision"][i].size(); j++){
+                    ingredientes.fotogramaAGrupoDeColision[fichero["grupos-de-colision"][i][j].as<int>()] = i+1;
+                }
             }
 
             if(fichero["sonido"]){

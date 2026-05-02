@@ -143,10 +143,6 @@ std::shared_ptr<Animacion> AnimacionConGravedad::clonar(){
     return std::make_shared<AnimacionConGravedad>(*this);
 }
 
-void AnimacionConGravedad::chocar(Hitbox hitbox){
-    hitbox.getRectangulo();
-}
-
 void AnimacionConGravedad::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     if(contadorParpadeo%(DURACION_PARPADEO*2) < DURACION_PARPADEO)
     {

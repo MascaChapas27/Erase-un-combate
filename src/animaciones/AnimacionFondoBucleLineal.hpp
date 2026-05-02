@@ -47,10 +47,6 @@ class AnimacionFondoBucleLineal : public Animacion
         // Devuelve un clon de la animación
         std::shared_ptr<Animacion> clonar();
 
-        // Esto se usaría para indicar a la animación que ha chocado
-        // con una hitbox, pero los fondos no chocan con nada
-        void chocar(Hitbox hitbox);
-
         // Las clases que heredan de sf::Drawable deben implementar draw
         void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

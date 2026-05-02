@@ -44,9 +44,8 @@ class Animacion : public sf::Drawable {
         // Devuelve un clon de la animación
         virtual std::shared_ptr<Animacion> clonar() = 0;
 
-        // Indica a la animación que acaba de chocar contra una hitbox (SE SUPONE QUE
-        // LA HITBOX VIENE CON SU POSICION RELATIVA A LA PARTE DE ARRIBA A LA IZQUIERDA)
-        virtual void chocar(Hitbox hitbox);
+        // Indica a la animación que acaba de chocar
+        virtual void chocar();
 
         // Las clases que heredan de sf::Drawable deben implementar draw
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

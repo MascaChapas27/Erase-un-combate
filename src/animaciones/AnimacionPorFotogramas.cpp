@@ -18,6 +18,10 @@ Animacion(ContenedorDeTexturas::unicaInstancia()->obtener(ingredientes.rutaTextu
 
     this->tipoBucle = ingredientes.tipoBucle;
     this->hitboxes = ingredientes.hitboxes;
+    this->fotogramaAGrupoDeColision = ingredientes.fotogramaAGrupoDeColision;
+    for(int i=0;i<ingredientes.numGruposDeColision;i++){
+        this->grupoDeColisionActivo[i] = true;
+    }
     this->rectanguloCorrespondiente = ingredientes.rectanguloCorrespondiente;
     this->rutaSonido = ingredientes.rutaSonido;
     this->fotogramasConSonido = ingredientes.fotogramasConSonido;
@@ -156,6 +160,10 @@ void AnimacionPorFotogramas::resetear(){
     sonidoYaReproducido = false;
     primerFotograma = true;
 
+    for(int i=0;i<grupoDeColisionActivo.size();i++){
+        grupoDeColisionActivo[i] = true;
+    }
+
     sprite.setTextureRect(sf::IntRect({rectanguloCorrespondiente[fotogramaActual]*sprite.getTextureRect().size.x,0}, {sprite.getTextureRect().size.x,sprite.getTextureRect().size.y}));
 }
 
@@ -163,12 +171,16 @@ std::shared_ptr<Animacion> AnimacionPorFotogramas::clonar(){
     return std::make_shared<AnimacionPorFotogramas>(*this);
 }
 
+void AnimacionPorFotogramas::chocar()
+{
+    int grupoDeColision = fotogramaAGrupoDeColision[fotogramaActual];
+
+    grupoDeColisionActivo[grupoDeColision] = false;
+}
+
 std::vector<Hitbox> AnimacionPorFotogramas::getHitboxes(){
-    // Cuando un rectángulo tiene una hitbox con daño, solo el primer fotograma de ese rectángulo hará
-    // realmente daño. Esto hace que si un rectángulo con hitbox dañina dura varios fotogramas, solo el
-    // primero sea el que cause daño, mientras que los siguientes son para que la animación se vea
-    // más bonita y dé tiempo a verla, y así no pase demasiado rápido
-    if(fotogramaActual > 0 && rectanguloCorrespondiente[fotogramaActual] == rectanguloCorrespondiente[fotogramaActual-1])
+
+    if(!grupoDeColisionActivo[fotogramaAGrupoDeColision[fotogramaActual]])
     {
         std::vector<Hitbox> nuevasHitboxes = hitboxes[rectanguloCorrespondiente[fotogramaActual]];
 

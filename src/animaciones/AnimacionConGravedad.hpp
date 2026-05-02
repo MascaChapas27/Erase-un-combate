@@ -57,9 +57,6 @@ public:
     // Devuelve un clon de la animación
     std::shared_ptr<Animacion> clonar();
 
-    // Indica a la animación que ha chocado con una hitbox
-    void chocar(Hitbox hitbox);
-
     // Dibuja la animación con gravedad, pudiendo no dibujarla a veces para el efecto
     // de parpadeo al chocarse
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;

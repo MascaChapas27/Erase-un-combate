@@ -213,6 +213,12 @@ estados:
           ancho: 27
           alto: 71
           ataque: 0
+        - posX: 93
+          posY: 60
+          ancho: 12
+          alto: 12
+          ataque: 1
+          bajo: false
     fotogramas: [0,0,0,0,1,1,2,2,2]
     sonido:
       tipo: "No repetir"
@@ -242,6 +248,12 @@ estados:
           ancho: 27
           alto: 71
           ataque: 0
+        - posX: 89
+          posY: 63
+          ancho: 17
+          alto: 12
+          ataque: 2
+          bajo: false
       - - posX: 51
           posY: 29
           ancho: 27
@@ -276,6 +288,12 @@ estados:
           ancho: 27
           alto: 71
           ataque: 0
+        - posX: 86
+          posY: 56
+          ancho: 14
+          alto: 16
+          ataque: 5
+          bajo: false
       - - posX: 54
           posY: 29
           ancho: 27
@@ -310,6 +328,12 @@ estados:
           ancho: 27
           alto: 71
           ataque: 0
+        - posX: 89
+          posY: 58
+          ancho: 10
+          alto: 15
+          ataque: 2
+          bajo: false
       - - posX: 54
           posY: 29
           ancho: 27
@@ -326,10 +350,19 @@ estados:
           ancho: 27
           alto: 71
           ataque: 0
+        - posX: 98
+          posY: 59
+          ancho: 10
+          alto: 15
+          ataque: 2
+          bajo: false
     fotogramas: [0,0,0,0,1,1,2,2,2,2,2,0,0,3,3,4,4,4,4,4,0,0,0,0]
+    grupos-de-colision:
+      - [4,5,6,7,8,9,10]
+      - [13,14,15,16,17,18,19]
     sonido:
       tipo: "No repetir"
-      fotogramas: [4,16]
+      fotogramas: [4,13]
 
   ataque-acercandose:
     bucle: "Sin bucle"
@@ -355,6 +388,12 @@ estados:
           ancho: 27
           alto: 68
           ataque: 0
+        - posX: 93
+          posY: 74
+          ancho: 11
+          alto: 11
+          ataque: 4
+          bajo: false
       - - posX: 54
           posY: 32
           ancho: 27
@@ -403,6 +442,12 @@ estados:
           ancho: 27
           alto: 71
           ataque: 0
+        - posX: 68
+          posY: 49
+          ancho: 17
+          alto: 38
+          ataque: 5
+          bajo: false
       - - posX: 54
           posY: 29
           ancho: 27
@@ -479,6 +524,12 @@ estados:
           alto: 71
           ataque: 0
     fotogramas: [0,0,0,0,0,0,0,1,1,5,5,5,2,2,4,4,4,2,2,3,3,3,2,2,4,4,4,2,2,3,3,3,2,2,2,2,2,6,6,6,6,6]
+    grupos-de-colision:
+      - [9,10,11]
+      - [14,15,16]
+      - [19,20,21]
+      - [24,25,26]
+      - [29,30,31]
     sonido:
       tipo: "No repetir"
       fotogramas: [7]
@@ -572,6 +623,12 @@ estados:
           ancho: 27
           alto: 62
           ataque: 0
+        - posX: 87
+          posY: 78
+          ancho: 14
+          alto: 14
+          ataque: 5
+          bajo: true
       - - posX: 51
           posY: 38
           ancho: 27
@@ -634,6 +691,12 @@ estados:
           ancho: 32
           alto: 37
           ataque: 0
+        - posX: 92
+          posY: 48
+          ancho: 32
+          alto: 37
+          ataque: 5
+          bajo: false
         - posX: 69
           posY: 65
           ancho: 26

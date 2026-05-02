@@ -106,6 +106,9 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
 
             Bitacora::unicaInstancia()->escribir("Juan Cuesta: Encontrado estado \"" + nombreEstado + "\".");
 
+            // Por defecto, solo hay un grupo de colisión (el 0)
+            ingredientes.numGruposDeColision = 1;
+
             // Dentro de este estado se sacan datos
             for(YAML::const_iterator itAtributoEstado = itEstado->second.begin(); itAtributoEstado != itEstado->second.end(); ++itAtributoEstado)
             {
@@ -157,6 +160,23 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
                     for(size_t fotogramaActual = 0; fotogramaActual < itAtributoEstado->second.size(); fotogramaActual++)
                     {
                         ingredientes.rectanguloCorrespondiente[fotogramaActual] = itAtributoEstado->second[fotogramaActual].as<int>();
+                        
+                        // Por defecto, todos los fotogramas pertenecen al grupo de colisión 0
+                        ingredientes.fotogramaAGrupoDeColision[fotogramaActual] = 0;
+                    }
+                }
+
+                // Se saca la info sobre los grupos de colisión
+                else if(itAtributoEstado->first.as<std::string>() == "grupos-de-colision")
+                {
+                    for(size_t grupoDeColisionActual = 0; grupoDeColisionActual < itAtributoEstado->second.size(); grupoDeColisionActual++)
+                    {
+                        ingredientes.numGruposDeColision++;
+                        for(int indiceFotograma = 0; indiceFotograma < itAtributoEstado->second[grupoDeColisionActual].size(); indiceFotograma++)
+                        {
+                            int fotograma = itAtributoEstado->second[grupoDeColisionActual][indiceFotograma].as<int>();
+                            ingredientes.fotogramaAGrupoDeColision[fotograma] = grupoDeColisionActual+1;
+                        }
                     }
                 }
 
@@ -242,6 +262,8 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
                     }
                 }
             }
+
+            Bitacora::unicaInstancia()->escribir("Juan Cuesta: Se han encontrado "+std::to_string(ingredientes.numGruposDeColision)+" grupos de colisión.");
 
             std::shared_ptr<AnimacionPorFotogramas> anim = std::make_shared<AnimacionPorFotogramas>(ingredientes);
 

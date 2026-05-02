@@ -34,6 +34,13 @@ struct IngredientesAnimacionPorFotogramas
     // Correspondencia entre rectángulo y hitboxes
     std::unordered_map<int, std::vector<Hitbox>> hitboxes;
 
+    // Dado un fotograma, indica el grupo de colisión correspondiente
+    std::unordered_map<int, int> fotogramaAGrupoDeColision;
+
+    // Indica cuántos grupos de colisión hay en total (desde el grupo 0 hasta
+    // el grupo numGruposDeColision-1)
+    int numGruposDeColision;
+
     // Correspondencia entre fotograma y rectángulo (por ejemplo, fotograma 0 rectángulo 0, o fotograma 5 rectángulo 2)
     std::unordered_map<int, int> rectanguloCorrespondiente;
 
@@ -72,6 +79,12 @@ private:
 
     // Correspondencia entre rectángulo y hitboxes
     std::unordered_map<int, std::vector<Hitbox>> hitboxes;
+
+    // Dado un fotograma, indica el grupo de colisión correspondiente
+    std::unordered_map<int, int> fotogramaAGrupoDeColision;
+
+    // Dado un grupo de colisión, indica si está activo o no
+    std::unordered_map<int,bool> grupoDeColisionActivo;
 
     // Correspondencia entre fotograma y rectángulo (por ejemplo, fotograma 0 rectángulo 0, o fotograma 5 rectángulo 2)
     std::unordered_map<int, int> rectanguloCorrespondiente;
@@ -137,6 +150,9 @@ public:
 
     // Resetea la animación al primer fotograma y el primer rectángulo
     void resetear();
+
+    // Indica a la animación que acaba de chocar
+    void chocar();
 
     // Devuelve un clon de la animación
     std::shared_ptr<Animacion> clonar();

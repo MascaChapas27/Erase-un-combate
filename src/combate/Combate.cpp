@@ -435,8 +435,8 @@ void Combate::actualizarFotogramaNormal(std::list<std::shared_ptr<Animacion>> &e
     // aseguro que se puedan comprobar las colisiones en paralelo sin que haya problemas. Se crea una copia de la animación actual
     // de cada jugador (empiezo a pensar que paralelizar esto va a ser más porculero que hacerlo secuencial)
 
-    efectosA.push_back(personajeJugador2.getAnimacionSegunEstado(personajeJugador2.getEstado())->clonar());
-    efectosB.push_back(personajeJugador1.getAnimacionSegunEstado(personajeJugador1.getEstado())->clonar());
+    efectosA.push_back(personajeJugador2.getAnimacionSegunEstado(personajeJugador2.getEstado()));
+    efectosB.push_back(personajeJugador1.getAnimacionSegunEstado(personajeJugador1.getEstado()));
 
     // bool golpeadoMedioAntes = personajeJugador1.getEstado() == EstadoPersonaje::GOLPEADO_MEDIO || personajeJugador2.getEstado() == EstadoPersonaje::GOLPEADO_MEDIO;
 
@@ -594,8 +594,8 @@ void Combate::actualizarFotogramaCelebracion(std::list<std::shared_ptr<Animacion
     // aseguro que se puedan comprobar las colisiones en paralelo sin que haya problemas. Se crea una copia de la animación actual
     // de cada jugador (empiezo a pensar que paralelizar esto va a ser más porculero que hacerlo secuencial)
 
-    efectosA.push_back(personajeJugador2.getAnimacionSegunEstado(personajeJugador2.getEstado())->clonar());
-    efectosB.push_back(personajeJugador1.getAnimacionSegunEstado(personajeJugador1.getEstado())->clonar());
+    efectosA.push_back(personajeJugador2.getAnimacionSegunEstado(personajeJugador2.getEstado()));
+    efectosB.push_back(personajeJugador1.getAnimacionSegunEstado(personajeJugador1.getEstado()));
 
     // Aquí se meten los nuevos efectos que se generen al actualizar los personajes
     std::list<std::shared_ptr<Animacion>> nuevosEfectosA;

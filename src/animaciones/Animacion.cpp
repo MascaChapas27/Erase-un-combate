@@ -1,5 +1,6 @@
 #include "Animacion.hpp"
 #include "Constantes.hpp"
+#include <iostream>
 
 Animacion::Animacion(sf::Texture &textura) : sprite(textura) {
     // Se inicializa la posición en el 0,0
@@ -53,8 +54,8 @@ void Animacion::mover(sf::Vector2f diferencia){
     mover(diferencia.x,diferencia.y);
 }
 
-void Animacion::chocar(Hitbox hitbox){
-    // Solo las animaciones con gravedad necesitan saber que chocan
+void Animacion::chocar(){
+    
 }
 
 void Animacion::draw(sf::RenderTarget& target, sf::RenderStates states) const{
