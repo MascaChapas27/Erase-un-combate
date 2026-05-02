@@ -45,6 +45,7 @@ namespace util{
         {"ataque-normal-3", EstadoPersonaje::ATAQUE_NORMAL_3},
         {"ataque-alejandose", EstadoPersonaje::ATAQUE_ALEJANDOSE},
         {"ataque-acercandose", EstadoPersonaje::ATAQUE_ACERCANDOSE},
+        {"ataque-corriendo", EstadoPersonaje::ATAQUE_CORRIENDO},
         {"ataque-aereo", EstadoPersonaje::ATAQUE_AEREO},
         {"ataque-especial", EstadoPersonaje::ATAQUE_ESPECIAL},
         {"golpeado-peque", EstadoPersonaje::GOLPEADO_PEQUE},
