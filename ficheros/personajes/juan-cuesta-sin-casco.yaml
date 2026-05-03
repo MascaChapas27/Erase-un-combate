@@ -448,6 +448,11 @@ estados:
           alto: 38
           ataque: 5
           bajo: false
+      - - posX: 55
+          posY: 26
+          ancho: 27
+          alto: 71
+          ataque: 0
       - - posX: 54
           posY: 29
           ancho: 27
@@ -458,13 +463,13 @@ estados:
           ancho: 27
           alto: 71
           ataque: 0
-    fotogramas: [0,0,0,0,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4]
+    fotogramas: [0,0,0,0,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,4,4,4,4,4,4,4,5,5,5,5]
     sonido:
       tipo: "No repetir"
       fotogramas: [4]
     movimientos:
       - fotograma: 4
-        velX: 3
+        velX: 4
         velY: 0
   
   ataque-especial:
