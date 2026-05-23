@@ -250,7 +250,8 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
 
         // Si estamos saliendo, se aumenta el contador que indica desde hace
         // cuántos frames estamos saliendo
-        contadorSaliendo++;
+        if(saliendo)
+            contadorSaliendo++;
 
         // Asumimos que selectoresPersonajeJugador1 tiene la misma longitud
         // que selectoresPersonajeJugador2 porque se supone que ambos jugadores
