@@ -209,13 +209,13 @@ constexpr sf::Color COLOR_FONDO_SELECTOR_MENU_PRINCIPAL_SIN_SELECCIONAR = sf::Co
 // Color del fondo correspondiente al selector seleccionado
 constexpr sf::Color COLOR_FONDO_SELECTOR_MENU_PRINCIPAL_SELECCIONADO = sf::Color(255,255,255,255);
 
-// Número de frames que espera el juego desde que selecciona una opción del menú principal
-// hasta que la pantalla empieza a fundirse en negro para ir al menú de esa opción
-constexpr int FRAMES_ESPERA_SALIR_MENU_PRINCIPAL = 60;
-
 // La cantidad de píxeles que se mueven los fondos de dientes
 // de sierra oscuros cada frame
 constexpr float DIENTES_SIERRA_MENU_PRINCIPAL_VELOCIDAD = 1.f/5.f;
+
+// Número de frames que espera el juego desde que selecciona una opción de un menú
+// hasta que la pantalla empieza a fundirse en negro para ir a otro sitio
+constexpr int FRAMES_ESPERA_SALIR_MENU = 60;
 
 
 /*

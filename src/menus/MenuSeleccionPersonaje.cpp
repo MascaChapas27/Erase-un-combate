@@ -28,7 +28,7 @@ MenuSeleccionPersonaje::~MenuSeleccionPersonaje(){
 }
 
 MenuSeleccionPersonaje::MenuSeleccionPersonaje() :
-indiceJugador1(0), indiceJugador2(1), personajeElegidoJugador1(false), personajeElegidoJugador2(false),
+indiceJugador1(0), indiceJugador2(1), personajeElegidoJugador1(false), personajeElegidoJugador2(false), contadorSaliendo(0),
 spriteMarco(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/marco.png")),
 fondoCuadriculado(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-cuadricula.png"),Direccion::ARRIBA_IZQUIERDA,VELOCIDAD_FONDO_CUADRICULADO_SELECCION_PERSONAJE),
 fondoJ1Elegido(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-j1-seleccionado.png"),Direccion::ARRIBA,VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO,sf::Vector2i(VENTANA_ANCHURA/2,0)),
@@ -84,6 +84,7 @@ void MenuSeleccionPersonaje::resetear()
     indiceJugador2 = 1;
     personajeElegidoJugador1 = false;
     personajeElegidoJugador2 = false;
+    contadorSaliendo = 0;
 
     for(int i=0;i<selectoresPersonajeJugador1.size();i++)
     {
@@ -139,6 +140,8 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
                 saliendo = true;
                 ReproductorDeMusica::unicaInstancia()->detener();
                 ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/salir.ogg");
+
+                personajesElegidos.clear();
             }
             else if(infoEvento.accion == Accion::DERECHA && infoEvento.realizada)
             {
@@ -245,6 +248,10 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
             }
         }
 
+        // Si estamos saliendo, se aumenta el contador que indica desde hace
+        // cuántos frames estamos saliendo
+        contadorSaliendo++;
+
         // Asumimos que selectoresPersonajeJugador1 tiene la misma longitud
         // que selectoresPersonajeJugador2 porque se supone que ambos jugadores
         // tienen acceso a los mismos personajes
@@ -268,23 +275,15 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
         {
             ReproductorDeMusica::unicaInstancia()->detener();
 
-            // Puede que se hayan elegido los personajes demasiado rápido y no
-            // haya dado tiempo a que el rectángulo negro se vuelva transparente
-            // del todo, así que se pone transpa
-            sf::Color nuevoColor = rectanguloNegro.getFillColor();
-
             saliendo = true;
         }
 
         // Se cambia la opacidad del rectángulo negro según sea necesario
-        if(rectanguloNegro.getFillColor().a > 0 && !saliendo)
-        {
+        if(rectanguloNegro.getFillColor().a > 0 && (!saliendo || (saliendo && (contadorSaliendo < FRAMES_ESPERA_SALIR_MENU && personajesElegidos.size() > 0))))
             rectanguloNegro.setFillColor(sf::Color(rectanguloNegro.getFillColor().r, rectanguloNegro.getFillColor().g, rectanguloNegro.getFillColor().b, rectanguloNegro.getFillColor().a-5));
-        }
-        else if (saliendo && animaciones.empty() && rectanguloNegro.getFillColor().a < 255)
-        {
+
+        else if (saliendo && (contadorSaliendo >= FRAMES_ESPERA_SALIR_MENU || personajesElegidos.size() == 0))
             rectanguloNegro.setFillColor(sf::Color(rectanguloNegro.getFillColor().r, rectanguloNegro.getFillColor().g, rectanguloNegro.getFillColor().b, rectanguloNegro.getFillColor().a+5));
-        }
 
         // Se actualizan las animaciones
         std::list<std::shared_ptr<Animacion>> nuevasAnimaciones;

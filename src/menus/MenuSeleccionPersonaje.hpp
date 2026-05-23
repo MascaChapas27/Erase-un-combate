@@ -35,6 +35,10 @@ class MenuSeleccionPersonaje {
         bool personajeElegidoJugador1;
         bool personajeElegidoJugador2;
 
+        // Un contador que indica desde hace cuántos fotogramas terminó
+        // la selección de personaje de forma satisfactoria
+        unsigned int contadorSaliendo;
+
         // El sprite del marco principal del menú de selección de personajes
         sf::Sprite spriteMarco;
 

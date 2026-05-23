@@ -155,11 +155,11 @@ TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
         }
 
         // Se cambia la opacidad del rectángulo negro según sea necesario
-        if(rectanguloNegro.getFillColor().a > 0 && (!selectorPulsado || (selectorPulsado && contadorSelectorPulsado < FRAMES_ESPERA_SALIR_MENU_PRINCIPAL))){
+        if(rectanguloNegro.getFillColor().a > 0 && (!selectorPulsado || (selectorPulsado && contadorSelectorPulsado < FRAMES_ESPERA_SALIR_MENU)))
             rectanguloNegro.setFillColor(sf::Color(rectanguloNegro.getFillColor().r, rectanguloNegro.getFillColor().g, rectanguloNegro.getFillColor().b, rectanguloNegro.getFillColor().a-5));
-        } else if (selectorPulsado && contadorSelectorPulsado >= FRAMES_ESPERA_SALIR_MENU_PRINCIPAL && rectanguloNegro.getFillColor().a < 255){
+        
+        else if (selectorPulsado && contadorSelectorPulsado >= FRAMES_ESPERA_SALIR_MENU && rectanguloNegro.getFillColor().a < 255)
             rectanguloNegro.setFillColor(sf::Color(rectanguloNegro.getFillColor().r, rectanguloNegro.getFillColor().g, rectanguloNegro.getFillColor().b, rectanguloNegro.getFillColor().a+5));
-        }
 
         // Se mueven los fondos de dientes de sierra
         dientesSierraArriba.actualizar(nuevasAnimaciones);
