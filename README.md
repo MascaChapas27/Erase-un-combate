@@ -50,10 +50,10 @@ pacman -S mingw-w64-ucrt-x86_64-gcc
 
 Ahora escribe `Y` y pulsa Enter. Todas las herramientas necesarias comenzarán a instalarse. Sabrás que ha terminado cuando aparezcan otra vez las letras en verde con tu nombre de usuario y el nombre de tu ordenador, junto con las letras en morado que dicen UCRT64.
 
-A continuación, será necesario descargar dos herramientas adicionales. Ejecuta el siguiente comando:
+A continuación, será necesario descargar algunas herramientas adicionales. Ejecuta el siguiente comando:
 
 ```bash
-pacman -S mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja
+pacman -S mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-curl
 ```
 
 El procedimiento es igual. Pulsa `Y` y luego pulsa Enter. Cuando termine de instalarse, podrás cerrar la ventana negra.

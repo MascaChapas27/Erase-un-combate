@@ -1,9 +1,21 @@
-# Paso 0: instalar dependencias. CMake, g++, curl, etc etc etc no sé, yo me instalé el MSYS2 y el mingw64 y ahí ya me lo daban todo
+# Paso 0: instalar dependencias. CMake, g++, curl, etc etc etc no sé,
+# yo me instalé el MSYS2 y el mingw64 y ahí ya me lo daban todo (consultar
+# el tutorial del fichero README.md para más info)
+#
 # Paso 1: Crear el directorio build con `mkdir build`
+#
 # Paso 2: Ir al directorio build recién creado con `cd build`
-# Paso 3: Usar CMake para crear toda la morralla en el directorio build. `cmake .. -G Ninja`
-# Paso 4: Compilar usando `ninja` o lo que hayas utilizado para compilar si en vez de `-G Ninja` has puesto algo distinto en el comando de arriba
+#
+# Paso 3: Usar CMake para crear toda la morralla en el directorio
+# build. `cmake .. -G Ninja`
+# Paso 4: Compilar usando `ninja` o lo que hayas utilizado para compilar
+# si en vez de `-G Ninja` has puesto algo distinto en el comando de arriba
+#
 # Paso 5: Ejecutar el juego EraseUnCombate.exe en el directorio principal
+#
+# ADICIONAL: si al ejecutar `cmake .. -G Ninja` parece que todo va bien pero
+# de repente se para y no sale ningún mensaje de error, lo más seguro es que
+# tu antivirus haya parado la compilación por pensar que e
 
 cmake_minimum_required(VERSION 3.28)
 project(EraseUnCombate LANGUAGES CXX)
@@ -12,11 +24,15 @@ project(EraseUnCombate LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Variables de utilidad para el SDK de Discord
-set(DISCORD_SDK_ROOT "${CMAKE_SOURCE_DIR}/lib/discord_social_sdk")
-set(DISCORD_SDK_LIB_DIR "${DISCORD_SDK_ROOT}/lib/release")
-set(DISCORD_SDK_BIN_DIR "${DISCORD_SDK_ROOT}/bin/release")
-set(DISCORD_SDK_INCLUDE_DIR "${DISCORD_SDK_ROOT}/include")
+# Se trae el SDK de Discord desde mi GitHub
+include(FetchContent)
+FetchContent_Declare(
+    discord_sdk
+    URL      https://github.com/MascaChapas27/Erase-Un-Combate/releases/download/deps/discord-social-sdk.zip
+)
+FetchContent_MakeAvailable(discord_sdk)
+
+add_library(discord SHARED IMPORTED)
 
 # El programa se creará en el directorio raíz del proyecto
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
@@ -58,9 +74,7 @@ endif()
 # necesita curl, por lo que se descarga el código e intenta
 # compilarlo. El problema es que da problemas al compilar, así
 # que directamente le digo que use el curl que hay en el sistema
-# y ya está, no me complico la vida (para instalar curl con MSYS2:
-# pacman -S mingw-w64-x86_64-curl)
-# (Para instalarlo en Linux: sudo apt-get install curl libssl-dev libcurl4-openssl-dev)
+# y ya está, no me complico la vida
 set(CPR_USE_SYSTEM_CURL ON CACHE BOOL "" FORCE) # Esto porque da problemas al compilar
 FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/libcpr/cpr.git
                          GIT_TAG master)
@@ -71,27 +85,58 @@ FetchContent_MakeAvailable(cpr)
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz)
 FetchContent_MakeAvailable(json)
 
+# Opciones para que libzip compile lo justo y lo necesario y se deje
+# de pachochadas
+# set(BUILD_TOOLS OFF CACHE BOOL "" FORCE)
+# set(BUILD_REGRESS OFF CACHE BOOL "" FORCE)
+# set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+# set(BUILD_DOC OFF CACHE BOOL "" FORCE)
+
+# Opción para que libzip se compile como librería estática porque si
+# no da errores to raros
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+
 # Libzip para poder extraer la nueva versión del juego al actualizarlo
 FetchContent_Declare(
   libzip
   GIT_REPOSITORY https://github.com/nih-at/libzip.git
-  GIT_TAG main
+  # Cada dos por tres da problemas el libzip así que prefiero quedarme
+  # en una versión estable antes que descargarme el main y que me salgan
+  # 81923 errores nuevos
+  GIT_TAG v1.11.1
 )
 FetchContent_MakeAvailable(libzip)
 
 # Se indica dónde están los headers
 include_directories(src/animaciones src/combate src/general src/menus src/recursos src/discord)
 
+# Variables de utilidad para el SDK de Discord
+set(DISCORD_SDK_LIB_DIR "${discord_sdk_SOURCE_DIR}/lib/release")
+set(DISCORD_SDK_BIN_DIR "${discord_sdk_SOURCE_DIR}/bin/release")
+set(DISCORD_SDK_INCLUDE_DIR "${discord_sdk_SOURCE_DIR}/include")
+
 # Dependiendo de la plataforma se especifica dónde están
 # las bibliotecas necesarias para el SDK de Discord
 if(WIN32)
-    set(DISCORD_LIB_PATH "${DISCORD_SDK_LIB_DIR}/discord_partner_sdk.lib")
+    set_target_properties(discord PROPERTIES
+        IMPORTED_LOCATION "${DISCORD_SDK_BIN_DIR}/discord_partner_sdk.dll"
+        IMPORTED_IMPLIB "${DISCORD_SDK_LIB_DIR}/discord_partner_sdk.lib"
+        INTERFACE_INCLUDE_DIRECTORIES "${DISCORD_SDK_INCLUDE_DIR}"
+    )
     set(DISCORD_SHARED_LIB "${DISCORD_SDK_BIN_DIR}/discord_partner_sdk.dll")
 elseif(APPLE)
-    set(DISCORD_LIB_PATH "${DISCORD_SDK_LIB_DIR}/libdiscord_partner_sdk.dylib")
+    set_target_properties(discord PROPERTIES
+        IMPORTED_LOCATION "${DISCORD_SDK_LIB_DIR}/libdiscord_partner_sdk.dylib"
+        IMPORTED_IMPLIB "${DISCORD_SDK_LIB_DIR}/libdiscord_partner_sdk.dylib"
+        INTERFACE_INCLUDE_DIRECTORIES "${DISCORD_SDK_INCLUDE_DIR}"
+    )
     set(DISCORD_SHARED_LIB "${DISCORD_SDK_LIB_DIR}/libdiscord_partner_sdk.dylib")
 else() # Linux
-    set(DISCORD_LIB_PATH "${DISCORD_SDK_LIB_DIR}/libdiscord_partner_sdk.so")
+    set_target_properties(discord PROPERTIES
+        IMPORTED_LOCATION "${DISCORD_SDK_LIB_DIR}/libdiscord_partner_sdk.so"
+        IMPORTED_IMPLIB "${DISCORD_SDK_LIB_DIR}/libdiscord_partner_sdk.so"
+        INTERFACE_INCLUDE_DIRECTORIES "${DISCORD_SDK_INCLUDE_DIR}"
+    )
     set(DISCORD_SHARED_LIB "${DISCORD_SDK_LIB_DIR}/libdiscord_partner_sdk.so")
 endif()
 
@@ -154,15 +199,9 @@ target_include_directories(EraseUnActualizador PRIVATE
     ${minizip_SOURCE_DIR}/lib
 )
 
-# Se indica dónde están los headers del SKD de Discord
-target_include_directories(EraseUnCombate PRIVATE ${DISCORD_SDK_INCLUDE_DIR})
-
-# Se especifican los cinco módulos de SFML y el módulo de yaml-cpp
-target_link_libraries(EraseUnCombate PRIVATE SFML::Graphics SFML::Network SFML::Window SFML::System SFML::Audio yaml-cpp::yaml-cpp)
+# Se especifican los cinco módulos de SFML, el módulo de yaml-cpp y el módulo de discord
+target_link_libraries(EraseUnCombate PRIVATE SFML::Graphics SFML::Network SFML::Window SFML::System SFML::Audio yaml-cpp::yaml-cpp discord)
 target_link_libraries(EraseUnActualizador PRIVATE SFML::Graphics SFML::Network SFML::Window SFML::System SFML::Audio cpr::cpr nlohmann_json::nlohmann_json zip)
-
-# Se especifica la biblioteca del SDK de Discord
-target_link_libraries(EraseUnCombate PRIVATE ${DISCORD_LIB_PATH})
 
 # Se especifica la ruta en la que se buscarán las cosillas necesarias
 # durante la ejecución (RPATH) para Linux y macOS
@@ -193,3 +232,25 @@ add_custom_command(TARGET EraseUnCombate POST_BUILD
     "${DISCORD_SHARED_LIB}"
     $<TARGET_FILE_DIR:EraseUnCombate>
 )
+
+# Se copian las bibliotecas compartidas de SFML
+# add_custom_command(TARGET EraseUnCombate POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#     "${SFML_BINARY_DIR}/bin/sfml-audio-3.dll"
+#     $<TARGET_FILE_DIR:EraseUnCombate>
+# )
+# add_custom_command(TARGET EraseUnCombate POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#     "${SFML_BINARY_DIR}/bin/sfml-system-3.dll"
+#     $<TARGET_FILE_DIR:EraseUnCombate>
+# )
+# add_custom_command(TARGET EraseUnCombate POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#     "${SFML_BINARY_DIR}/bin/sfml-graphics-3.dll"
+#     $<TARGET_FILE_DIR:EraseUnCombate>
+# )
+# add_custom_command(TARGET EraseUnCombate POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#     "${SFML_BINARY_DIR}/bin/sfml-window-3.dll"
+#     $<TARGET_FILE_DIR:EraseUnCombate>
+# )
