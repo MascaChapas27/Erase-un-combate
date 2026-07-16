@@ -14,6 +14,7 @@
 
 int main(int argc, char* argv[])
 {
+    // Se inicializa el cliente de Discord para actualizar el Rich Presence
     ClienteDiscord::unicaInstancia()->inicializar();
 
     // Los personajes y efectos son recursos que se tienen que cargar desde un principio.

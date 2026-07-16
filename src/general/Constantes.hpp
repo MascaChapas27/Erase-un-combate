@@ -222,6 +222,14 @@ constexpr int FRAMES_ESPERA_SALIR_MENU = 60;
     CONSTANTES PARA EL MENÚ DE SELECCIÓN DE PERSONAJE
 */
 
+// Posición del sprite que indica que al darle a la tecla ESC puedes
+// salir al menú anterior
+constexpr sf::Vector2f POSICION_SPRITE_ESC_SELECCION_PERSONAJE = {0.f, 4.f};
+
+// Cantidad de píxeles en el eje X que se mueve el sprite de la tecla ESC
+// hacia la izquierda cuando pulsas la tecla para salir
+constexpr float NUM_PIXELES_RETROCESO_SPRITE_ESC = 6.f;
+
 // Posición en el eje X del selector de personaje para el jugador 1
 constexpr float POSICION_X_SELECTOR_PERSONAJE_J1 = VENTANA_ANCHURA/4.f;
 

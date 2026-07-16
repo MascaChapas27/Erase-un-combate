@@ -42,6 +42,10 @@ class MenuSeleccionPersonaje {
         // El sprite del marco principal del menú de selección de personajes
         sf::Sprite spriteMarco;
 
+        // El sprite que sale arriba a la derecha que indica que si le pulsas
+        // a ESC sales al menú anterior
+        sf::Sprite spriteEsc;
+
         // El fondo super chulo cuadriculado que sale por detrás
         AnimacionFondoBucleLineal fondoCuadriculado;
 
@@ -79,6 +83,16 @@ class MenuSeleccionPersonaje {
 
         // Se devuelve todo a su posición inicial
         void resetear();
+
+        // Selecciona el personaje al que un jugador está apuntando. Además,
+        // mete en animaciones las animaciones que han surgido al seleccionar
+        // al personaje, e indica en personajesElegidos cuál ha sido el personaje
+        // elegido por el jugador
+        void seleccionarPersonaje(Jugador jugador, std::list<std::shared_ptr<Animacion>>& animaciones, std::unordered_map<Jugador,std::string>& personajesElegidos);
+
+        // Se quita la selección del personaje que había elegido un jugador. También
+        // elimina la entrada de personajesElegidos para el jugador en cuestión
+        void desseleccionarPersonaje(Jugador jugador, std::unordered_map<Jugador,std::string>& personajesElegidos);
 
     public:
 

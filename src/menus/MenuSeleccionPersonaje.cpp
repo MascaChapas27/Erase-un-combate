@@ -30,6 +30,7 @@ MenuSeleccionPersonaje::~MenuSeleccionPersonaje(){
 MenuSeleccionPersonaje::MenuSeleccionPersonaje() :
 indiceJugador1(0), indiceJugador2(1), personajeElegidoJugador1(false), personajeElegidoJugador2(false), contadorSaliendo(0),
 spriteMarco(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/marco.png")),
+spriteEsc(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/esc-salir.png")),
 fondoCuadriculado(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-cuadricula.png"),Direccion::ARRIBA_IZQUIERDA,VELOCIDAD_FONDO_CUADRICULADO_SELECCION_PERSONAJE),
 fondoJ1Elegido(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-j1-seleccionado.png"),Direccion::ARRIBA,VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO,sf::Vector2i(VENTANA_ANCHURA/2,0)),
 fondoJ2Elegido(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-j2-seleccionado.png"),Direccion::ARRIBA,VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO,sf::Vector2i(VENTANA_ANCHURA/2,0)),
@@ -43,6 +44,8 @@ rectanguloNegro({VENTANA_ANCHURA,VENTANA_ALTURA})
     fondoJ2Elegido.setPosicion({0.f,0.f});
     fondoJ2ElegidoBolitas.setOrigen({-VENTANA_ANCHURA/2.f, 0.f});
     fondoJ2ElegidoBolitas.setPosicion({0.f,0.f});
+
+    spriteEsc.setPosition(POSICION_SPRITE_ESC_SELECCION_PERSONAJE);
 
     // A la hora de colocar los selectores de personaje, la posición relativa
     // del primero para el jugador 1 será 0, y la posición relativa del primero
@@ -101,9 +104,83 @@ void MenuSeleccionPersonaje::resetear()
     rectanguloBlancoJ2.setFillColor(sf::Color(255,255,255,0));
 }
 
+void MenuSeleccionPersonaje::seleccionarPersonaje(Jugador jugador, std::list<std::shared_ptr<Animacion>>& animaciones, std::unordered_map<Jugador,std::string>& personajesElegidos)
+{
+    std::list<std::shared_ptr<Animacion>> nuevasAnimaciones;
+
+    if(jugador == Jugador::JUGADOR1)
+    {
+        personajeElegidoJugador1 = selectoresPersonajeJugador1[indiceJugador1].seleccionar(nuevasAnimaciones);
+        
+        animaciones.splice(animaciones.end(),nuevasAnimaciones);
+
+        if(personajeElegidoJugador1)
+        {
+            fondosPersonajeJugador1[indiceJugador1].seleccionar();
+
+            sf::Color nuevoColor = rectanguloBlancoJ1.getFillColor();
+            nuevoColor.a = 125;
+            rectanguloBlancoJ1.setFillColor(nuevoColor);
+
+            fondoAdicionalCopiaJugador1 = std::make_shared<sf::Sprite>(fondosPersonajeJugador1[indiceJugador1].getSprite());
+            fondoAdicionalNegroJugador1 = std::make_shared<sf::Sprite>(fondosPersonajeJugador1[indiceJugador1].getSprite());
+            fondoAdicionalNegroJugador1->setColor(sf::Color::Black);
+
+            ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/jugador-1-elegir.ogg");
+            
+            personajesElegidos[Jugador::JUGADOR1] = selectoresPersonajeJugador1[indiceJugador1].getNombrePersonaje();
+        }
+    }
+    else if (jugador == Jugador::JUGADOR2)
+    {
+        personajeElegidoJugador2 = selectoresPersonajeJugador2[indiceJugador2].seleccionar(nuevasAnimaciones);
+
+        animaciones.splice(animaciones.end(),nuevasAnimaciones);
+
+        if(personajeElegidoJugador2)
+        {
+            fondosPersonajeJugador2[indiceJugador2].seleccionar();
+
+            sf::Color nuevoColor = rectanguloBlancoJ2.getFillColor();
+            nuevoColor.a = 125;
+            rectanguloBlancoJ2.setFillColor(nuevoColor);
+
+            fondoAdicionalCopiaJugador2 = std::make_shared<sf::Sprite>(fondosPersonajeJugador2[indiceJugador2].getSprite());
+            fondoAdicionalNegroJugador2 = std::make_shared<sf::Sprite>(fondosPersonajeJugador2[indiceJugador2].getSprite());
+            fondoAdicionalNegroJugador2->setColor(sf::Color::Black);
+
+            ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/jugador-2-elegir.ogg");
+            
+            personajesElegidos[Jugador::JUGADOR2] = selectoresPersonajeJugador2[indiceJugador2].getNombrePersonaje();
+        }
+    }
+}
+
+void MenuSeleccionPersonaje::desseleccionarPersonaje(Jugador jugador, std::unordered_map<Jugador,std::string>& personajesElegidos)
+{
+    ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/jugador-1-rechazar.ogg");
+
+    personajesElegidos.erase(jugador);
+
+    if(jugador == Jugador::JUGADOR1)
+    {
+        personajeElegidoJugador1 = false;
+        fondoAdicionalNegroJugador1.reset();
+        fondoAdicionalCopiaJugador1.reset();
+        fondosPersonajeJugador1[indiceJugador1].quitarSeleccion();
+    }
+    else
+    {
+        personajeElegidoJugador2 = false;
+        fondoAdicionalNegroJugador2.reset();
+        fondoAdicionalCopiaJugador2.reset();
+        fondosPersonajeJugador2[indiceJugador2].quitarSeleccion();
+    }
+}
+
 std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccionDoble()
 {
-    ClienteDiscord::unicaInstancia()->actualizarRichPresence("En una Batalla VS","Eligiendo personajes...");
+    ClienteDiscord::unicaInstancia()->actualizarRichPresence("En una Batalla VS", "Eligiendo personajes...");
 
     // Se resetea todo antes de empezar por si acaso
     resetear();
@@ -140,8 +217,10 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
                 saliendo = true;
                 ReproductorDeMusica::unicaInstancia()->detener();
                 ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/salir.ogg");
+                spriteEsc.move({-NUM_PIXELES_RETROCESO_SPRITE_ESC,0.f});
 
-                personajesElegidos.clear();
+                if(personajeElegidoJugador1) desseleccionarPersonaje(Jugador::JUGADOR1,personajesElegidos);
+                if(personajeElegidoJugador2) desseleccionarPersonaje(Jugador::JUGADOR2,personajesElegidos);
             }
             else if(infoEvento.accion == Accion::DERECHA && infoEvento.realizada)
             {
@@ -175,74 +254,22 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
                 {
                     if(!personajeElegidoJugador1)
                     {
-                        std::list<std::shared_ptr<Animacion>> nuevasAnimaciones;
-
-                        personajeElegidoJugador1 = selectoresPersonajeJugador1[indiceJugador1].seleccionar(nuevasAnimaciones);
-                        
-                        animaciones.splice(animaciones.end(),nuevasAnimaciones);
-
-                        if(personajeElegidoJugador1)
-                        {
-                            fondosPersonajeJugador1[indiceJugador1].seleccionar();
-
-                            sf::Color nuevoColor = rectanguloBlancoJ1.getFillColor();
-                            nuevoColor.a = 125;
-                            rectanguloBlancoJ1.setFillColor(nuevoColor);
-
-                            fondoAdicionalCopiaJugador1 = std::make_shared<sf::Sprite>(fondosPersonajeJugador1[indiceJugador1].getSprite());
-                            fondoAdicionalNegroJugador1 = std::make_shared<sf::Sprite>(fondosPersonajeJugador1[indiceJugador1].getSprite());
-                            fondoAdicionalNegroJugador1->setColor(sf::Color::Black);
-
-                            ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/jugador-1-elegir.ogg");
-                            
-                            personajesElegidos[Jugador::JUGADOR1] = selectoresPersonajeJugador1[indiceJugador1].getNombrePersonaje();
-                        }
+                        seleccionarPersonaje(infoEvento.jugador,animaciones,personajesElegidos);
                     }
                     else if(!saliendo)
                     {
-                        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/jugador-1-rechazar.ogg");
-                        personajesElegidos.erase(Jugador::JUGADOR1);
-                        personajeElegidoJugador1 = false;
-                        fondoAdicionalNegroJugador1.reset();
-                        fondoAdicionalCopiaJugador1.reset();
-                        fondosPersonajeJugador1[indiceJugador1].quitarSeleccion();
+                        desseleccionarPersonaje(infoEvento.jugador,personajesElegidos);
                     }
                 }
                 else if(infoEvento.jugador == Jugador::JUGADOR2)
                 {
                     if(!personajeElegidoJugador2)
                     {
-                        std::list<std::shared_ptr<Animacion>> nuevasAnimaciones;
-
-                        personajeElegidoJugador2 = selectoresPersonajeJugador2[indiceJugador2].seleccionar(nuevasAnimaciones);
-
-                        animaciones.splice(animaciones.end(),nuevasAnimaciones);
-
-                        if(personajeElegidoJugador2)
-                        {
-                            fondosPersonajeJugador2[indiceJugador2].seleccionar();
-
-                            sf::Color nuevoColor = rectanguloBlancoJ2.getFillColor();
-                            nuevoColor.a = 125;
-                            rectanguloBlancoJ2.setFillColor(nuevoColor);
-
-                            fondoAdicionalCopiaJugador2 = std::make_shared<sf::Sprite>(fondosPersonajeJugador2[indiceJugador2].getSprite());
-                            fondoAdicionalNegroJugador2 = std::make_shared<sf::Sprite>(fondosPersonajeJugador2[indiceJugador2].getSprite());
-                            fondoAdicionalNegroJugador2->setColor(sf::Color::Black);
-
-                            ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/jugador-2-elegir.ogg");
-                            
-                            personajesElegidos[Jugador::JUGADOR2] = selectoresPersonajeJugador2[indiceJugador2].getNombrePersonaje();
-                        }
+                        seleccionarPersonaje(infoEvento.jugador,animaciones,personajesElegidos);
                     }
                     else if(!saliendo)
                     {
-                        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-seleccion-personaje/jugador-2-rechazar.ogg");
-                        personajesElegidos.erase(Jugador::JUGADOR2);
-                        personajeElegidoJugador2 = false;
-                        fondoAdicionalNegroJugador2.reset();
-                        fondoAdicionalCopiaJugador2.reset();
-                        fondosPersonajeJugador2[indiceJugador2].quitarSeleccion();
+                        desseleccionarPersonaje(infoEvento.jugador,personajesElegidos);
                     }
                 }
             }
@@ -279,11 +306,23 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
             saliendo = true;
         }
 
-        // Se cambia la opacidad del rectángulo negro según sea necesario
-        if(rectanguloNegro.getFillColor().a > 0 && (!saliendo || (saliendo && (contadorSaliendo < FRAMES_ESPERA_SALIR_MENU && personajesElegidos.size() > 0))))
+        // Si nos estamos saliendo sin elegir personaje, significa que le hemos
+        // dado a ESC, por lo que hay que mover el sprite de darle a ESC
+        // a su posición original
+        if(saliendo && personajesElegidos.empty())
+        {
+            sf::Vector2f posicionActual = spriteEsc.getPosition();
+            sf::Vector2f posicionNueva = util::aproximarVector2f(posicionActual,POSICION_SPRITE_ESC_SELECCION_PERSONAJE,0.9f);
+            spriteEsc.setPosition(posicionNueva);
+        }
+
+        // El rectángulo negro que cubre la pantalla se vuelve transparente si todavía se está eligiendo un personaje, o si hemos dicho
+        // de salir pero no ha pasado el tiempo suficiente
+        if(rectanguloNegro.getFillColor().a > 0 && (!saliendo || (saliendo && (contadorSaliendo < FRAMES_ESPERA_SALIR_MENU))))
             rectanguloNegro.setFillColor(sf::Color(rectanguloNegro.getFillColor().r, rectanguloNegro.getFillColor().g, rectanguloNegro.getFillColor().b, rectanguloNegro.getFillColor().a-5));
 
-        else if (saliendo && (contadorSaliendo >= FRAMES_ESPERA_SALIR_MENU || personajesElegidos.size() == 0))
+        // Por el contrario, si ya hemos dicho de salir, se vuelve opaco si pasa suficiente tiempo
+        else if (saliendo && contadorSaliendo >= FRAMES_ESPERA_SALIR_MENU)
             rectanguloNegro.setFillColor(sf::Color(rectanguloNegro.getFillColor().r, rectanguloNegro.getFillColor().g, rectanguloNegro.getFillColor().b, rectanguloNegro.getFillColor().a+5));
 
         // Se actualizan las animaciones
@@ -391,6 +430,7 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
         ventana->draw(rectanguloBlancoJ2);
 
         ventana->draw(spriteMarco);
+        ventana->draw(spriteEsc);
 
         for(int i=0;i<selectoresPersonajeJugador1.size();i++)
         {

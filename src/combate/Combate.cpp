@@ -763,7 +763,7 @@ void Combate::actualizarFotogramaCelebracion(std::list<std::shared_ptr<Animacion
 
 void Combate::actualizarRichPresence()
 {
-    ClienteDiscord::unicaInstancia()->actualizarRichPresence("En una Batalla VS","J1: "+std::to_string(GUIJugador1.getRondasGanadas())+" - J2: "+std::to_string(GUIJugador2.getRondasGanadas()));
+    ClienteDiscord::unicaInstancia()->actualizarRichPresence("En una Batalla VS",personajeJugador1.getNombre() + " (" + std::to_string(GUIJugador1.getRondasGanadas()) + ") VS " + personajeJugador2.getNombre() + " (" + std::to_string(GUIJugador2.getRondasGanadas()) + ")");
 }
 
 void Combate::comenzar()
