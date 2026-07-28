@@ -1,8 +1,14 @@
 #pragma once
 
 #include <string>
+#include <cmath>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+
+// Como la función std::floor de cmath no se puede llamar para
+// valores constexpr, me invento aquí un define para calcular
+// el floor de un valor float
+#define FLOORF(valor) (static_cast<float>(static_cast<int>(valor)))
 
 /*
     Este fichero contiene todas las constantes del programa, como su
@@ -177,13 +183,31 @@ constexpr float PROPORCION_RECORRIDO_MENGUAR_PARTICULA_LINEAL = 0.9;
 constexpr sf::Vector2f POSICION_TITULO = sf::Vector2f(VENTANA_ANCHURA/4,VENTANA_ALTURA/6);
 
 // Posición en el eje X de los selectores de opción
-constexpr float POSICION_X_SELECTOR_MENU_PRINCIPAL = VENTANA_ANCHURA/4.f;
+constexpr float POSICION_X_SELECTOR_MENU_PRINCIPAL = 6.f*VENTANA_ANCHURA/20.f;
 
 // Posición inicial en el eje Y de los selectores de opción
-constexpr float POSICION_INICIAL_Y_SELECTOR_MENU_PRINCIPAL = 12*VENTANA_ALTURA/20.f;
+constexpr float POSICION_INICIAL_Y_SELECTOR_MENU_PRINCIPAL = 13*VENTANA_ALTURA/20.f;
 
 // Diferencia en la posición en el eje Y entre dos selectores adyacentes
 constexpr float DIFERENCIA_POSICION_Y_SELECTOR_MENU_PRINCIPAL = VENTANA_ALTURA/6.f;
+
+// Distancia en píxeles que hay entre el sprite que indica la tecla o botón a pulsar
+// para hacer una selección y el sprite de las letras que representan la selección
+// que se está eligiendo actualmente
+constexpr float DISTANCIA_PIXELES_SPRITE_TECLA_Y_SELECCION = 5.f;
+
+// El factor utilizado para devolver los sprites de las teclas o botones a su
+// posición deseada tras moverse estos
+constexpr float FACTOR_APROXIMACION_POSICION_SPRITES_TECLAS = 0.8f;
+
+// La cantidad de píxeles que se mueven los sprites para las teclas o botones
+// cada vez que se pulsa la tecla o botón correspondiente
+constexpr unsigned int REBOTE_SPRITES_TECLAS_MENU_PRINCIPAL = 5;
+
+// El número que se resta o suma en cada fotograma a los valores de transparencia
+// de los sprites que indican el botón o la tecla a pulsar en caso de que deban
+// aparecer o desaparecer
+constexpr unsigned int VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS = 17;
 
 // Diferencia en la posición en el eje Y entre dos fondos distintos usados
 // por los selectores del menú principal

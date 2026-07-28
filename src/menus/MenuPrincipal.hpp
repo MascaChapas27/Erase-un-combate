@@ -35,6 +35,21 @@ class MenuPrincipal {
         // El cartel con el título del juego
         std::shared_ptr<Animacion> cartelTitulo;
 
+        // Los sprites que indican qué teclas o botones hay que pulsar para
+        // avanzar al selector de arriba, al selector de abajo, o para seleccionar
+        // el selector actual, respectivamente
+        sf::Sprite spriteTeclaArriba;
+        sf::Sprite spriteTeclaAbajo;
+        sf::Sprite spriteTeclaSeleccionar;
+
+        // Los tres sprites de arriba tienen una posición deseada en la que se tienen
+        // que mantener. Aún así, es posible que se muevan para generar algunos efectos
+        // chulos, pero independientemente de cuánto se muevan, luego deben volver a
+        // las posiciones indicadas por estas tres variables
+        sf::Vector2f posicionDeseadaSpriteTeclaArriba;
+        sf::Vector2f posicionDeseadaSpriteTeclaAbajo;
+        sf::Vector2f posicionDeseadaSpriteTeclaSeleccionar;
+
         // El efecto que hay a la izquierda que es como dientes de sierra oscuros
         AnimacionFondoBucleLineal dientesSierraArriba;
         AnimacionFondoBucleLineal dientesSierraAbajo;
@@ -52,6 +67,11 @@ class MenuPrincipal {
         // Se avisa a cada selector de su nueva posición relativa cuando se
         // cambia la selección
         void cambiarPosicionRelativa();
+
+        // Se calcula la posición en la que debería estar el sprite de la tecla
+        // o el botón que indica cómo realizar una selección. Se llama cada vez
+        // que se resetea el menú o cada vez que se cambia de selección
+        void calcularPosicionDeseadaSpriteTeclaSeleccionar();
 
     public:
 

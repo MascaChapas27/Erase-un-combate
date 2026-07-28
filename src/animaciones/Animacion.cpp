@@ -38,6 +38,11 @@ sf::Vector2f Animacion::getEscala()
     return sprite.getScale();
 }
 
+sf::Vector2f Animacion::getOrigen()
+{
+    return sprite.getOrigin();
+}
+
 sf::Vector2f Animacion::getPosicion(){
     return sprite.getPosition();
 }

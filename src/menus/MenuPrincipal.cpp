@@ -9,6 +9,7 @@
 #include "Configuracion.hpp"
 #include "Utilidades.hpp"
 #include "ClienteDiscord.hpp"
+#include <cmath>
 
 // La instancia es nula al principio
 MenuPrincipal * MenuPrincipal::menuPrincipal = nullptr;
@@ -26,11 +27,34 @@ MenuPrincipal::~MenuPrincipal(){
 
 MenuPrincipal::MenuPrincipal() : seleccionActual(0),
                                  cartelTitulo(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("titulo")),
+                                 spriteTeclaArriba(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-arriba-w.png")),
+                                 spriteTeclaAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-abajo-s.png")),
+                                 spriteTeclaSeleccionar(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-seleccionar-shift.png")),
                                  dientesSierraArriba(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png"),Direccion::ARRIBA,DIENTES_SIERRA_MENU_PRINCIPAL_VELOCIDAD),
                                  dientesSierraAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png"),Direccion::ABAJO,DIENTES_SIERRA_MENU_PRINCIPAL_VELOCIDAD),
-                                 selectorPulsado(false), rectanguloNegro({VENTANA_ANCHURA,VENTANA_ALTURA}){
-    // Se coloca todo en su posición inicial
-    resetear();
+                                 selectorPulsado(false), rectanguloNegro({VENTANA_ANCHURA,VENTANA_ALTURA})
+{
+    // Las coordenadas del punto de origen del cartelito animado del
+    // título se pasan a un valor discreto para que no se vea
+    // feo si se utiliza una resolución baja
+    cartelTitulo->setOrigen({std::floor(cartelTitulo->getOrigen().x),std::floor(cartelTitulo->getOrigen().y)});
+
+    // Se establece el origen de los sprites de las teclas o botones en la parte izquierda
+    // para que se pueden alinear por la izquierda
+    spriteTeclaArriba.setOrigin({static_cast<float>(spriteTeclaArriba.getTextureRect().size.x)/2.f,static_cast<float>(spriteTeclaArriba.getTextureRect().size.y)/2.f});
+    spriteTeclaAbajo.setOrigin({static_cast<float>(spriteTeclaAbajo.getTextureRect().size.x)/2.f,static_cast<float>(spriteTeclaAbajo.getTextureRect().size.y)/2.f});
+    spriteTeclaSeleccionar.setOrigin({static_cast<float>(spriteTeclaSeleccionar.getTextureRect().size.x)/2.f,static_cast<float>(spriteTeclaSeleccionar.getTextureRect().size.y)/2.f});
+
+    // Se establece cuál es la posición deseada para los sprites de las teclas o botones
+    float factorDiferenciaPosicionYSpritesArribaAbajo = 1.7f;
+    posicionDeseadaSpriteTeclaArriba = {POSICION_X_SELECTOR_MENU_PRINCIPAL, POSICION_INICIAL_Y_SELECTOR_MENU_PRINCIPAL - factorDiferenciaPosicionYSpritesArribaAbajo*DIFERENCIA_POSICION_Y_SELECTOR_MENU_PRINCIPAL*std::sqrt(1.f - DIFERENCIA_ESCALA_SELECTOR_MENU_PRINCIPAL)};
+    posicionDeseadaSpriteTeclaAbajo = {POSICION_X_SELECTOR_MENU_PRINCIPAL, POSICION_INICIAL_Y_SELECTOR_MENU_PRINCIPAL + factorDiferenciaPosicionYSpritesArribaAbajo*DIFERENCIA_POSICION_Y_SELECTOR_MENU_PRINCIPAL*std::sqrt(1.f - DIFERENCIA_ESCALA_SELECTOR_MENU_PRINCIPAL)};
+    posicionDeseadaSpriteTeclaSeleccionar = {0.f, POSICION_INICIAL_Y_SELECTOR_MENU_PRINCIPAL};
+
+    // Se mueven los sprites de las teclas o botones a su lugar correspondiente
+    spriteTeclaArriba.setPosition(posicionDeseadaSpriteTeclaArriba);
+    spriteTeclaAbajo.setPosition(posicionDeseadaSpriteTeclaAbajo);
+    spriteTeclaSeleccionar.setPosition(posicionDeseadaSpriteTeclaSeleccionar);
     
     selectores.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/selector-modo-historia.png"),
                             TipoSelectorMenuPrincipal::MODO_HISTORIA);
@@ -52,20 +76,50 @@ MenuPrincipal::MenuPrincipal() : seleccionActual(0),
                             TipoSelectorMenuPrincipal::OPCIONES);
 
     rectanguloNegro.setFillColor(sf::Color::Black);
+
+    // Se coloca todo en su posición inicial
+    resetear();
 }
 
-void MenuPrincipal::resetear() {
+void MenuPrincipal::resetear()
+{
+    // El cartel del título se pone en su sitio
     cartelTitulo->setPosicion(POSICION_TITULO);
 
+    // Se resetean todos los selectores
     for(SelectorMenuPrincipal& selector : selectores)
     {
         selector.resetear();
     }
 
+    // Se resetean los fondos correspondientes a cada selector
     for(FondoMenuPrincipal& fondo : fondos)
     {
         fondo.resetear();
     }
+
+    // Se indica que se está seleccionando la primera opción
+    seleccionActual = 0;
+
+    // Se calcula la posición deseada del sprite con la tecla o botón
+    // que indica cómo seleccionar una opción
+    calcularPosicionDeseadaSpriteTeclaSeleccionar();
+
+    // Se mueven todos los sprites de las teclas o botones a su
+    // posición deseada inmediatamente
+    spriteTeclaSeleccionar.setPosition(posicionDeseadaSpriteTeclaSeleccionar);
+    spriteTeclaArriba.setPosition(posicionDeseadaSpriteTeclaArriba);
+    spriteTeclaAbajo.setPosition(posicionDeseadaSpriteTeclaAbajo);
+
+    // Los sprites de las teclas o botones para ir arriba o abajo se
+    // actualizan para tener el valor correcto de transparencia
+    sf::Color colorTeclaSeleccionarArriba = spriteTeclaArriba.getColor();
+    colorTeclaSeleccionarArriba.a = 0;
+    spriteTeclaArriba.setColor(colorTeclaSeleccionarArriba);
+
+    sf::Color colorTeclaSeleccionarAbajo = spriteTeclaAbajo.getColor();
+    colorTeclaSeleccionarAbajo.a = 0;
+    spriteTeclaAbajo.setColor(colorTeclaSeleccionarAbajo);
 }
 
 void MenuPrincipal::cambiarPosicionRelativa()
@@ -79,6 +133,13 @@ void MenuPrincipal::cambiarPosicionRelativa()
     {
         fondos[i].setPosicionRelativa(i-seleccionActual);
     }
+
+    calcularPosicionDeseadaSpriteTeclaSeleccionar();
+}
+
+void MenuPrincipal::calcularPosicionDeseadaSpriteTeclaSeleccionar()
+{
+    posicionDeseadaSpriteTeclaSeleccionar.x = selectores[seleccionActual].getSprite().getPosition().x - selectores[seleccionActual].getSprite().getTextureRect().size.x/2.f - spriteTeclaSeleccionar.getTextureRect().size.x/2.f - DISTANCIA_PIXELES_SPRITE_TECLA_Y_SELECCION;
 }
 
 TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
@@ -122,12 +183,14 @@ TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
                     {
                         ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/cambiar-seleccion.ogg");
                         seleccionActual--;
+                        spriteTeclaArriba.move({0.f,-static_cast<float>(REBOTE_SPRITES_TECLAS_MENU_PRINCIPAL)});
                         cambiarPosicionRelativa();
                     }
                     else if (infoEvento.accion == Accion::ABAJO && seleccionActual < selectores.size()-1)
                     {
                         ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/cambiar-seleccion.ogg");
                         seleccionActual++;
+                        spriteTeclaAbajo.move({0.f,static_cast<float>(REBOTE_SPRITES_TECLAS_MENU_PRINCIPAL)});
                         cambiarPosicionRelativa();
                     }
                     else if (infoEvento.accion == Accion::ATACAR)
@@ -140,6 +203,8 @@ TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
 
                         if(selectorPulsado)
                         {
+                            spriteTeclaSeleccionar.move({static_cast<float>(REBOTE_SPRITES_TECLAS_MENU_PRINCIPAL),0.f});
+
                             ReproductorDeMusica::unicaInstancia()->detener();
                             ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/seleccionar.ogg");
                         }
@@ -191,7 +256,43 @@ TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
             fondo.actualizar();
         }
 
-        ventana->clear(sf::Color(0,0,0));
+        // Se actualiza la posición de los sprites que indican
+        // las teclas o botones a pulsar
+        spriteTeclaAbajo.setPosition(util::aproximarVector2f(spriteTeclaAbajo.getPosition(),posicionDeseadaSpriteTeclaAbajo,FACTOR_APROXIMACION_POSICION_SPRITES_TECLAS));
+        spriteTeclaArriba.setPosition(util::aproximarVector2f(spriteTeclaArriba.getPosition(),posicionDeseadaSpriteTeclaArriba,FACTOR_APROXIMACION_POSICION_SPRITES_TECLAS));
+        spriteTeclaSeleccionar.setPosition(util::aproximarVector2f(spriteTeclaSeleccionar.getPosition(),posicionDeseadaSpriteTeclaSeleccionar,FACTOR_APROXIMACION_POSICION_SPRITES_TECLAS));
+        
+        // Se actualiza la transparencia del sprite que indica el botón o tecla
+        // a pulsar para moverse hacia abajo
+        if(spriteTeclaAbajo.getColor().a > 0 && seleccionActual == selectores.size()-1)
+        {
+            sf::Color nuevoColor = spriteTeclaAbajo.getColor();
+            nuevoColor.a -= VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
+            spriteTeclaAbajo.setColor(nuevoColor);
+        }
+        else if (spriteTeclaAbajo.getColor().a < 255 && seleccionActual < selectores.size()-1)
+        {
+            sf::Color nuevoColor = spriteTeclaAbajo.getColor();
+            nuevoColor.a += VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
+            spriteTeclaAbajo.setColor(nuevoColor);
+        }
+        
+        // Lo mismo de antes, pero para el sprite del botón o tecla para moverse
+        // hacia arriba
+        if(spriteTeclaArriba.getColor().a > 0 && seleccionActual == 0)
+        {
+            sf::Color nuevoColor = spriteTeclaArriba.getColor();
+            nuevoColor.a -= VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
+            spriteTeclaArriba.setColor(nuevoColor);
+        }
+        else if (spriteTeclaArriba.getColor().a < 255 && seleccionActual > 0)
+        {
+            sf::Color nuevoColor = spriteTeclaArriba.getColor();
+            nuevoColor.a += VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
+            spriteTeclaArriba.setColor(nuevoColor);
+        }
+
+        ventana->clear(sf::Color::Black);
 
         for(FondoMenuPrincipal& fondo : fondos)
         {
@@ -205,6 +306,10 @@ TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
         {
             ventana->draw(selector);
         }
+
+        ventana->draw(spriteTeclaArriba);
+        ventana->draw(spriteTeclaAbajo);
+        ventana->draw(spriteTeclaSeleccionar);
 
         for(std::shared_ptr<Animacion> &a : animaciones){
             ventana->draw(*a);
