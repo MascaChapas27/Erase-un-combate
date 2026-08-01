@@ -19,11 +19,34 @@
     CONSTANTES PARA EL DEBUG
 */
 
+// Tecla que activa el modo de cámara lenta
+constexpr sf::Keyboard::Scancode TECLA_DEBUG_CAMARA_LENTA = sf::Keyboard::Scancode::Num1;
+
+// Tecla que activa el modo de cámara rápida
+constexpr sf::Keyboard::Scancode TECLA_DEBUG_CAMARA_RAPIDA = sf::Keyboard::Scancode::Num2;
+
+// Tecla que activa la visibilidad de las hitboxes
+constexpr sf::Keyboard::Scancode TECLA_DEBUG_HITBOXES_VISIBLES = sf::Keyboard::Scancode::Num3;
+
+// Tecla que activa el uso de bitácora
+constexpr sf::Keyboard::Scancode TECLA_DEBUG_SALIDA_A_BITACORA = sf::Keyboard::Scancode::Num4;
+
 // Color para las hitboxes que hacen daño
 constexpr sf::Color HITBOX_ATAQUE_COLOR = sf::Color::Red;
 
 // Color para las hitboxes que no hacen daño
 constexpr sf::Color HITBOX_NO_ATAQUE_COLOR = sf::Color::Blue;
+
+/*
+    CONSTANTES PARA LOS AJUSTES
+*/
+
+// Tecla que aumenta el zoom
+constexpr sf::Keyboard::Scancode TECLA_AUMENTAR_ZOOM = sf::Keyboard::Scancode::Up;
+
+// Tecla que disminuye el zoom
+constexpr sf::Keyboard::Scancode TECLA_DISMINUIR_ZOOM = sf::Keyboard::Scancode::Down;
+
 
 /*
     CONSTANTES PARA LA BITÁCORA
@@ -318,7 +341,7 @@ constexpr float OFFSET_X_FONDO_ADICIONAL_NEGRO = 5.f;
 constexpr sf::Color COLOR_INICIAL_RECTANGULO_OSCURO_SELECTOR_MANDOS = sf::Color(0,0,0,0);
 
 // Color final del rectángulo que cubre el fondo en el menú de selección de jugador para el mando
-constexpr sf::Color COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_MANDOS = sf::Color(0,0,0,125);
+constexpr sf::Color COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_MANDOS = sf::Color(0,0,0,225);
 
 
 

@@ -3,6 +3,8 @@
 #include "VentanaPrincipal.hpp"
 #include "ContenedorDeRecursos.hpp"
 #include "ReproductorDeMusica.hpp"
+#include "ReproductorDeSonidos.hpp"
+#include "GestorDeControles.hpp"
 #include "Utilidades.hpp"
 #include "Configuracion.hpp"
 
@@ -23,10 +25,7 @@ SelectorJugadorParaMando::~SelectorJugadorParaMando()
 }
 
 SelectorJugadorParaMando::SelectorJugadorParaMando() : spriteJugador1(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugador1.png")),
-                                                       spriteJugador2(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugador2.png")),
-                                                       sonidoAparecer(ContenedorDeSonidos::unicaInstancia()->obtener("sonidos/seleccionar-mando/aparece-ventana.ogg")),
-                                                       sonidoCambiarSeleccion(ContenedorDeSonidos::unicaInstancia()->obtener("sonidos/seleccionar-mando/cambiar-seleccion.ogg")),
-                                                       sonidoDesaparecer(ContenedorDeSonidos::unicaInstancia()->obtener("sonidos/seleccionar-mando/desaparece-ventana.ogg"))
+                                                       spriteJugador2(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugador2.png"))
 {
 }
 
@@ -58,39 +57,8 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
 
     bool jugadorDecidido = false;
 
-    bool joystickMovido = false;
-
-    sonidoAparecer.play();
+    ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/seleccionar-mando/aparece-ventana.ogg");
     ReproductorDeMusica::unicaInstancia()->reproducir("musica/selector-mando.ogg");
-
-    // while(rectanguloOscuro.getFillColor() != COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_MANDOS){
-
-    //     // Se prepara un reloj para ver cuánto tiempo pasa entre fotogramas
-    //     sf::Clock reloj;
-
-    //     // Se comprueba solo el evento de cerrar la ventana
-    //     while (const std::optional evento = ventana->pollEvent())
-    //     {
-    //         if (evento->is<sf::Event::Closed>())
-    //         {
-    //             exit(EXIT_SUCCESS);
-    //         }
-    //     }
-
-    //     // Se aproxima el color del rectángulo del fondo al color final
-    //     rectanguloOscuro.setFillColor(util::aproximarColor(rectanguloOscuro.getFillColor(),COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_MANDOS,0.8));
-
-    //     // Se dibujan las cosas
-    //     ventana->clear();
-    //     ventana->draw(spriteFondo);
-    //     ventana->draw(rectanguloOscuro);
-    //     ventana->display();
-
-    //     // El juego se duerme hasta que dé tiempo a dibujar el siguiente fotograma, teniendo en cuenta
-    //     // que se deben dibujar 60 fotogramas por segundo y que cada fotograma además necesita un tiempo
-    //     // previo de preparación para actualizar y dibujar y tal
-    //     sf::sleep(sf::seconds(1.f / NUMERO_FPS) - reloj.reset());
-    // }
 
     // Los sprites usados para mostrar qué jugador se ha seleccionado
     // se van haciendo más opacos con el tiempo
@@ -105,29 +73,25 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
         // Se comprueban los eventos como de costumbre
         while (const std::optional evento = ventana->pollEvent())
         {
-            if (evento->is<sf::Event::Closed>())
+            if(evento->is<sf::Event::Closed>())
             {
                 exit(EXIT_SUCCESS);
             }
-            else if (evento->is<sf::Event::JoystickButtonPressed>())
+            else
             {
-                jugadorDecidido = true;
-            }
-            else if (evento->is<sf::Event::JoystickMoved>() &&
-                     (evento->getIf<sf::Event::JoystickMoved>()->axis == sf::Joystick::Axis::PovX ||
-                      evento->getIf<sf::Event::JoystickMoved>()->axis == sf::Joystick::Axis::X ||
-                      evento->getIf<sf::Event::JoystickMoved>()->axis == sf::Joystick::Axis::R))
-            {
-
-                if (!joystickMovido && std::abs(evento->getIf<sf::Event::JoystickMoved>()->position) > UMBRAL_JOYSTICK)
+                InfoEvento infoEvento = GestorDeControles::unicaInstancia()->comprobarEvento(evento);
+                if (infoEvento.accion == Accion::ESCAPE)
                 {
-                    joystickMovido = true;
-                    jugadorSeleccionado = (jugadorSeleccionado == Jugador::JUGADOR1 ? Jugador::JUGADOR2 : Jugador::JUGADOR1);
-                    sonidoCambiarSeleccion.play();
+                    exit(EXIT_SUCCESS);
                 }
-                else if (joystickMovido && std::abs(evento->getIf<sf::Event::JoystickMoved>()->position) < UMBRAL_JOYSTICK)
+                else if (infoEvento.accion == Accion::ATACAR && infoEvento.realizada)
                 {
-                    joystickMovido = false;
+                    jugadorDecidido = true;
+                }
+                else if ((infoEvento.accion == Accion::ARRIBA || infoEvento.accion == Accion::ABAJO) && infoEvento.realizada)
+                {
+                    jugadorSeleccionado = (jugadorSeleccionado == Jugador::JUGADOR1 ? Jugador::JUGADOR2 : Jugador::JUGADOR1);
+                    ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/seleccionar-mando/cambiar-seleccion.ogg");
                 }
             }
         }
@@ -136,10 +100,13 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
         spriteJugador1.setColor(util::aproximarColor(spriteJugador1.getColor(),sf::Color::White,0.8));
         spriteJugador2.setColor(util::aproximarColor(spriteJugador2.getColor(),sf::Color::White,0.8));
 
+        // Se pone más oscuro el rectángulo negro del fondo
+        rectanguloOscuro.setFillColor(util::aproximarColor(rectanguloOscuro.getFillColor(),COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_MANDOS,0.8));
+
         // Se dibujan las cosas
         ventana->clear();
         ventana->draw(spriteFondo);
-        //ventana->draw(rectanguloOscuro);
+        ventana->draw(rectanguloOscuro);
         ventana->draw(jugadorSeleccionado == Jugador::JUGADOR1 ? spriteJugador1 : spriteJugador2);
         ventana->display();
 
@@ -149,7 +116,7 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
         sf::sleep(sf::seconds(1.f / Configuracion::unicaInstancia()->getFPS()) - reloj.reset());
     }
 
-    sonidoDesaparecer.play();
+    ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/seleccionar-mando/desaparece-ventana.ogg");
 
     // Se vuelve a reproducir la canción anterior
     ReproductorDeMusica::unicaInstancia()->detener();

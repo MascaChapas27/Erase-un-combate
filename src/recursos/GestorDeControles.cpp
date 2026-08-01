@@ -21,7 +21,7 @@ GestorDeControles::~GestorDeControles(){
     if(gestorDeControles != nullptr) delete gestorDeControles;
 }
 
-GestorDeControles::GestorDeControles()
+GestorDeControles::GestorDeControles() : asignandoJugadorAMando(false)
 {
     // Teclas, controles y acciones para la parte izquierda del teclado
     teclaAControlYAccion[sf::Keyboard::Scancode::S] = std::pair<Control,Accion>(Control::TECLADO_IZQUIERDA,Accion::ABAJO);
@@ -109,12 +109,24 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
             boton = evento->getIf<sf::Event::JoystickButtonReleased>()->button;
         }
 
+        // Si actualmente estamos en la pantalla de selección de jugador para mando,
+        // solo el mando que se está asignando a un jugador puede tenerse en cuenta.
+        // Los demás dan igual
+        if(asignandoJugadorAMando && control != controlSiendoAsignado)
+            return {Jugador::NADIE, Accion::NADA, false};
 
+        // Se encuentra el jugador que está usando este mando
         infoEvento.jugador = controlAJugador[control];
-        if(infoEvento.jugador != Jugador::NADIE){
+        
+        // Si el mando está asignado a un jugador (o si está siendo asignado
+        // actualmente) se registra el botón pulsado
+        if(infoEvento.jugador != Jugador::NADIE || asignandoJugadorAMando){
             if(boton == MANDO_BOTON_ATACAR) infoEvento.accion = Accion::ATACAR;
             else infoEvento.accion = Accion::NADA;
             infoEvento.realizada = evento->is<sf::Event::JoystickButtonPressed>();
+
+        // Si el mando no está asignado a nadie y si no está siendo asignado,
+        // es necesario que sea asignado a un jugador
         } else {
             // Si el control no está asignado a un jugador, se comprueba si ninguno tiene mando
             Jugador jugadorTecladoIzq = controlAJugador[Control::TECLADO_IZQUIERDA];
@@ -128,7 +140,12 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
                 conectarMando(jugadorTecladoDer,control);
             } else if(jugadorTecladoIzq != Jugador::NADIE && jugadorTecladoDer != Jugador::NADIE){
                 // Si ninguno tiene mando, se pregunta para quién es el mando
-                Jugador jugadorConMando = SelectorJugadorParaMando::unicaInstancia()->decidirJugador(control);
+                asignandoJugadorAMando = true;
+                controlSiendoAsignado = control;
+                Jugador jugadorConMando = SelectorJugadorParaMando::unicaInstancia()->decidirJugador(controlSiendoAsignado);
+
+                // Se indica que se ha terminado la asignación del mando
+                asignandoJugadorAMando = false;
                 conectarMando(jugadorConMando,control);
             } 
         }
@@ -137,11 +154,18 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
         // Alguien ha movido un joystick
         Control control = static_cast<Control>(evento->getIf<sf::Event::JoystickMoved>()->joystickId+2);
 
-        // Se saca el jugador correspondiente al mando. Si hay jugador,
-        // se hacen cosas
-        infoEvento.jugador = controlAJugador[control];
-        if(infoEvento.jugador != Jugador::NADIE){
+        // Si actualmente estamos en la pantalla de selección de jugador para mando,
+        // solo el mando que se está asignando a un jugador puede tenerse en cuenta.
+        // Los demás dan igual
+        if(asignandoJugadorAMando && control != controlSiendoAsignado)
+            return {Jugador::NADIE, Accion::NADA, false};
 
+        // Se saca el jugador correspondiente al mando. Si hay jugador
+        // (o si el mando se está asignando a alguien), se hacen cosas
+        infoEvento.jugador = controlAJugador[control];
+
+        if(infoEvento.jugador != Jugador::NADIE || asignandoJugadorAMando)
+        {
             // Se saca la posición del joystick de antemano
             float posicionJoystick = evento->getIf<sf::Event::JoystickMoved>()->position;
 
@@ -205,10 +229,8 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
             }
         }
     } else if (evento->is<sf::Event::KeyPressed>() || evento->is<sf::Event::KeyReleased>()){
-        // Alguien ha pulsado una tecla
-
-        // Si es la tecla de salida tiene solución fácil
-
+        // Alguien ha pulsado una tecla. Hay que encontrar
+        // qué tecla ha sido
         sf::Keyboard::Scancode scancode;
         
         if(evento->is<sf::Event::KeyPressed>()){
@@ -217,13 +239,15 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
             scancode = evento->getIf<sf::Event::KeyReleased>()->scancode;
         }
 
+        // Si es la tecla de salida tiene solución fácil
         if(scancode == TECLA_SALIDA){
             infoEvento.jugador = Jugador::JUGADOR1;
             infoEvento.accion = Accion::ESCAPE;
             infoEvento.realizada = evento->is<sf::Event::KeyPressed>();
         } else {
-            // Si es otra tecla, hay que ver si es una de las que nos interesa
-            if(teclaAControlYAccion.count(scancode)){
+            // Si es otra tecla, hay que ver si es una tecla de ataque o de movimiento (aunque
+            // solo si no estamos asignando jugador a mando)
+            if(!asignandoJugadorAMando && teclaAControlYAccion.count(scancode)){
                 // Si es una tecla que tenemos registrada, se comprueba su control y su acción
                 Control c = teclaAControlYAccion[scancode].first;
                 Accion a = teclaAControlYAccion[scancode].second;
@@ -238,7 +262,7 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
             {
                 switch(scancode)
                 {
-                    case sf::Keyboard::Scancode::Num1:
+                    case TECLA_DEBUG_CAMARA_LENTA:
                         if(Configuracion::unicaInstancia()->getFPS() != NUMERO_FPS_INICIAL/3)
                         {
                             Configuracion::unicaInstancia()->setFPS(NUMERO_FPS_INICIAL/3);
@@ -253,7 +277,7 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
                         }
                         break;
 
-                    case sf::Keyboard::Scancode::Num2:
+                    case TECLA_DEBUG_CAMARA_RAPIDA:
                         if(Configuracion::unicaInstancia()->getFPS() != NUMERO_FPS_INICIAL*3)
                         {
                             Configuracion::unicaInstancia()->setFPS(NUMERO_FPS_INICIAL*3);
@@ -268,19 +292,19 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
                         }
                         break;
                     
-                    case sf::Keyboard::Scancode::Num3:
+                    case TECLA_DEBUG_HITBOXES_VISIBLES:
                         Configuracion::unicaInstancia()->setHitboxesVisibles(!Configuracion::unicaInstancia()->isHitboxesVisibles());
                         break;
 
-                    case sf::Keyboard::Scancode::Num4:
+                    case TECLA_DEBUG_SALIDA_A_BITACORA:
                         Configuracion::unicaInstancia()->setSalidaABitacora(!Configuracion::unicaInstancia()->isSalidaABitacora());
                         break;
                     
-                    case sf::Keyboard::Scancode::Down:
+                    case TECLA_DISMINUIR_ZOOM:
                         VentanaPrincipal::disminuirZoom();
                         break;
                     
-                    case sf::Keyboard::Scancode::Up:
+                    case TECLA_AUMENTAR_ZOOM:
                         VentanaPrincipal::aumentarZoom();
                         break;
                 }
@@ -289,12 +313,14 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
     }
 
     // Si el personaje es NADIE, la acción sí o sí tiene que ser NADA y viceversa
-    if(infoEvento.jugador == Jugador::NADIE){
+    // (aunque el jugador puede ser NADIE si el mando se está asignando a un
+    // jugador)
+    if(infoEvento.jugador == Jugador::NADIE && !asignandoJugadorAMando)
         infoEvento.accion = Accion::NADA;
-    } else if(infoEvento.accion == Accion::NADA){
+    else if(infoEvento.accion == Accion::NADA)
         infoEvento.jugador = Jugador::NADIE;
-    }
 
-    // Después de este pifostio devolvemos el par
+    // Después de este pifostio devolvemos el infoEvento que hemos ido cocinando
+    // a fuego lento
     return infoEvento;
 }

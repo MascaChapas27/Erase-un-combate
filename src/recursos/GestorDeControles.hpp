@@ -47,6 +47,19 @@ private:
     // un joystick ligeramente un poco más hacia el lado cada vez
     std::unordered_map<Jugador, std::unordered_map<Accion, bool>> jugadorRealizandoAccionJoystick;
 
+    // Un flag que indica si actualmente se está asignando un mando a un jugador
+    // utilizando la clase SelectorJugadorParaMando. En este caso, el funcionamiento
+    // del método comprobarEvento es distinto, ya que se está utilizando un mando
+    // que aún no tiene dueño
+    bool asignandoJugadorAMando;
+
+    // Si asignandoJugadorAMando está a true, controlSiendoAsignado indica cuál
+    // es el mando que está actualmente siendo asignado a un jugador. De esta
+    // forma, durante la pantalla de selección de personaje solo se permitirá
+    // que este mando controle el juego. Los demás mandos tendrán que esperar
+    // a que el mando actual sea asignado a un jugador
+    Control controlSiendoAsignado;
+
     // Función que indica si un control está libre
     bool estaLibre(Control c);
 

@@ -144,7 +144,8 @@ void MenuPrincipal::calcularPosicionDeseadaSpriteTeclaSeleccionar()
 
 TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
 
-    ClienteDiscord::unicaInstancia()->actualizarRichPresence("En el menú principal", "Eligiendo un modo de juego...");
+    // ClienteDiscord::unicaInstancia()->actualizarRichPresence("En el menú principal", "Eligiendo un modo de juego...");
+    ClienteDiscord::unicaInstancia()->actualizarRichPresence("Chupando pollas o", "algo así");
 
     resetear();
 
@@ -179,7 +180,11 @@ TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
             } else if(!selectorPulsado) {
                 InfoEvento infoEvento = GestorDeControles::unicaInstancia()->comprobarEvento(evento);
                 if(infoEvento.realizada){
-                    if(infoEvento.accion == Accion::ARRIBA && seleccionActual > 0)
+                    if (infoEvento.accion == Accion::ESCAPE)
+                    {
+                        exit(EXIT_SUCCESS);
+                    }
+                    else if(infoEvento.accion == Accion::ARRIBA && seleccionActual > 0)
                     {
                         ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/cambiar-seleccion.ogg");
                         seleccionActual--;

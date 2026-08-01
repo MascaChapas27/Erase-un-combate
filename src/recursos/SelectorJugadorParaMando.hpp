@@ -23,15 +23,6 @@ class SelectorJugadorParaMando {
 
         // Imagen que aparece cuando seleccionas la opción del jugador 2
         sf::Sprite spriteJugador2;
-
-        // Sonido que suena cuando aparece la ventana
-        sf::Sound sonidoAparecer;
-
-        // Sonido que suena cuando se cambia el jugador seleccionado
-        sf::Sound sonidoCambiarSeleccion;
-
-        // Sonido que suena cuando desaparece la ventana
-        sf::Sound sonidoDesaparecer;
     
     public:
         // En base a un control dado, se pregunta al usuario qué jugador va a ser
