@@ -144,8 +144,7 @@ void MenuPrincipal::calcularPosicionDeseadaSpriteTeclaSeleccionar()
 
 TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
 
-    // ClienteDiscord::unicaInstancia()->actualizarRichPresence("En el menú principal", "Eligiendo un modo de juego...");
-    ClienteDiscord::unicaInstancia()->actualizarRichPresence("Chupando pollas o", "algo así");
+    ClienteDiscord::unicaInstancia()->actualizarRichPresence("En el menú principal", "Eligiendo un modo de juego...");
 
     resetear();
 
