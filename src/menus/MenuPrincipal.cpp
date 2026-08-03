@@ -206,7 +206,7 @@ TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
                 exit(EXIT_SUCCESS);
             } else if(!selectorPulsado) {
                 InfoEvento infoEvento = GestorDeControles::unicaInstancia()->comprobarEvento(evento);
-                if(infoEvento.realizada){
+                if(infoEvento.realizada && infoEvento.jugador == Jugador::JUGADOR1){
                     if (infoEvento.accion == Accion::ESCAPE)
                     {
                         exit(EXIT_SUCCESS);
