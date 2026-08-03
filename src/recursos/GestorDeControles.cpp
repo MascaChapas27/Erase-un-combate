@@ -5,6 +5,7 @@
 #include "VentanaPrincipal.hpp"
 #include "ReproductorDeMusica.hpp"
 #include "ReproductorDeSonidos.hpp"
+#include "Utilidades.hpp"
 #include <iostream>
 
 // La instancia es nula al principio
@@ -323,4 +324,34 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
     // Después de este pifostio devolvemos el infoEvento que hemos ido cocinando
     // a fuego lento
     return infoEvento;
+}
+
+Control GestorDeControles::obtenerControlUsadoPorJugador(Jugador jugador)
+{
+    // Se itera por cada control asignado a un jugador, intentando
+    // encontrar el control que está asignado al jugador que nos
+    // importa
+    for(auto const &[c,j] : controlAJugador)
+    {
+        // Si se encuentra el jugador, se devuelve su control
+        if(jugador == j)
+            return c;
+    }
+
+    // Si no, se considera un error y se muestra por la salida
+    std::string nombreJugador = util::jugadorAString(jugador);
+
+    Bitacora::unicaInstancia()->escribir("Emilio: señor Juan, ¿es normal que el jugador "+nombreJugador+" no tenga ni mando ni teclado ni nada?");
+    if(nombreJugador == "NADIE")
+    {
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Emilio, el jugador NADIE no es nadie. ¿Qué va a tener asignado?");
+        Bitacora::unicaInstancia()->escribir("Emilio: claro, ya me parecía raro a mí. Es que ha llegado una llamada a la función obtenerControlUsadoPorJugador y...");
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: ¿una llamada a obtenerControlUsadoPorJugador pasando NADIE como parámetro? Pero bueno... esto es inconcebible. Se suspende la junta.");
+    }
+    else
+    {
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: ¿pero cómo no va a tener "+nombreJugador+" un control asignado? Eso pone en entredicho una de las reglas más básicas del juego: todo jugador deberá tener su control correctamente asignado. Esto no puede seguir así... se suspende la junta.");
+    }
+
+    exit(EXIT_FAILURE);
 }

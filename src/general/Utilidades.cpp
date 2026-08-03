@@ -96,6 +96,18 @@ namespace util{
         return tablaStringAAccion.at(string);
     }
 
+    std::string jugadorAString(Jugador jugador)
+    {
+        return tablaJugadorAString.at(jugador);
+    }
+
+    std::unordered_map<Jugador,std::string> tablaJugadorAString =
+    {
+        {Jugador::JUGADOR1, "JUGADOR1"},
+        {Jugador::JUGADOR2, "JUGADOR2"},
+        {Jugador::NADIE, "NADIE"}
+    };
+
     sf::Vector2f centroDeInterseccion(sf::IntRect r1, sf::IntRect r2){
         
         int izquierda = std::max(r1.position.x, r2.position.x);

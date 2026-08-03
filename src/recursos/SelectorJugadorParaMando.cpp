@@ -7,6 +7,7 @@
 #include "GestorDeControles.hpp"
 #include "Utilidades.hpp"
 #include "Configuracion.hpp"
+#include "ClienteDiscord.hpp"
 
 // La instancia es nula al principio
 SelectorJugadorParaMando *SelectorJugadorParaMando::selectorJugadorParaMando = nullptr;
@@ -69,6 +70,9 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
     {
         // Se prepara un reloj para ver cuánto tiempo pasa entre fotogramas
         sf::Clock reloj;
+
+        // Se ejecutan cosillas de Discord en cada frame
+        discordpp::RunCallbacks();
 
         // Se comprueban los eventos como de costumbre
         while (const std::optional evento = ventana->pollEvent())

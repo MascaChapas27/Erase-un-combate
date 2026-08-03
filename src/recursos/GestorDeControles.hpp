@@ -70,6 +70,9 @@ public:
     // Dado un evento, devuelve el jugador y la acción que está haciendo
     InfoEvento comprobarEvento(std::optional<sf::Event> evento);
 
+    // Dado un jugador, devuelve qué control está usando actualmente
+    Control obtenerControlUsadoPorJugador(Jugador jugador);
+
     // NUNCA SE COPIA UN SINGLETON
     GestorDeControles(GestorDeControles &otro) = delete;
 

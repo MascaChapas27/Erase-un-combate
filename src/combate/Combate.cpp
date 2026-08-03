@@ -790,6 +790,9 @@ void Combate::comenzar()
             // Se prepara un reloj para ver cuánto tiempo pasa entre fotogramas
             sf::Clock reloj;
 
+            // Se ejecutan cosillas de Discord en cada frame
+            discordpp::RunCallbacks();
+
             // Se aclara el rectángulo que cubre el combate
             if (rectanguloOscuro.getFillColor().a > 0)
             {
@@ -839,6 +842,9 @@ void Combate::comenzar()
         while (rectanguloOscuro.getFillColor().a != 255)
         {
             sf::Clock reloj;
+
+            // Se ejecutan cosillas de Discord en cada frame
+            discordpp::RunCallbacks();
 
             actualizarFotogramaCelebracion(efectos);
 

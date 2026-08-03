@@ -39,6 +39,13 @@ namespace util{
     // Dado un string, devuelve la acción correspondiente
     Accion stringAAccion(const std::string &string);
 
+    // Dado un elemento del enumerado Jugador, devuelve un string que indica
+    // el nombre del elemento para poder mostrarlo por pantalla
+    std::string jugadorAString(Jugador jugador);
+
+    // Una tabla que permite implementar la función jugadorAString de forma eficiente
+    extern std::unordered_map<Jugador,std::string> tablaJugadorAString;
+
     // Dados dos rectángulos, calcula el centro del subrectángulo que resulta de la intersección
     // de ambos rectángulos (en SFML 3 está la función findIntersection que te encuentra el rectángulo
     // de la intersección pero ya que hice esto pues lo voy a seguir utilizando porque le he cogido cariño)

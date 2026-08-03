@@ -204,6 +204,9 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
         // Se prepara un reloj para ver cuánto tiempo pasa entre fotogramas
         sf::Clock reloj;
 
+        // Se ejecutan cosillas de Discord en cada frame
+        discordpp::RunCallbacks();
+
         while(const std::optional evento = ventana->pollEvent())
         {
             if(evento->is<sf::Event::Closed>()){
