@@ -302,7 +302,7 @@ constexpr float POSICION_Y_SELECTOR_PERSONAJE = 5.f*VENTANA_ALTURA/6.f;
 constexpr float POSICION_Y_NOMBRE_SELECTOR_PERSONAJE = 7.f*VENTANA_ALTURA/10.f;
 
 // Diferencia en el eje X entre dos selectores seguidos
-constexpr float DIFERENCIA_POSICION_X_SELECTOR_PERSONAJE = VENTANA_ANCHURA/4.f;
+constexpr float DIFERENCIA_POSICION_X_SELECTOR_PERSONAJE = 3.f*VENTANA_ANCHURA/10.f;
 
 // Color para el selector de personaje que se está seleccionado actualmente
 constexpr sf::Color COLOR_SELECTOR_PERSONAJE_POSICION_RELATIVA_0 = sf::Color(255,255,255,255);

@@ -81,6 +81,27 @@ class MenuSeleccionPersonaje {
         std::shared_ptr<sf::Sprite> fondoAdicionalCopiaJugador2;
         std::shared_ptr<sf::Sprite> fondoAdicionalNegroJugador2;
 
+        // Los sprites que indican qué teclas o botones tiene que pulsar
+        // el jugador 1 para cambiar al personaje de la derecha, al de
+        // la izquierda o para seleccionar al personaje actual
+        sf::Sprite spriteTeclaIzquierdaJ1;
+        sf::Sprite spriteTeclaDerechaJ1;
+        sf::Sprite spriteTeclaSeleccionarJ1;
+
+        // Los sprites que indican qué teclas o botones tiene que pulsar
+        // el jugador 2 para cambiar al personaje de la derecha, al de
+        // la izquierda o para seleccionar al personaje actual
+        sf::Sprite spriteTeclaIzquierdaJ2;
+        sf::Sprite spriteTeclaDerechaJ2;
+        sf::Sprite spriteTeclaSeleccionarJ2;
+
+        // Estos son los controles que cada jugador está usando. Dependiendo
+        // del control, se mostrarán unos sprites u otros indicando qué
+        // teclas o botones hay que pulsar para mover el personaje
+        // seleccionado y elegir o quitar la selección del personaje actual
+        Control controlUtilizadoParaLosSpritesJ1;
+        Control controlUtilizadoParaLosSpritesJ2;
+
         // Se devuelve todo a su posición inicial
         void resetear();
 
@@ -93,6 +114,10 @@ class MenuSeleccionPersonaje {
         // Se quita la selección del personaje que había elegido un jugador. También
         // elimina la entrada de personajesElegidos para el jugador en cuestión
         void desseleccionarPersonaje(Jugador jugador, std::unordered_map<Jugador,std::string>& personajesElegidos);
+
+        // Cambia los sprites que indican las teclas o botones que hay que
+        // pulsar
+        void cambiarSpritesTeclas(Jugador j, Control c);
 
     public:
 

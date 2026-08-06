@@ -40,7 +40,6 @@ MenuPrincipal::MenuPrincipal() : seleccionActual(0),
     // feo si se utiliza una resolución baja
     cartelTitulo->setOrigen({std::floor(cartelTitulo->getOrigen().x),std::floor(cartelTitulo->getOrigen().y)});
 
-
     
     selectores.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/selector-modo-historia.png"),
                             TipoSelectorMenuPrincipal::MODO_HISTORIA);
@@ -91,13 +90,13 @@ void MenuPrincipal::resetear()
 
     // Los sprites de las teclas o botones para ir arriba o abajo se
     // actualizan para tener el valor correcto de transparencia
-    sf::Color colorTeclaSeleccionarArriba = spriteTeclaArriba.getColor();
-    colorTeclaSeleccionarArriba.a = 0;
-    spriteTeclaArriba.setColor(colorTeclaSeleccionarArriba);
+    sf::Color colorTeclaArriba = spriteTeclaArriba.getColor();
+    colorTeclaArriba.a = 0;
+    spriteTeclaArriba.setColor(colorTeclaArriba);
 
-    sf::Color colorTeclaSeleccionarAbajo = spriteTeclaAbajo.getColor();
-    colorTeclaSeleccionarAbajo.a = 0;
-    spriteTeclaAbajo.setColor(colorTeclaSeleccionarAbajo);
+    sf::Color colorTeclaAbajo = spriteTeclaAbajo.getColor();
+    colorTeclaAbajo.a = 0;
+    spriteTeclaAbajo.setColor(colorTeclaAbajo);
 }
 
 void MenuPrincipal::cambiarPosicionRelativa()

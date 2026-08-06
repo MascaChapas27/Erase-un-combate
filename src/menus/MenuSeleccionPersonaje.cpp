@@ -36,7 +36,15 @@ fondoJ1Elegido(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion
 fondoJ2Elegido(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-j2-seleccionado.png"),Direccion::ARRIBA,VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO,sf::Vector2i(VENTANA_ANCHURA/2,0)),
 fondoJ1ElegidoBolitas(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-j1-seleccionado-bolitas.png"),Direccion::ARRIBA,VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO*2.f,sf::Vector2i(VENTANA_ANCHURA/2,0)),
 fondoJ2ElegidoBolitas(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-j2-seleccionado-bolitas.png"),Direccion::ARRIBA,VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO*2.f,sf::Vector2i(VENTANA_ANCHURA/2,0)),
-rectanguloNegro({VENTANA_ANCHURA,VENTANA_ALTURA})
+rectanguloNegro({VENTANA_ANCHURA,VENTANA_ALTURA}),
+spriteTeclaIzquierdaJ1(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/tecla-izquierda-a.png")),
+spriteTeclaDerechaJ1(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/tecla-derecha-d.png")),
+spriteTeclaSeleccionarJ1(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/tecla-seleccionar-shift.png")),
+spriteTeclaIzquierdaJ2(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/tecla-izquierda-j.png")),
+spriteTeclaDerechaJ2(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/tecla-derecha-l.png")),
+spriteTeclaSeleccionarJ2(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/tecla-seleccionar-espacio.png")),
+controlUtilizadoParaLosSpritesJ1(GestorDeControles::unicaInstancia()->obtenerControlUsadoPorJugador(Jugador::JUGADOR1)),
+controlUtilizadoParaLosSpritesJ2(GestorDeControles::unicaInstancia()->obtenerControlUsadoPorJugador(Jugador::JUGADOR2))
 {
     rectanguloNegro.setFillColor(sf::Color::Black);
 
@@ -102,6 +110,116 @@ void MenuSeleccionPersonaje::resetear()
 
     rectanguloBlancoJ1.setFillColor(COLOR_RECTANGULO_BLANCO_TRANSPARENTE_FONDO_PERSONAJE);
     rectanguloBlancoJ2.setFillColor(COLOR_RECTANGULO_BLANCO_TRANSPARENTE_FONDO_PERSONAJE);
+
+    cambiarSpritesTeclas(Jugador::JUGADOR1, controlUtilizadoParaLosSpritesJ1);
+    cambiarSpritesTeclas(Jugador::JUGADOR2, controlUtilizadoParaLosSpritesJ2);
+
+    // Los sprites de las teclas o botones para ir hacia la izquierda y hacia
+    // la derecha se actualizan para tener el valor correcto de transparencia
+    sf::Color colorTeclaIzquierdaJ1 = spriteTeclaIzquierdaJ1.getColor();
+    colorTeclaIzquierdaJ1.a = indiceJugador1 == 0 ? 0 : 255;
+    spriteTeclaIzquierdaJ1.setColor(colorTeclaIzquierdaJ1);
+
+    sf::Color colorTeclaDerechaJ1 = spriteTeclaDerechaJ1.getColor();
+    colorTeclaDerechaJ1.a = indiceJugador1 == selectoresPersonajeJugador1.size()-1 ? 0 : 255;
+    spriteTeclaDerechaJ1.setColor(colorTeclaDerechaJ1);
+
+    sf::Color colorTeclaIzquierdaJ2 = spriteTeclaIzquierdaJ2.getColor();
+    colorTeclaIzquierdaJ2.a = indiceJugador2 == 0 ? 0 : 255;
+    spriteTeclaIzquierdaJ2.setColor(colorTeclaIzquierdaJ2);
+
+    sf::Color colorTeclaDerechaJ2 = spriteTeclaDerechaJ2.getColor();
+    colorTeclaDerechaJ2.a = indiceJugador2 == selectoresPersonajeJugador2.size()-1 ? 0 : 255;
+    spriteTeclaDerechaJ2.setColor(colorTeclaDerechaJ2);
+}
+
+void MenuSeleccionPersonaje::cambiarSpritesTeclas(Jugador j, Control c)
+{
+    switch(c)
+    {
+        case Control::TECLADO_IZQUIERDA:
+            if(j == Jugador::JUGADOR1)
+            {
+                spriteTeclaIzquierdaJ1.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/tecla-izquierda-a.png"));
+                spriteTeclaDerechaJ1.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/tecla-derecha-d.png"));
+                spriteTeclaSeleccionarJ1.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/tecla-seleccionar-shift.png"));
+            }
+            else if(j == Jugador::JUGADOR2)
+            {
+                spriteTeclaIzquierdaJ2.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/tecla-izquierda-j.png"));
+                spriteTeclaDerechaJ2.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/tecla-derecha-l.png"));
+                spriteTeclaSeleccionarJ2.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/tecla-seleccionar-espacio.png"));
+            }
+            break;
+        
+        case Control::MANDO0:
+        case Control::MANDO1:
+        case Control::MANDO2:
+        case Control::MANDO3:
+        case Control::MANDO4:
+        case Control::MANDO5:
+        case Control::MANDO6:
+        case Control::MANDO7:
+            if(j == Jugador::JUGADOR1)
+            {
+                spriteTeclaIzquierdaJ1.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/boton-izquierda-d-pad.png"));
+                spriteTeclaDerechaJ1.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/boton-derecha-d-pad.png"));
+                spriteTeclaSeleccionarJ1.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/boton-seleccionar.png"));
+            }
+            else if(j == Jugador::JUGADOR2)
+            {
+                spriteTeclaIzquierdaJ2.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/boton-izquierda-d-pad.png"));
+                spriteTeclaDerechaJ2.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/boton-derecha-d-pad.png"));
+                spriteTeclaSeleccionarJ2.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/boton-seleccionar.png"));
+            }
+            break;
+    }
+
+    // Se vuelve a establecer el TextureRect para que el sprite no se muestre cortado si
+    // la nueva textura es de un tamaño distinto a la antigua
+    if(j == Jugador::JUGADOR1)
+    {
+        spriteTeclaIzquierdaJ1.setTextureRect(sf::IntRect({0,0},static_cast<sf::Vector2i>(spriteTeclaIzquierdaJ1.getTexture().getSize())));
+        spriteTeclaDerechaJ1.setTextureRect(sf::IntRect({0,0},static_cast<sf::Vector2i>(spriteTeclaDerechaJ1.getTexture().getSize())));
+        spriteTeclaSeleccionarJ1.setTextureRect(sf::IntRect({0,0},static_cast<sf::Vector2i>(spriteTeclaSeleccionarJ1.getTexture().getSize())));
+    }
+    else if(j == Jugador::JUGADOR2)
+    {
+        spriteTeclaIzquierdaJ2.setTextureRect(sf::IntRect({0,0},static_cast<sf::Vector2i>(spriteTeclaIzquierdaJ2.getTexture().getSize())));
+        spriteTeclaDerechaJ2.setTextureRect(sf::IntRect({0,0},static_cast<sf::Vector2i>(spriteTeclaDerechaJ2.getTexture().getSize())));
+        spriteTeclaSeleccionarJ2.setTextureRect(sf::IntRect({0,0},static_cast<sf::Vector2i>(spriteTeclaSeleccionarJ2.getTexture().getSize())));
+    }
+
+    // Se establece el origen de los sprites de las teclas o botones en el centro
+    spriteTeclaIzquierdaJ1.setOrigin(static_cast<sf::Vector2f>(spriteTeclaIzquierdaJ1.getTextureRect().size)/2.f);
+    spriteTeclaDerechaJ1.setOrigin(static_cast<sf::Vector2f>(spriteTeclaDerechaJ1.getTextureRect().size)/2.f);
+    spriteTeclaSeleccionarJ1.setOrigin(static_cast<sf::Vector2f>(spriteTeclaSeleccionarJ1.getTextureRect().size)/2.f);
+
+    spriteTeclaIzquierdaJ2.setOrigin(static_cast<sf::Vector2f>(spriteTeclaIzquierdaJ2.getTextureRect().size)/2.f);
+    spriteTeclaDerechaJ2.setOrigin(static_cast<sf::Vector2f>(spriteTeclaDerechaJ2.getTextureRect().size)/2.f);
+    spriteTeclaSeleccionarJ2.setOrigin(static_cast<sf::Vector2f>(spriteTeclaSeleccionarJ2.getTextureRect().size)/2.f);
+
+    // Ahora, para calcular correctamente el lugar exacto en el que poner los sprites que indican qué tecla
+    // o botón tiene que pulsar cada jugador para poder hacer cosas, hay que tener en cuenta dónde está el
+    // selector de personaje actual y dónde están los selectores de personaje que tiene al lado.
+    float posicionSelectorPersonajeActualJ1EjeX = POSICION_X_SELECTOR_PERSONAJE_J1;
+    float posicionSelectorPersonajeSiguienteJ1EjeX = POSICION_X_SELECTOR_PERSONAJE_J1 + (1-DIFERENCIA_ESCALA_SELECTOR_PERSONAJE)*DIFERENCIA_POSICION_X_SELECTOR_PERSONAJE;
+    float diferenciaPosicionSelectoresPersonajesAdyacentesEjeX = posicionSelectorPersonajeSiguienteJ1EjeX - posicionSelectorPersonajeActualJ1EjeX;
+
+    // También hay que tener en cuenta el tamaño de cada selector
+    float tamanoSelectorActualX = selectoresPersonajeJugador1[0].getSprite().getTextureRect().size.x;
+    float tamanoSelectorSiguienteX = tamanoSelectorActualX*(1-DIFERENCIA_ESCALA_SELECTOR_PERSONAJE);
+
+    // Ahora, se puede calcular cuál es la diferencia exacta en el eje X entre el selector actual y el
+    // sprite que indica la tecla a pulsar
+    float diferenciaEntreSelectorYSpriteTecla = tamanoSelectorActualX/2.f + (diferenciaPosicionSelectoresPersonajesAdyacentesEjeX - tamanoSelectorActualX/2.f - tamanoSelectorSiguienteX/2.f)/2.f;
+
+    // Finalmente, se ponen los sprites en su posición correcta
+    spriteTeclaIzquierdaJ1.setPosition({POSICION_X_SELECTOR_PERSONAJE_J1-diferenciaEntreSelectorYSpriteTecla,POSICION_Y_SELECTOR_PERSONAJE});
+    spriteTeclaDerechaJ1.setPosition({POSICION_X_SELECTOR_PERSONAJE_J1+diferenciaEntreSelectorYSpriteTecla,POSICION_Y_SELECTOR_PERSONAJE});
+
+    spriteTeclaIzquierdaJ2.setPosition({POSICION_X_SELECTOR_PERSONAJE_J2-diferenciaEntreSelectorYSpriteTecla,POSICION_Y_SELECTOR_PERSONAJE});
+    spriteTeclaDerechaJ2.setPosition({POSICION_X_SELECTOR_PERSONAJE_J2+diferenciaEntreSelectorYSpriteTecla,POSICION_Y_SELECTOR_PERSONAJE});
 }
 
 void MenuSeleccionPersonaje::seleccionarPersonaje(Jugador jugador, std::list<std::shared_ptr<Animacion>>& animaciones, std::unordered_map<Jugador,std::string>& personajesElegidos)
@@ -280,6 +398,80 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
             }
         }
 
+        // Si el jugador 1 ha cambiado de control, hay que cambiar los sprites
+        if(controlUtilizadoParaLosSpritesJ1 != GestorDeControles::unicaInstancia()->obtenerControlUsadoPorJugador(Jugador::JUGADOR1))
+        {
+            controlUtilizadoParaLosSpritesJ1 = GestorDeControles::unicaInstancia()->obtenerControlUsadoPorJugador(Jugador::JUGADOR1);
+            cambiarSpritesTeclas(Jugador::JUGADOR1, controlUtilizadoParaLosSpritesJ1);
+        }
+        
+        // Lo mismo para el jugador 2
+        if(controlUtilizadoParaLosSpritesJ2 != GestorDeControles::unicaInstancia()->obtenerControlUsadoPorJugador(Jugador::JUGADOR2))
+        {
+            controlUtilizadoParaLosSpritesJ2 = GestorDeControles::unicaInstancia()->obtenerControlUsadoPorJugador(Jugador::JUGADOR2);
+            cambiarSpritesTeclas(Jugador::JUGADOR2, controlUtilizadoParaLosSpritesJ2);
+        }
+
+        // Se actualiza la transparencia del sprite que indica el botón o tecla
+        // a pulsar para moverse hacia la izquierda para el jugador 1
+        if(spriteTeclaIzquierdaJ1.getColor().a > 0 && indiceJugador1 == 0)
+        {
+            sf::Color nuevoColor = spriteTeclaIzquierdaJ1.getColor();
+            nuevoColor.a -= VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
+            spriteTeclaIzquierdaJ1.setColor(nuevoColor);
+        }
+        else if (spriteTeclaIzquierdaJ1.getColor().a < 255 && indiceJugador1 > 0)
+        {
+            sf::Color nuevoColor = spriteTeclaIzquierdaJ1.getColor();
+            nuevoColor.a += VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
+            spriteTeclaIzquierdaJ1.setColor(nuevoColor);
+        }
+
+        // Se actualiza la transparencia del sprite que indica el botón o tecla
+        // a pulsar para moverse hacia la derecha para el jugador 1
+        if(spriteTeclaDerechaJ1.getColor().a > 0 && indiceJugador1 == selectoresPersonajeJugador1.size()-1)
+        {
+            sf::Color nuevoColor = spriteTeclaDerechaJ1.getColor();
+            nuevoColor.a -= VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
+            spriteTeclaDerechaJ1.setColor(nuevoColor);
+        }
+        else if (spriteTeclaDerechaJ1.getColor().a < 255 && indiceJugador1 < selectoresPersonajeJugador1.size()-1)
+        {
+            sf::Color nuevoColor = spriteTeclaDerechaJ1.getColor();
+            nuevoColor.a += VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
+            spriteTeclaDerechaJ1.setColor(nuevoColor);
+        }
+
+        // Se actualiza la transparencia del sprite que indica el botón o tecla
+        // a pulsar para moverse hacia la izquierda para el jugador 2
+        if(spriteTeclaIzquierdaJ2.getColor().a > 0 && indiceJugador2 == 0)
+        {
+            sf::Color nuevoColor = spriteTeclaIzquierdaJ2.getColor();
+            nuevoColor.a -= VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
+            spriteTeclaIzquierdaJ2.setColor(nuevoColor);
+        }
+        else if (spriteTeclaIzquierdaJ2.getColor().a < 255 && indiceJugador2 > 0)
+        {
+            sf::Color nuevoColor = spriteTeclaIzquierdaJ2.getColor();
+            nuevoColor.a += VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
+            spriteTeclaIzquierdaJ2.setColor(nuevoColor);
+        }
+
+        // Se actualiza la transparencia del sprite que indica el botón o tecla
+        // a pulsar para moverse hacia la derecha para el jugador 2
+        if(spriteTeclaDerechaJ2.getColor().a > 0 && indiceJugador2 == selectoresPersonajeJugador2.size()-1)
+        {
+            sf::Color nuevoColor = spriteTeclaDerechaJ2.getColor();
+            nuevoColor.a -= VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
+            spriteTeclaDerechaJ2.setColor(nuevoColor);
+        }
+        else if (spriteTeclaDerechaJ2.getColor().a < 255 && indiceJugador2 < selectoresPersonajeJugador2.size()-1)
+        {
+            sf::Color nuevoColor = spriteTeclaDerechaJ2.getColor();
+            nuevoColor.a += VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
+            spriteTeclaDerechaJ2.setColor(nuevoColor);
+        }
+
         // Si estamos saliendo, se aumenta el contador que indica desde hace
         // cuántos frames estamos saliendo
         if(saliendo)
@@ -436,6 +628,12 @@ std::unordered_map<Jugador,std::string> MenuSeleccionPersonaje::comenzarEleccion
 
         ventana->draw(spriteMarco);
         ventana->draw(spriteEsc);
+
+        ventana->draw(spriteTeclaIzquierdaJ1);
+        ventana->draw(spriteTeclaDerechaJ1);
+
+        ventana->draw(spriteTeclaIzquierdaJ2);
+        ventana->draw(spriteTeclaDerechaJ2);
 
         for(int i=0;i<selectoresPersonajeJugador1.size();i++)
         {
