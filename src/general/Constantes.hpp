@@ -331,6 +331,14 @@ constexpr float OFFSET_X_FONDO_ADICIONAL_COPIA = -5.f;
 // al fondo de personaje original que está replicando
 constexpr float OFFSET_X_FONDO_ADICIONAL_NEGRO = 5.f;
 
+// La opacidad que consigue el rectángulo blanco de cada fondo de personaje
+// cuando el personaje correspondiente es seleccionado
+constexpr int OPACIDAD_RECTANGULO_BLANCO_FONDO_PERSONAJE_SELECCIONADO = 125;
+
+// El color transparente que tiene el rectángulo que aparece encima del
+// fondo del personaje al ser seleccionado
+constexpr sf::Color COLOR_RECTANGULO_BLANCO_TRANSPARENTE_FONDO_PERSONAJE = sf::Color(255,255,255,0);
+
 
 
 /*

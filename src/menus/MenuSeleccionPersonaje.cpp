@@ -70,11 +70,11 @@ rectanguloNegro({VENTANA_ANCHURA,VENTANA_ALTURA})
         posicionRelativaJugador2++;
     }
 
-    rectanguloBlancoJ1.setFillColor(sf::Color(255,255,255,0));
+    rectanguloBlancoJ1.setFillColor(COLOR_RECTANGULO_BLANCO_TRANSPARENTE_FONDO_PERSONAJE);
     rectanguloBlancoJ1.setSize(sf::Vector2f(fondosPersonajeJugador1[0].getSprite().getTextureRect().size));
     rectanguloBlancoJ1.setPosition({POSICION_X_FONDO_PERSONAJE_J1,POSICION_Y_FONDO_PERSONAJE});
 
-    rectanguloBlancoJ2.setFillColor(sf::Color(255,255,255,0));
+    rectanguloBlancoJ2.setFillColor(COLOR_RECTANGULO_BLANCO_TRANSPARENTE_FONDO_PERSONAJE);
     rectanguloBlancoJ2.setSize(sf::Vector2f(fondosPersonajeJugador2[0].getSprite().getTextureRect().size));
     rectanguloBlancoJ2.setPosition({POSICION_X_FONDO_PERSONAJE_J2,POSICION_Y_FONDO_PERSONAJE});
 
@@ -100,8 +100,8 @@ void MenuSeleccionPersonaje::resetear()
 
     fondoCuadriculado.resetear();
 
-    rectanguloBlancoJ1.setFillColor(sf::Color(255,255,255,0));
-    rectanguloBlancoJ2.setFillColor(sf::Color(255,255,255,0));
+    rectanguloBlancoJ1.setFillColor(COLOR_RECTANGULO_BLANCO_TRANSPARENTE_FONDO_PERSONAJE);
+    rectanguloBlancoJ2.setFillColor(COLOR_RECTANGULO_BLANCO_TRANSPARENTE_FONDO_PERSONAJE);
 }
 
 void MenuSeleccionPersonaje::seleccionarPersonaje(Jugador jugador, std::list<std::shared_ptr<Animacion>>& animaciones, std::unordered_map<Jugador,std::string>& personajesElegidos)
@@ -119,7 +119,7 @@ void MenuSeleccionPersonaje::seleccionarPersonaje(Jugador jugador, std::list<std
             fondosPersonajeJugador1[indiceJugador1].seleccionar();
 
             sf::Color nuevoColor = rectanguloBlancoJ1.getFillColor();
-            nuevoColor.a = 125;
+            nuevoColor.a = OPACIDAD_RECTANGULO_BLANCO_FONDO_PERSONAJE_SELECCIONADO;
             rectanguloBlancoJ1.setFillColor(nuevoColor);
 
             fondoAdicionalCopiaJugador1 = std::make_shared<sf::Sprite>(fondosPersonajeJugador1[indiceJugador1].getSprite());
@@ -167,6 +167,7 @@ void MenuSeleccionPersonaje::desseleccionarPersonaje(Jugador jugador, std::unord
         personajeElegidoJugador1 = false;
         fondoAdicionalNegroJugador1.reset();
         fondoAdicionalCopiaJugador1.reset();
+        rectanguloBlancoJ1.setFillColor(COLOR_RECTANGULO_BLANCO_TRANSPARENTE_FONDO_PERSONAJE);
         fondosPersonajeJugador1[indiceJugador1].quitarSeleccion();
     }
     else
@@ -174,6 +175,7 @@ void MenuSeleccionPersonaje::desseleccionarPersonaje(Jugador jugador, std::unord
         personajeElegidoJugador2 = false;
         fondoAdicionalNegroJugador2.reset();
         fondoAdicionalCopiaJugador2.reset();
+        rectanguloBlancoJ2.setFillColor(COLOR_RECTANGULO_BLANCO_TRANSPARENTE_FONDO_PERSONAJE);
         fondosPersonajeJugador2[indiceJugador2].quitarSeleccion();
     }
 }
