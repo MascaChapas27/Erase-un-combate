@@ -108,7 +108,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(libzip)
 
 # Se indica dónde están los headers
-include_directories(src/animaciones src/combate src/general src/menus src/recursos src/discord)
+include_directories(src/animaciones src/combate src/discord src/general src/menus src/recursos src/sprites)
 
 # Variables de utilidad para el SDK de Discord
 set(DISCORD_SDK_LIB_DIR "${discord_sdk_SOURCE_DIR}/lib/release")
@@ -185,6 +185,8 @@ src/recursos/GestorDeControles.cpp
 src/recursos/ReproductorDeMusica.cpp
 src/recursos/ReproductorDeSonidos.cpp
 src/recursos/SelectorJugadorParaMando.cpp
+
+src/sprites/SpriteDeseado.cpp
 
 )
 

@@ -27,9 +27,9 @@ MenuPrincipal::~MenuPrincipal(){
 
 MenuPrincipal::MenuPrincipal() : seleccionActual(0),
                                  cartelTitulo(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("titulo")),
-                                 spriteTeclaArriba(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-arriba-w.png")),
-                                 spriteTeclaAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-abajo-s.png")),
-                                 spriteTeclaSeleccionar(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-seleccionar-shift.png")),
+                                 spriteTeclaArriba(sf::Sprite(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-arriba-w.png")),FACTOR_APROXIMACION_SPRITES_TECLAS),
+                                 spriteTeclaAbajo(sf::Sprite(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-abajo-s.png")),FACTOR_APROXIMACION_SPRITES_TECLAS),
+                                 spriteTeclaSeleccionar(sf::Sprite(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-seleccionar-shift.png")),FACTOR_APROXIMACION_SPRITES_TECLAS),
                                  controlUtilizadoParaLosSprites(GestorDeControles::unicaInstancia()->obtenerControlUsadoPorJugador(Jugador::JUGADOR1)),
                                  dientesSierraArriba(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png"),Direccion::ARRIBA,DIENTES_SIERRA_MENU_PRINCIPAL_VELOCIDAD),
                                  dientesSierraAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png"),Direccion::ABAJO,DIENTES_SIERRA_MENU_PRINCIPAL_VELOCIDAD),
@@ -90,13 +90,15 @@ void MenuPrincipal::resetear()
 
     // Los sprites de las teclas o botones para ir arriba o abajo se
     // actualizan para tener el valor correcto de transparencia
-    sf::Color colorTeclaArriba = spriteTeclaArriba.getColor();
+    sf::Color colorTeclaArriba = spriteTeclaArriba.getSprite().getColor();
     colorTeclaArriba.a = 0;
-    spriteTeclaArriba.setColor(colorTeclaArriba);
+    spriteTeclaArriba.setColorDeseado(colorTeclaArriba);
+    spriteTeclaArriba.actualizarColorInmediatamente();
 
-    sf::Color colorTeclaAbajo = spriteTeclaAbajo.getColor();
+    sf::Color colorTeclaAbajo = spriteTeclaAbajo.getSprite().getColor();
     colorTeclaAbajo.a = 0;
-    spriteTeclaAbajo.setColor(colorTeclaAbajo);
+    spriteTeclaAbajo.setColorDeseado(colorTeclaAbajo);
+    spriteTeclaAbajo.actualizarColorInmediatamente();
 }
 
 void MenuPrincipal::cambiarPosicionRelativa()
@@ -116,7 +118,9 @@ void MenuPrincipal::cambiarPosicionRelativa()
 
 void MenuPrincipal::calcularPosicionDeseadaSpriteTeclaSeleccionar()
 {
-    posicionDeseadaSpriteTeclaSeleccionar.x = selectores[seleccionActual].getSprite().getPosition().x - selectores[seleccionActual].getSprite().getTextureRect().size.x/2.f - spriteTeclaSeleccionar.getTextureRect().size.x/2.f - DISTANCIA_PIXELES_SPRITE_TECLA_Y_SELECCION;
+    sf::Vector2f posicionDeseada = spriteTeclaSeleccionar.getPosicionDeseada();
+    posicionDeseada.x = selectores[seleccionActual].getSprite().getPosition().x - selectores[seleccionActual].getSprite().getTextureRect().size.x/2.f - spriteTeclaSeleccionar.getSprite().getTextureRect().size.x/2.f - DISTANCIA_PIXELES_SPRITE_TECLA_Y_SELECCION;
+    spriteTeclaSeleccionar.setPosicionDeseada(posicionDeseada);
 }
 
 void MenuPrincipal::cambiarSpritesTeclas(Control c)
@@ -124,9 +128,9 @@ void MenuPrincipal::cambiarSpritesTeclas(Control c)
     switch(c)
     {
         case Control::TECLADO_IZQUIERDA:
-            spriteTeclaArriba.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-arriba-w.png"));
-            spriteTeclaAbajo.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-abajo-s.png"));
-            spriteTeclaSeleccionar.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-seleccionar-shift.png"));
+            spriteTeclaArriba.getSprite().setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-arriba-w.png"));
+            spriteTeclaAbajo.getSprite().setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-abajo-s.png"));
+            spriteTeclaSeleccionar.getSprite().setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-seleccionar-shift.png"));
             break;
         
         case Control::MANDO0:
@@ -137,35 +141,38 @@ void MenuPrincipal::cambiarSpritesTeclas(Control c)
         case Control::MANDO5:
         case Control::MANDO6:
         case Control::MANDO7:
-            spriteTeclaArriba.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/boton-arriba-d-pad.png"));
-            spriteTeclaArriba.setTextureRect(sf::IntRect({0,0},static_cast<sf::Vector2i>(spriteTeclaArriba.getTexture().getSize())));
-            spriteTeclaAbajo.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/boton-abajo-d-pad.png"));
-            spriteTeclaAbajo.setTextureRect(sf::IntRect({0,0},static_cast<sf::Vector2i>(spriteTeclaAbajo.getTexture().getSize())));
-            spriteTeclaSeleccionar.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/boton-seleccionar.png"));
-            spriteTeclaSeleccionar.setTextureRect(sf::IntRect({0,0},static_cast<sf::Vector2i>(spriteTeclaSeleccionar.getTexture().getSize())));
+            spriteTeclaArriba.getSprite().setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/boton-arriba-d-pad.png"));
+            spriteTeclaAbajo.getSprite().setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/boton-abajo-d-pad.png"));
+            spriteTeclaSeleccionar.getSprite().setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/boton-seleccionar.png"));
             break;
     }
 
-    // Se establece el origen de los sprites de las teclas o botones en la parte izquierda
-    // para que se pueden alinear por la izquierda
-    spriteTeclaArriba.setOrigin({static_cast<float>(spriteTeclaArriba.getTextureRect().size.x)/2.f,static_cast<float>(spriteTeclaArriba.getTextureRect().size.y)/2.f});
-    spriteTeclaAbajo.setOrigin({static_cast<float>(spriteTeclaAbajo.getTextureRect().size.x)/2.f,static_cast<float>(spriteTeclaAbajo.getTextureRect().size.y)/2.f});
-    spriteTeclaSeleccionar.setOrigin({static_cast<float>(spriteTeclaSeleccionar.getTextureRect().size.x)/2.f,static_cast<float>(spriteTeclaSeleccionar.getTextureRect().size.y)/2.f});
+    // Se recalcula el TextureRect de cada Sprite para evitar que se entrecorte la textura
+    // si la nueva tiene un tamaño distinto a la antigua
+    spriteTeclaArriba.getSprite().setTextureRect(sf::IntRect({0,0},static_cast<sf::Vector2i>(spriteTeclaArriba.getSprite().getTexture().getSize())));
+    spriteTeclaAbajo.getSprite().setTextureRect(sf::IntRect({0,0},static_cast<sf::Vector2i>(spriteTeclaAbajo.getSprite().getTexture().getSize())));
+    spriteTeclaSeleccionar.getSprite().setTextureRect(sf::IntRect({0,0},static_cast<sf::Vector2i>(spriteTeclaSeleccionar.getSprite().getTexture().getSize())));
+
+
+    // Se establece el origen de los sprites de las teclas o botones en el centro
+    spriteTeclaArriba.getSprite().setOrigin({static_cast<float>(spriteTeclaArriba.getSprite().getTextureRect().size.x)/2.f,static_cast<float>(spriteTeclaArriba.getSprite().getTextureRect().size.y)/2.f});
+    spriteTeclaAbajo.getSprite().setOrigin({static_cast<float>(spriteTeclaAbajo.getSprite().getTextureRect().size.x)/2.f,static_cast<float>(spriteTeclaAbajo.getSprite().getTextureRect().size.y)/2.f});
+    spriteTeclaSeleccionar.getSprite().setOrigin({static_cast<float>(spriteTeclaSeleccionar.getSprite().getTextureRect().size.x)/2.f,static_cast<float>(spriteTeclaSeleccionar.getSprite().getTextureRect().size.y)/2.f});
 
     // Se establece cuál es la posición deseada para los sprites de las teclas o botones
     float factorDiferenciaPosicionYSpritesArribaAbajo = 1.7f;
-    posicionDeseadaSpriteTeclaArriba = {POSICION_X_SELECTOR_MENU_PRINCIPAL, POSICION_INICIAL_Y_SELECTOR_MENU_PRINCIPAL - factorDiferenciaPosicionYSpritesArribaAbajo*DIFERENCIA_POSICION_Y_SELECTOR_MENU_PRINCIPAL*std::sqrt(1.f - DIFERENCIA_ESCALA_SELECTOR_MENU_PRINCIPAL)};
-    posicionDeseadaSpriteTeclaAbajo = {POSICION_X_SELECTOR_MENU_PRINCIPAL, POSICION_INICIAL_Y_SELECTOR_MENU_PRINCIPAL + factorDiferenciaPosicionYSpritesArribaAbajo*DIFERENCIA_POSICION_Y_SELECTOR_MENU_PRINCIPAL*std::sqrt(1.f - DIFERENCIA_ESCALA_SELECTOR_MENU_PRINCIPAL)};
-    posicionDeseadaSpriteTeclaSeleccionar = {0.f, POSICION_INICIAL_Y_SELECTOR_MENU_PRINCIPAL};
+    spriteTeclaArriba.setPosicionDeseada({POSICION_X_SELECTOR_MENU_PRINCIPAL, POSICION_INICIAL_Y_SELECTOR_MENU_PRINCIPAL - factorDiferenciaPosicionYSpritesArribaAbajo*DIFERENCIA_POSICION_Y_SELECTOR_MENU_PRINCIPAL*std::sqrt(1.f - DIFERENCIA_ESCALA_SELECTOR_MENU_PRINCIPAL)});
+    spriteTeclaAbajo.setPosicionDeseada({POSICION_X_SELECTOR_MENU_PRINCIPAL, POSICION_INICIAL_Y_SELECTOR_MENU_PRINCIPAL + factorDiferenciaPosicionYSpritesArribaAbajo*DIFERENCIA_POSICION_Y_SELECTOR_MENU_PRINCIPAL*std::sqrt(1.f - DIFERENCIA_ESCALA_SELECTOR_MENU_PRINCIPAL)});
+    spriteTeclaSeleccionar.setPosicionDeseada({0.f, POSICION_INICIAL_Y_SELECTOR_MENU_PRINCIPAL});
 
     // Se calcula la posición en la que debería estar
     // el sprite de la tecla o botón para seleccionar
     calcularPosicionDeseadaSpriteTeclaSeleccionar();
 
     // Se mueven los sprites de las teclas o botones a su lugar correspondiente
-    spriteTeclaArriba.setPosition(posicionDeseadaSpriteTeclaArriba);
-    spriteTeclaAbajo.setPosition(posicionDeseadaSpriteTeclaAbajo);
-    spriteTeclaSeleccionar.setPosition(posicionDeseadaSpriteTeclaSeleccionar);
+    spriteTeclaArriba.actualizarPosicionInmediatamente();
+    spriteTeclaAbajo.actualizarPosicionInmediatamente();
+    spriteTeclaSeleccionar.actualizarPosicionInmediatamente();
 }
 
 TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
@@ -214,14 +221,14 @@ TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
                     {
                         ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/cambiar-seleccion.ogg");
                         seleccionActual--;
-                        spriteTeclaArriba.move({0.f,-static_cast<float>(REBOTE_SPRITES_TECLAS_MENU_PRINCIPAL)});
+                        spriteTeclaArriba.getSprite().move({0.f,-static_cast<float>(REBOTE_SPRITES_TECLAS_MENU_PRINCIPAL)});
                         cambiarPosicionRelativa();
                     }
                     else if (infoEvento.accion == Accion::ABAJO && seleccionActual < selectores.size()-1)
                     {
                         ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/cambiar-seleccion.ogg");
                         seleccionActual++;
-                        spriteTeclaAbajo.move({0.f,static_cast<float>(REBOTE_SPRITES_TECLAS_MENU_PRINCIPAL)});
+                        spriteTeclaAbajo.getSprite().move({0.f,static_cast<float>(REBOTE_SPRITES_TECLAS_MENU_PRINCIPAL)});
                         cambiarPosicionRelativa();
                     }
                     else if (infoEvento.accion == Accion::ATACAR)
@@ -234,7 +241,7 @@ TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
 
                         if(selectorPulsado)
                         {
-                            spriteTeclaSeleccionar.move({static_cast<float>(REBOTE_SPRITES_TECLAS_MENU_PRINCIPAL),0.f});
+                            spriteTeclaSeleccionar.getSprite().move({static_cast<float>(REBOTE_SPRITES_TECLAS_MENU_PRINCIPAL),0.f});
 
                             ReproductorDeMusica::unicaInstancia()->detener();
                             ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-principal/seleccionar.ogg");
@@ -294,41 +301,41 @@ TipoSelectorMenuPrincipal MenuPrincipal::comenzar(){
             fondo.actualizar();
         }
 
-        // Se actualiza la posición de los sprites que indican
-        // las teclas o botones a pulsar
-        spriteTeclaAbajo.setPosition(util::aproximarVector2f(spriteTeclaAbajo.getPosition(),posicionDeseadaSpriteTeclaAbajo,FACTOR_APROXIMACION_POSICION_SPRITES_TECLAS));
-        spriteTeclaArriba.setPosition(util::aproximarVector2f(spriteTeclaArriba.getPosition(),posicionDeseadaSpriteTeclaArriba,FACTOR_APROXIMACION_POSICION_SPRITES_TECLAS));
-        spriteTeclaSeleccionar.setPosition(util::aproximarVector2f(spriteTeclaSeleccionar.getPosition(),posicionDeseadaSpriteTeclaSeleccionar,FACTOR_APROXIMACION_POSICION_SPRITES_TECLAS));
-        
-        // Se actualiza la transparencia del sprite que indica el botón o tecla
-        // a pulsar para moverse hacia abajo
-        if(spriteTeclaAbajo.getColor().a > 0 && seleccionActual == selectores.size()-1)
+        // Se actualiza el color deseado del sprite de la tecla o botón
+        // para moverse hacia abajo si es necesario
+        if(spriteTeclaAbajo.getColorDeseado().a > 0 && seleccionActual == selectores.size()-1)
         {
-            sf::Color nuevoColor = spriteTeclaAbajo.getColor();
-            nuevoColor.a -= VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
-            spriteTeclaAbajo.setColor(nuevoColor);
+            sf::Color nuevoColor = spriteTeclaAbajo.getColorDeseado();
+            nuevoColor.a = 0;
+            spriteTeclaAbajo.setColorDeseado(nuevoColor);
         }
-        else if (spriteTeclaAbajo.getColor().a < 255 && seleccionActual < selectores.size()-1)
+        else if (spriteTeclaAbajo.getColorDeseado().a < 255 && seleccionActual < selectores.size()-1)
         {
-            sf::Color nuevoColor = spriteTeclaAbajo.getColor();
-            nuevoColor.a += VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
-            spriteTeclaAbajo.setColor(nuevoColor);
+            sf::Color nuevoColor = spriteTeclaAbajo.getColorDeseado();
+            nuevoColor.a = 255;
+            spriteTeclaAbajo.setColorDeseado(nuevoColor);
         }
         
-        // Lo mismo de antes, pero para el sprite del botón o tecla para moverse
-        // hacia arriba
-        if(spriteTeclaArriba.getColor().a > 0 && seleccionActual == 0)
+        // Lo mismo de antes, pero para el sprite de la tecla o botón
+        // para moverse hacia arriba
+        if(spriteTeclaArriba.getColorDeseado().a > 0 && seleccionActual == 0)
         {
-            sf::Color nuevoColor = spriteTeclaArriba.getColor();
-            nuevoColor.a -= VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
-            spriteTeclaArriba.setColor(nuevoColor);
+            sf::Color nuevoColor = spriteTeclaArriba.getColorDeseado();
+            nuevoColor.a = 0;
+            spriteTeclaArriba.setColorDeseado(nuevoColor);
         }
-        else if (spriteTeclaArriba.getColor().a < 255 && seleccionActual > 0)
+        else if (spriteTeclaArriba.getColorDeseado().a < 255 && seleccionActual > 0)
         {
-            sf::Color nuevoColor = spriteTeclaArriba.getColor();
-            nuevoColor.a += VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS;
-            spriteTeclaArriba.setColor(nuevoColor);
+            sf::Color nuevoColor = spriteTeclaArriba.getColorDeseado();
+            nuevoColor.a = 255;
+            spriteTeclaArriba.setColorDeseado(nuevoColor);
         }
+
+        // Se actualizan los atributos de los sprites que indican qué teclas
+        // o botones hay que pulsar
+        spriteTeclaAbajo.actualizar();
+        spriteTeclaArriba.actualizar();
+        spriteTeclaSeleccionar.actualizar();
 
         ventana->clear(sf::Color::Black);
 

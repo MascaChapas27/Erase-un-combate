@@ -219,9 +219,10 @@ constexpr float DIFERENCIA_POSICION_Y_SELECTOR_MENU_PRINCIPAL = VENTANA_ALTURA/6
 // que se está eligiendo actualmente
 constexpr float DISTANCIA_PIXELES_SPRITE_TECLA_Y_SELECCION = 5.f;
 
-// El factor utilizado para devolver los sprites de las teclas o botones a su
-// posición deseada tras moverse estos
-constexpr float FACTOR_APROXIMACION_POSICION_SPRITES_TECLAS = 0.8f;
+// El factor utilizado para actualizar los atributos de los sprites de clase
+// SpriteDeseado usados para indicar qué botones o teclas hay que pulsar
+// para llevar a cabo las acciones necesarias en cada menú
+constexpr float FACTOR_APROXIMACION_SPRITES_TECLAS = 0.8f;
 
 // La cantidad de píxeles que se mueven los sprites para las teclas o botones
 // cada vez que se pulsa la tecla o botón correspondiente

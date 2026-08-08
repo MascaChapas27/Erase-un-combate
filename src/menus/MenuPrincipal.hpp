@@ -4,9 +4,9 @@
 #include "AnimacionFondoBucleLineal.hpp"
 #include <memory>
 #include <vector>
-
 #include "SelectorMenuPrincipal.hpp"
 #include "FondoMenuPrincipal.hpp"
+#include "SpriteDeseado.hpp"
 
 /*
     Esta clase representa el menú principal en el que puedes elegir el modo
@@ -38,17 +38,9 @@ class MenuPrincipal {
         // Los sprites que indican qué teclas o botones hay que pulsar para
         // avanzar al selector de arriba, al selector de abajo, o para seleccionar
         // el selector actual, respectivamente
-        sf::Sprite spriteTeclaArriba;
-        sf::Sprite spriteTeclaAbajo;
-        sf::Sprite spriteTeclaSeleccionar;
-
-        // Los tres sprites de arriba tienen una posición deseada en la que se tienen
-        // que mantener. Aún así, es posible que se muevan para generar algunos efectos
-        // chulos, pero independientemente de cuánto se muevan, luego deben volver a
-        // las posiciones indicadas por estas tres variables
-        sf::Vector2f posicionDeseadaSpriteTeclaArriba;
-        sf::Vector2f posicionDeseadaSpriteTeclaAbajo;
-        sf::Vector2f posicionDeseadaSpriteTeclaSeleccionar;
+        SpriteDeseado spriteTeclaArriba;
+        SpriteDeseado spriteTeclaAbajo;
+        SpriteDeseado spriteTeclaSeleccionar;
 
         // Este es el control para el que se están mostrando los sprites que indican
         // qué teclas o botones hay que pulsar. Si el control es un teclado, se mostrarán
