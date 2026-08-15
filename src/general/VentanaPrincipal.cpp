@@ -10,7 +10,11 @@ bool VentanaPrincipal::vibracionActivada = true;
 sf::RenderWindow * VentanaPrincipal::unicaInstancia()
 {
     if(ventanaPrincipal==nullptr){
+        // Se crea la ventana principal
         ventanaPrincipal = new sf::RenderWindow(sf::VideoMode({VENTANA_ANCHURA, VENTANA_ALTURA}), VENTANA_NOMBRE, VENTANA_ESTILO);
+
+        // Se establece el icono de la ventana
+        ventanaPrincipal->setIcon(sf::Image("sprites/icono/icono.png"));
 
         // Se desactiva lo de que si mantienes pulsada una tecla se vuelve a pulsar muchas veces
         // porque esto es un juego no un editor de texto ni nada por el estilo

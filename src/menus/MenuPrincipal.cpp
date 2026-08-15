@@ -21,7 +21,8 @@ MenuPrincipal * MenuPrincipal::unicaInstancia()
     return menuPrincipal;
 }
 
-MenuPrincipal::~MenuPrincipal(){
+MenuPrincipal::~MenuPrincipal()
+{
     if(menuPrincipal != nullptr) delete menuPrincipal;
 }
 
