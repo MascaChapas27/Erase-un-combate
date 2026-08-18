@@ -1,5 +1,7 @@
 #pragma once
 
+#include "AnimacionFondoBucleLineal.hpp"
+
 /*
     Esta clase representa el menú de pausa que aparece cuando
     se pulsa la tecla de salida durante un combate
@@ -13,6 +15,9 @@ class MenuPausa {
 
         // La única instancia
         static MenuPausa * menuPausa;
+
+        // El fondo super chulo cuadriculado que sale por detrás
+        AnimacionFondoBucleLineal fondoCuadriculado;
 
     public:
 

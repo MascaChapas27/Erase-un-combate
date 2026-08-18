@@ -26,7 +26,8 @@ MenuPausa::~MenuPausa()
     if(menuPausa != nullptr) delete menuPausa;
 }
 
-MenuPausa::MenuPausa()
+MenuPausa::MenuPausa() :
+fondoCuadriculado(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/eleccion-personaje/fondo-cuadricula.png"),Direccion::ARRIBA_IZQUIERDA,VELOCIDAD_FONDO_CUADRICULADO_SELECCION_PERSONAJE)
 {
 
 }
@@ -34,6 +35,8 @@ MenuPausa::MenuPausa()
 void MenuPausa::comenzar()
 {
     ReproductorDeMusica::unicaInstancia()->pausarCancionCombate();
+
+    fondoCuadriculado.resetear();
 
     // Aquí se guarda la ventana principal para tenerla más a mano
     sf::RenderWindow* ventana(VentanaPrincipal::unicaInstancia());
@@ -82,7 +85,7 @@ void MenuPausa::comenzar()
     // En este flag se indica cuándo se debe salir del menú de pausa
     bool saliendo = false;
 
-    while(!saliendo){
+    while(!(saliendo && util::floatsIguales(spriteFondo.getSprite().getScale().x,1.f))){
         // Se prepara un reloj para ver cuánto tiempo pasa entre fotogramas
         sf::Clock reloj;
         
@@ -100,15 +103,21 @@ void MenuPausa::comenzar()
                     if (infoEvento.accion == Accion::ESCAPE)
                     {
                         saliendo = true;
+                        spriteFondo.setEscalaDeseada({1.f,1.f});
+                        spriteFondo.setColorDeseado(sf::Color::White);
                     }
                 }
             }
         }
 
         spriteFondo.actualizar();
+        
+        std::list<std::shared_ptr<Animacion>> nuevasAnimaciones;
+        fondoCuadriculado.actualizar(nuevasAnimaciones);
 
         ventana->clear();
 
+        ventana->draw(fondoCuadriculado);
         ventana->draw(spriteFondo);
 
         ventana->display();

@@ -97,37 +97,6 @@ void SelectorPersonaje::actualizar()
     bordeCuadrado.setOutlineColor(spriteSelector.getColor());
 }
 
-void SelectorPersonaje::ajustarPosicion()
-{
-    sf::Vector2f posicionDeseadaSprite;
-    sf::Color colorDeseadoSprite = COLOR_SELECTOR_PERSONAJE_POSICION_RELATIVA_0;
-    sf::Vector2f posicionDeseadaFondo;
-    sf::Color colorDeseadoFondo;
-
-    float escalaDeseadaSprite = 1.f - std::abs(posicionRelativa)*DIFERENCIA_ESCALA_SELECTOR_PERSONAJE;
-    if(escalaDeseadaSprite < 0.f) escalaDeseadaSprite = 0.f;
-
-    posicionDeseadaSprite.x = jugador == Jugador::JUGADOR1 ?
-                              POSICION_X_SELECTOR_PERSONAJE_J1 :
-                              POSICION_X_SELECTOR_PERSONAJE_J2;
-    posicionDeseadaSprite.x += posicionRelativa*DIFERENCIA_POSICION_X_SELECTOR_PERSONAJE*escalaDeseadaSprite;
-    posicionDeseadaSprite.y = POSICION_Y_SELECTOR_PERSONAJE;
-
-    colorDeseadoSprite.a = std::clamp(colorDeseadoSprite.a-std::abs(posicionRelativa)*DIFERENCIA_TRANSPARENCIA_SELECTOR_PERSONAJE,0,255);
-
-    spriteSelector.setPosition(posicionDeseadaSprite);
-    spriteSelector.setColor(colorDeseadoSprite);
-
-    if(jugador == Jugador::JUGADOR1)
-        spriteSelector.setScale({escalaDeseadaSprite,escalaDeseadaSprite});
-    else
-        spriteSelector.setScale({-escalaDeseadaSprite,escalaDeseadaSprite});
-
-    bordeCuadrado.setPosition(spriteSelector.getPosition());
-    bordeCuadrado.setScale(spriteSelector.getScale());
-    bordeCuadrado.setOutlineColor(spriteSelector.getColor());
-}
-
 bool SelectorPersonaje::seleccionar(std::list<std::shared_ptr<Animacion>>& nuevasAnimaciones)
 {
     // Si el selector aún se está moviendo (y, por tanto, aún tiene un

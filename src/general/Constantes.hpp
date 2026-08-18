@@ -228,6 +228,10 @@ constexpr float FACTOR_PRIMERO_SPRITES_TECLAS = 0.8f;
 // fondos del menú principal
 constexpr float FACTOR_PRIMERO_FONDOS_MENU_PRINCIPAL = 0.8f;
 
+// El valor del atributo factorPrimero usado en los SpriteDeseado de los
+// selectores del menú principal
+constexpr float FACTOR_PRIMERO_SELECTORES_MENU_PRINCIPAL = 0.8f;
+
 // La cantidad de píxeles que se mueven los sprites para las teclas o botones
 // cada vez que se pulsa la tecla o botón correspondiente
 constexpr unsigned int REBOTE_SPRITES_TECLAS_MENU_PRINCIPAL = 5;
@@ -254,6 +258,10 @@ constexpr int DIFERENCIA_TRANSPARENCIA_SELECTOR_MENU_PRINCIPAL = 100;
 // Color para los selectores que están más de una posición alejados
 // del selector actual
 constexpr sf::Color COLOR_SELECTOR_MENU_PRINCIPAL_POSICION_RELATIVA_MAYOR_QUE_1 = sf::Color(255,255,255,0);
+
+// Un selector que tenga una escala menor a esta no podrá ser
+// seleccionado
+constexpr float UMBRAL_ESCALA_SELECCION_SELECTOR_MENU_PRINCIPAL = 0.95f;
 
 // Color del fondo correspondiente a selectores sin seleccionar
 constexpr sf::Color COLOR_FONDO_SELECTOR_MENU_PRINCIPAL_SIN_SELECCIONAR = sf::Color(255,255,255,0);
@@ -351,10 +359,10 @@ constexpr sf::Color COLOR_RECTANGULO_BLANCO_TRANSPARENTE_FONDO_PERSONAJE = sf::C
 
 // El factor de aproximación a utilizar para el sprite que representa
 // el estado anterior de la partida al pausar
-constexpr float FACTOR_APROXIMACION_ESTADO_ANTERIOR_MENU_PAUSA = 0.8;
+constexpr float FACTOR_APROXIMACION_ESTADO_ANTERIOR_MENU_PAUSA = 0.9;
 
 // El color que acaba teniendo el sprite del estado anterior
-constexpr sf::Color COLOR_ESTADO_ANTERIOR_MENU_PAUSA(255,255,255,128);
+constexpr sf::Color COLOR_ESTADO_ANTERIOR_MENU_PAUSA(200,200,200,200);
 
 // La escala que acaba teniendo el sprite del estado anterior
 constexpr float ESCALA_ESTADO_ANTERIOR_MENU_PAUSA = 0.5;

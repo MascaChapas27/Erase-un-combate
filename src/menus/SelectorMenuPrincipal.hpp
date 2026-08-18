@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Animacion.hpp"
-#include <list>
-#include <SFML/Graphics.hpp>
+#include "SpriteDeseado.hpp"
 #include "Enums.hpp"
 
 /*
@@ -12,7 +11,7 @@
 class SelectorMenuPrincipal : public sf::Drawable {
     private:
         // El sprite asociado al selector
-        sf::Sprite spriteSelector;
+        SpriteDeseado spriteSelector;
 
         // Indica a qué selección hace referencia este selector
         TipoSelectorMenuPrincipal tipoSelector;
@@ -29,7 +28,7 @@ class SelectorMenuPrincipal : public sf::Drawable {
     public:
         // Se crea el selector en base a su textura para el sprite y el tipo de
         // selección al que hace referencia
-        SelectorMenuPrincipal(sf::Texture& texturaSelector, TipoSelectorMenuPrincipal tipoSelector);
+        SelectorMenuPrincipal(sf::Texture& texturaSelector, float factorPrimero, TipoSelectorMenuPrincipal tipoSelector);
 
         // Se reestablece el selector a su estado inicial
         void resetear();
@@ -44,18 +43,12 @@ class SelectorMenuPrincipal : public sf::Drawable {
         // Se actualiza la posición y la transparencia del selector y su fondo
         void actualizar();
 
-        // Se lleva el selector a la posición exacta a la que debería estar, y también
-        // se pone la escala correcta inmediatemente en vez de esperar a que lo haga
-        void ajustarPosicion();
-
         // Permite dibujar el selector
         void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-        // Establece el valor de la posición relativa
-        void setPosicionRelativa(int posicionRelativa)
-        {
-            this->posicionRelativa = posicionRelativa;
-        }
+        // Establece el valor de la posición relativa y actualiza la posición,
+        // el color y la escala deseados
+        void setPosicionRelativa(int posicionRelativa);
 
         // Devuelve el tipo de selector
         TipoSelectorMenuPrincipal getTipoSelector()
@@ -64,8 +57,5 @@ class SelectorMenuPrincipal : public sf::Drawable {
         }
 
         // Devuelve una referencia al sprite del selector
-        sf::Sprite& getSprite()
-        {
-            return spriteSelector;
-        }
+        sf::Sprite& getSprite();
 };

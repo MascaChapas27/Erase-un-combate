@@ -43,13 +43,13 @@ MenuPrincipal::MenuPrincipal() : seleccionActual(0),
 
     
     selectores.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/selector-modo-historia.png"),
-                            TipoSelectorMenuPrincipal::MODO_HISTORIA);
+                            FACTOR_PRIMERO_SELECTORES_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::MODO_HISTORIA);
     
     selectores.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/selector-batalla-vs.png"),
-                            TipoSelectorMenuPrincipal::BATALLA_VS);
+                            FACTOR_PRIMERO_SELECTORES_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::BATALLA_VS);
 
     selectores.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/selector-opciones.png"),
-                            TipoSelectorMenuPrincipal::OPCIONES);
+                            FACTOR_PRIMERO_SELECTORES_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::OPCIONES);
     
 
     fondos.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-modo-historia.png"),

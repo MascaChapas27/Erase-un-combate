@@ -2,6 +2,7 @@
 
 #include "Animacion.hpp"
 #include "SpriteDeseado.hpp"
+#include "Enums.hpp"
 
 /*
     Esta es una clase auxiliar para los fondos del menú principal. Cada
