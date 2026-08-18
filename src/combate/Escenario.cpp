@@ -1,6 +1,5 @@
 #include "Escenario.hpp"
 #include "Constantes.hpp"
-#include <iostream>
 
 Escenario::Escenario(sf::Texture& texturaFondo) : spriteFondo(texturaFondo) {
 

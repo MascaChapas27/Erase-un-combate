@@ -3,7 +3,6 @@
 #include "ContenedorDeRecursos.hpp"
 #include "ContenedorDeEfectos.hpp"
 #include <string>
-#include <iostream>
 
 GUIPersonaje::GUIPersonaje(Personaje &personaje, bool parteIzquierda) : personaje(personaje), parteIzquierda(parteIzquierda),
                                                                         spriteNombre(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/personajes/" + personaje.nombre + "/nombre.png")),

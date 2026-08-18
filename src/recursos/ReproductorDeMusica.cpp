@@ -3,8 +3,6 @@
 #include "Utilidades.hpp"
 #include <filesystem>
 
-#include <iostream>
-
 ReproductorDeMusica * ReproductorDeMusica::reproductorDeMusica = nullptr;
 
 ReproductorDeMusica * ReproductorDeMusica::unicaInstancia()

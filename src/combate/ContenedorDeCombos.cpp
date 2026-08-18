@@ -1,7 +1,6 @@
 #include "ContenedorDeCombos.hpp"
 #include "Constantes.hpp"
 #include "VentanaPrincipal.hpp"
-#include <iostream>
 
 ContenedorDeCombos *ContenedorDeCombos::contenedorDeCombos = nullptr;
 

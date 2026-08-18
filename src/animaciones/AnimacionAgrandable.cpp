@@ -1,7 +1,6 @@
 #include "AnimacionAgrandable.hpp"
 #include "Constantes.hpp"
 #include "ReproductorDeSonidos.hpp"
-#include <iostream>
 
 AnimacionAgrandable::AnimacionAgrandable(int fotogramasEspera, sf::Texture& textura, std::string rutaSonido) : 
     Animacion(textura), escalaActual(0.0f), seEstaAgrandando(true), fotogramasEspera(fotogramasEspera), contadorEspera(0) {

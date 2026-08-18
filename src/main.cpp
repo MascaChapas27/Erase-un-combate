@@ -7,7 +7,6 @@
 #include "MenuSeleccionPersonaje.hpp"
 
 #include "yaml-cpp/yaml.h"
-#include <iostream>
 #include <random>
 
 #include <unistd.h>

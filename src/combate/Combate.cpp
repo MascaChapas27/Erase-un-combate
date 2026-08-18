@@ -9,7 +9,6 @@
 #include "Configuracion.hpp"
 #include "MenuPausa.hpp"
 #include <omp.h>
-#include <iostream>
 #include <list>
 #include <ClienteDiscord.hpp>
 

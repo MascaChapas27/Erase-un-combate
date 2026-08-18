@@ -11,8 +11,6 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-#include <iostream>
-
 // La instancia es nula al principio
 MenuPausa * MenuPausa::menuPausa = nullptr;
 
@@ -62,7 +60,6 @@ void MenuPausa::comenzar()
         Bitacora::unicaInstancia()->escribir("Juan Cuesta: qué follón... se suspende la junta.");
         exit(EXIT_FAILURE);
     }
-    std::cerr << "Tamaño de la textura después del resize: " << texturaVentana.getSize().x << "x" << texturaVentana.getSize().y << "\n";
 
     texturaVentana.update(nuevaImagenVentana);
 

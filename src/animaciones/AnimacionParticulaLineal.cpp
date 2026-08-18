@@ -2,7 +2,6 @@
 #include "Constantes.hpp"
 #include "Utilidades.hpp"
 #include <cmath>
-#include <iostream>
 
 AnimacionParticulaLineal::AnimacionParticulaLineal(sf::Texture &textura) : 
     Animacion(textura)

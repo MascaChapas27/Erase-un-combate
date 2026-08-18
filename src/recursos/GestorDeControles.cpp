@@ -6,7 +6,6 @@
 #include "ReproductorDeMusica.hpp"
 #include "ReproductorDeSonidos.hpp"
 #include "Utilidades.hpp"
-#include <iostream>
 
 // La instancia es nula al principio
 GestorDeControles * GestorDeControles::gestorDeControles = nullptr;
@@ -92,8 +91,8 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
     if(evento->is<sf::Event::JoystickButtonPressed>() || evento->is<sf::Event::JoystickButtonReleased>())
     {
         // Esto es para debug. Se imprime el código asociado al botón pulsado
-        if(evento->is<sf::Event::JoystickButtonPressed>())
-            std::cerr << "Botón pulsado: " << evento->getIf<sf::Event::JoystickButtonPressed>()->button << "\n";
+        // if(evento->is<sf::Event::JoystickButtonPressed>())
+        //     std::cerr << "Botón pulsado: " << evento->getIf<sf::Event::JoystickButtonPressed>()->button << "\n";
 
         // Alguien ha pulsado un botón de mando (el botón da igual, todos
         // hacen lo mismo). Se le suma 2 al numerito del control porque los dos

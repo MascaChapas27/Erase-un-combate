@@ -4,7 +4,6 @@
 #include "ReproductorDeSonidos.hpp"
 #include "Utilidades.hpp"
 #include <assert.h>
-#include <iostream>
 
 InfoCombo::InfoCombo(Jugador jugador) :
     jugador(jugador), numeroGolpes(0), ataqueCausado(0),

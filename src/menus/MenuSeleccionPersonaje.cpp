@@ -11,8 +11,6 @@
 
 #include <algorithm>
 
-#include <iostream>
-
 // La instancia es nula al principio
 MenuSeleccionPersonaje * MenuSeleccionPersonaje::menuSeleccionPersonaje = nullptr;
 

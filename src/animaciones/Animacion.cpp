@@ -1,6 +1,5 @@
 #include "Animacion.hpp"
 #include "Constantes.hpp"
-#include <iostream>
 
 Animacion::Animacion(sf::Texture &textura) : sprite(textura) {
     // Se inicializa la posición en el 0,0

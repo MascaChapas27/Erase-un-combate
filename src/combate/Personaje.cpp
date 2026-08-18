@@ -10,7 +10,6 @@
 #include "Bitacora.hpp"
 #include "ReproductorDeSonidos.hpp"
 #include "ContenedorDeCombos.hpp"
-#include <iostream>
 
 Personaje::Personaje(std::unordered_map<EstadoPersonaje, std::shared_ptr<AnimacionPorFotogramas>> animaciones,
                      std::string nombre, int maxPuntosDeVida, float velocidadMaxima, float fuerzaSalto,

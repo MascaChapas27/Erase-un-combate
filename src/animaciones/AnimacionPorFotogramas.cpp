@@ -5,7 +5,6 @@
 #include "ContenedorDeEfectos.hpp"
 #include "Configuracion.hpp"
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include <typeinfo>
 #include "ContenedorDeRecursos.hpp"
 
