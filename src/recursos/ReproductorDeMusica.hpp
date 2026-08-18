@@ -43,10 +43,18 @@ private:
 public:
     // Reproduce la canción dado su identificador (ruta del fichero relativa al directorio donde
     // se ejecuta el programa)
-    void reproducir(std::string cancion, bool bucle = true);
+    void reproducir(std::string cancion, bool bucle = true, sf::Time progreso = sf::seconds(0.f));
 
     // Reproduce aleatoriamente una canción de combate
     void reproducirCancionCombate();
+
+    // Detiene la canción de combate actual y reproduce
+    // la canción de pausa correspondiente
+    void pausarCancionCombate();
+
+    // Detiene la versión de pausa de la canción de combate
+    // actual y sigue reproduciendo la versión normal
+    void reanudarCancionCombate();
 
     // Detiene por completo la reproducción de la canción actual
     void detener();

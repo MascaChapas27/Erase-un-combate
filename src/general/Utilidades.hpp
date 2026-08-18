@@ -81,5 +81,13 @@ namespace util{
 
     // Devuelve true si los dos floats dados difieren en menos que UMBRAL_FLOAT
     bool floatsIguales(float float1, float float2);
+
+    // Cambia la escala de una imagen en la que un "píxel" de imagen son varios
+    // píxeles reales. Por ejemplo, si estamos jugando con el zoom al 3 y sacamos
+    // una captura (que es lo que pasa en el menú de pausa), es necesario
+    // reescalar esa captura para que en vez de tener píxeles de 3x3 los tenga
+    // de 1x1. En este caso, longitudLadoPixelOriginal es 3 porque los píxeles
+    // de la imagen son de 3x3 píxeles reales. Espero estar explicándome xdd
+    sf::Image reescalarImagenA1por1pixel(const sf::Image& imagen, unsigned int longitudLadoPixelOriginal);
 }
 

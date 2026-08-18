@@ -7,13 +7,13 @@
 # Paso 2: Ir al directorio build recién creado con `cd build`
 #
 # Paso 3: Usar CMake para crear toda la morralla en el directorio
-# build. `cmake .. -G Ninja`
+# build. `cmake .. -DCMAKE_BUILD_TYPE=Debug -G Ninja`
 # Paso 4: Compilar usando `ninja` o lo que hayas utilizado para compilar
 # si en vez de `-G Ninja` has puesto algo distinto en el comando de arriba
 #
 # Paso 5: Ejecutar el juego EraseUnCombate.exe en el directorio principal
 #
-# ADICIONAL: si al ejecutar `cmake .. -G Ninja` parece que todo va bien pero
+# ADICIONAL: si al ejecutar `cmake .. -DCMAKE_BUILD_TYPE=Debug -G Ninja` parece que todo va bien pero
 # de repente se para y no sale ningún mensaje de error, lo más seguro es que
 # tu antivirus haya parado la compilación por pensar que e
 
@@ -176,6 +176,7 @@ src/menus/FondoMenuPrincipal.cpp
 src/menus/MenuPrincipal.cpp
 src/menus/SelectorPersonaje.cpp
 src/menus/FondoPersonaje.cpp
+src/menus/MenuPausa.cpp
 src/menus/MenuSeleccionPersonaje.cpp
 
 src/recursos/ContenedorDeEfectos.cpp

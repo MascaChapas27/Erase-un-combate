@@ -7,6 +7,7 @@
 #include "Utilidades.hpp"
 #include "ContenedorDeCombos.hpp"
 #include "Configuracion.hpp"
+#include "MenuPausa.hpp"
 #include <omp.h>
 #include <iostream>
 #include <list>
@@ -37,7 +38,7 @@ Combate::Combate(std::string nombrePersonajeJ1, std::string nombrePersonajeJ2, s
     rectanguloOscuro.setOutlineThickness(0);
     rectanguloOscuro.setFillColor(sf::Color::Black);
 
-    if (direccionIP != sf::IpAddress(0, 0, 0, 0))
+    if(direccionIP != sf::IpAddress(0, 0, 0, 0))
     {
         conector.emplace(direccionIP, lider);
     }
@@ -104,25 +105,25 @@ void Combate::actualizarFotogramaPreparandoSuper(std::list<std::shared_ptr<Anima
     sf::RenderWindow *ventana = VentanaPrincipal::unicaInstancia();
 
     // Se actualizan solo los personajes preparando súper
-    if (personajeJugador1.getEstado() == EstadoPersonaje::PREPARANDO_SUPER)
+    if(personajeJugador1.getEstado() == EstadoPersonaje::PREPARANDO_SUPER)
     {
         std::list<std::shared_ptr<Animacion>> nuevosEfectos;
 
         personajeJugador1.actualizar(personajeJugador2.getPosicion(), nuevosEfectos);
 
-        for (const std::shared_ptr<Animacion> &efecto : nuevosEfectos)
+        for(const std::shared_ptr<Animacion> &efecto : nuevosEfectos)
         {
             efectos.push_back(efecto);
         }
     }
 
-    if (personajeJugador2.getEstado() == EstadoPersonaje::PREPARANDO_SUPER)
+    if(personajeJugador2.getEstado() == EstadoPersonaje::PREPARANDO_SUPER)
     {
         std::list<std::shared_ptr<Animacion>> nuevosEfectos;
 
         personajeJugador2.actualizar(personajeJugador1.getPosicion(), nuevosEfectos);
 
-        for (const std::shared_ptr<Animacion> &efecto : nuevosEfectos)
+        for(const std::shared_ptr<Animacion> &efecto : nuevosEfectos)
         {
             efectos.push_back(efecto);
         }
@@ -137,15 +138,15 @@ void Combate::actualizarFotogramaPreparandoSuper(std::list<std::shared_ptr<Anima
     // Se dibuja todo como de costumbre (menos los personajes que están preparando súper)
     ventana->draw(escenario);
 
-    if (personajeJugador1.getEstado() != EstadoPersonaje::PREPARANDO_SUPER)
+    if(personajeJugador1.getEstado() != EstadoPersonaje::PREPARANDO_SUPER)
         ventana->draw(personajeJugador1);
-    if (personajeJugador2.getEstado() != EstadoPersonaje::PREPARANDO_SUPER)
+    if(personajeJugador2.getEstado() != EstadoPersonaje::PREPARANDO_SUPER)
         ventana->draw(personajeJugador2);
 
     ventana->draw(GUIJugador1);
     ventana->draw(GUIJugador2);
 
-    for (std::list<std::shared_ptr<Animacion>>::iterator iter = efectos.begin(); iter != efectos.end(); iter++)
+    for(std::list<std::shared_ptr<Animacion>>::iterator iter = efectos.begin(); iter != efectos.end(); iter++)
     {
         ventana->draw(**iter);
     }
@@ -161,9 +162,9 @@ void Combate::actualizarFotogramaPreparandoSuper(std::list<std::shared_ptr<Anima
     ventana->draw(rectanguloOscuro);
 
     // Se dibujan los personajes preparando súper
-    if (personajeJugador1.getEstado() == EstadoPersonaje::PREPARANDO_SUPER)
+    if(personajeJugador1.getEstado() == EstadoPersonaje::PREPARANDO_SUPER)
         ventana->draw(personajeJugador1);
-    if (personajeJugador2.getEstado() == EstadoPersonaje::PREPARANDO_SUPER)
+    if(personajeJugador2.getEstado() == EstadoPersonaje::PREPARANDO_SUPER)
         ventana->draw(personajeJugador2);
 
     ventana->display();
@@ -171,12 +172,11 @@ void Combate::actualizarFotogramaPreparandoSuper(std::list<std::shared_ptr<Anima
 
 void Combate::recibirEntradaPlayerVSPlayerOffline()
 {
-
     sf::RenderWindow *ventana = VentanaPrincipal::unicaInstancia();
 
-    while (const std::optional evento = ventana->pollEvent())
+    while(const std::optional evento = ventana->pollEvent())
     {
-        if (evento->is<sf::Event::Closed>())
+        if(evento->is<sf::Event::Closed>())
         {
             exit(EXIT_SUCCESS);
         }
@@ -185,12 +185,16 @@ void Combate::recibirEntradaPlayerVSPlayerOffline()
             InfoEvento infoEvento = GestorDeControles::unicaInstancia()->comprobarEvento(evento);
 
             // Puede ser que la acción sea inválida, hay que comprobar que el jugador no es NADIE
-            if (infoEvento.jugador != Jugador::NADIE)
+            if(infoEvento.jugador != Jugador::NADIE)
             {
-
                 Personaje &personajeElegido = infoEvento.jugador == Jugador::JUGADOR1 ? personajeJugador1 : personajeJugador2;
 
-                if ((dynamic_cast<AnimacionAgrandable *>(cartelTodoListo.get()))->haTerminado())
+                // Se comprueba si se ha pausado la partida
+                if(infoEvento.jugador == Jugador::JUGADOR1 && infoEvento.accion == Accion::ESCAPE && infoEvento.realizada)
+                {
+                    MenuPausa::unicaInstancia()->comenzar();
+                }
+                else if((dynamic_cast<AnimacionAgrandable *>(cartelTodoListo.get()))->haTerminado())
                 {
                     if (infoEvento.realizada)
                         personajeElegido.realizarAccion(infoEvento.accion);

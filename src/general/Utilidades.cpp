@@ -284,4 +284,22 @@ namespace util{
     {
         return std::abs(float1-float2) < UMBRAL_FLOAT;
     }
+
+    sf::Image reescalarImagenA1por1pixel(const sf::Image& imagen, unsigned int longitudLadoPixelOriginal)
+    {
+        // Aquí se colocará la imagen final que se devolverá, en la que los
+        // píxeles son de 1x1
+        sf::Image imagenFinal(imagen.getSize()/longitudLadoPixelOriginal);
+        
+        #pragma omp for collapse(2)
+        for(unsigned int i=0;i<imagen.getSize().x;i+=longitudLadoPixelOriginal)
+        {
+            for(unsigned int j=0;j<imagen.getSize().y;j+=longitudLadoPixelOriginal)
+            {
+                imagenFinal.setPixel({i/longitudLadoPixelOriginal,j/longitudLadoPixelOriginal},imagen.getPixel({i,j}));
+            }
+        }
+
+        return imagenFinal;
+    }
 }

@@ -341,6 +341,20 @@ constexpr int OPACIDAD_RECTANGULO_BLANCO_FONDO_PERSONAJE_SELECCIONADO = 125;
 constexpr sf::Color COLOR_RECTANGULO_BLANCO_TRANSPARENTE_FONDO_PERSONAJE = sf::Color(255,255,255,0);
 
 
+/*
+    CONSTANTES PARA EL MENÚ DE PAUSA
+*/
+
+// El factor de aproximación a utilizar para el sprite que representa
+// el estado anterior de la partida al pausar
+constexpr float FACTOR_APROXIMACION_ESTADO_ANTERIOR_MENU_PAUSA = 0.8;
+
+// El color que acaba teniendo el sprite del estado anterior
+constexpr sf::Color COLOR_ESTADO_ANTERIOR_MENU_PAUSA(255,255,255,128);
+
+// La escala que acaba teniendo el sprite del estado anterior
+constexpr float ESCALA_ESTADO_ANTERIOR_MENU_PAUSA = 0.5;
+
 
 /*
     CONSTANTES PARA EL SELECTOR DE MANDOS
