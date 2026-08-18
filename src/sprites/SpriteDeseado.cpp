@@ -1,8 +1,8 @@
 #include "SpriteDeseado.hpp"
 #include "Utilidades.hpp"
 
-SpriteDeseado::SpriteDeseado(const sf::Sprite& sprite, float factorPrimerValor) :
-sprite(sprite),
+SpriteDeseado::SpriteDeseado(const sf::Texture& textura, float factorPrimerValor) :
+sprite(textura),
 factorPrimerValor(factorPrimerValor),
 posicionDeseada(sprite.getPosition()),
 escalaDeseada(sprite.getScale()),

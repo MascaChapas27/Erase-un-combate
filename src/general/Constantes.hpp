@@ -222,7 +222,11 @@ constexpr float DISTANCIA_PIXELES_SPRITE_TECLA_Y_SELECCION = 5.f;
 // El factor utilizado para actualizar los atributos de los sprites de clase
 // SpriteDeseado usados para indicar qué botones o teclas hay que pulsar
 // para llevar a cabo las acciones necesarias en cada menú
-constexpr float FACTOR_APROXIMACION_SPRITES_TECLAS = 0.8f;
+constexpr float FACTOR_PRIMERO_SPRITES_TECLAS = 0.8f;
+
+// El valor del atributo factorPrimero usado en los SpriteDeseado de los
+// fondos del menú principal
+constexpr float FACTOR_PRIMERO_FONDOS_MENU_PRINCIPAL = 0.8f;
 
 // La cantidad de píxeles que se mueven los sprites para las teclas o botones
 // cada vez que se pulsa la tecla o botón correspondiente

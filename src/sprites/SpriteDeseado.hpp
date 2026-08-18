@@ -39,9 +39,9 @@ class SpriteDeseado : public sf::Drawable
         float factorPrimerValor;
     
     public:
-        // Crea un SpriteDeseado en base a un Sprite y el factor usado para
-        // la actualización de los atributos del sprite
-        SpriteDeseado(const sf::Sprite& sprite, float factorPrimerValor);
+        // Crea un SpriteDeseado en base a una textura y el factor usado para
+        // la actualización de los atributos del sprite creado
+        SpriteDeseado(const sf::Texture& textura, float factorPrimerValor);
 
         // Devuelve una referencia al sprite que se está usando
         sf::Sprite& getSprite();

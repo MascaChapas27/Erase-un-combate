@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Animacion.hpp"
-#include <list>
-#include <SFML/Graphics.hpp>
+#include "SpriteDeseado.hpp"
 
 /*
     Esta es una clase auxiliar para los fondos del menú principal. Cada
@@ -11,7 +10,7 @@
 class FondoMenuPrincipal : public sf::Drawable {
     private:
         // El sprite asociado al fondo
-        sf::Sprite spriteFondo;
+        SpriteDeseado spriteFondo;
 
         // El tipo de selector al que está asociado este fondo
         TipoSelectorMenuPrincipal tipoSelector;
@@ -21,8 +20,10 @@ class FondoMenuPrincipal : public sf::Drawable {
         int posicionRelativa;
     
     public:
-        // Se crea el fondo en base a su textura
-        FondoMenuPrincipal(sf::Texture& texturaFondo, TipoSelectorMenuPrincipal tipoSelector);
+        // Se crea el fondo inicializando el SpriteDeseado y especificando qué
+        // tipo de selector es (si es para el menú de opciones, para el modo
+        // historia, etc.)
+        FondoMenuPrincipal(sf::Texture& texturaFondo, float factorPrimerValor, TipoSelectorMenuPrincipal tipoSelector);
 
         // Se reestablece el fondo a su estado inicial
         void resetear();
@@ -33,15 +34,10 @@ class FondoMenuPrincipal : public sf::Drawable {
         // Permite dibujar el fondo
         void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-        // Establece el valor de la posición relativa
-        void setPosicionRelativa(int posicionRelativa)
-        {
-            this->posicionRelativa = posicionRelativa;
-        }
+        // Establece el valor de la posición relativa y actualiza la posición
+        // y el color deseados del SpriteDeseado
+        void setPosicionRelativa(int posicionRelativa);
 
         // Devuelve una referencia al sprite del fondo
-        sf::Sprite& getSprite()
-        {
-            return spriteFondo;
-        }
+        sf::Sprite& getSprite();
 };

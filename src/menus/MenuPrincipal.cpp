@@ -28,9 +28,9 @@ MenuPrincipal::~MenuPrincipal()
 
 MenuPrincipal::MenuPrincipal() : seleccionActual(0),
                                  cartelTitulo(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("titulo")),
-                                 spriteTeclaArriba(sf::Sprite(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-arriba-w.png")),FACTOR_APROXIMACION_SPRITES_TECLAS),
-                                 spriteTeclaAbajo(sf::Sprite(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-abajo-s.png")),FACTOR_APROXIMACION_SPRITES_TECLAS),
-                                 spriteTeclaSeleccionar(sf::Sprite(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-seleccionar-shift.png")),FACTOR_APROXIMACION_SPRITES_TECLAS),
+                                 spriteTeclaArriba(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-arriba-w.png"),FACTOR_PRIMERO_SPRITES_TECLAS),
+                                 spriteTeclaAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-abajo-s.png"),FACTOR_PRIMERO_SPRITES_TECLAS),
+                                 spriteTeclaSeleccionar(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-seleccionar-shift.png"),FACTOR_PRIMERO_SPRITES_TECLAS),
                                  controlUtilizadoParaLosSprites(GestorDeControles::unicaInstancia()->obtenerControlUsadoPorJugador(Jugador::JUGADOR1)),
                                  dientesSierraArriba(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png"),Direccion::ARRIBA,DIENTES_SIERRA_MENU_PRINCIPAL_VELOCIDAD),
                                  dientesSierraAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png"),Direccion::ABAJO,DIENTES_SIERRA_MENU_PRINCIPAL_VELOCIDAD),
@@ -53,13 +53,13 @@ MenuPrincipal::MenuPrincipal() : seleccionActual(0),
     
 
     fondos.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-modo-historia.png"),
-                            TipoSelectorMenuPrincipal::MODO_HISTORIA);
+                        FACTOR_PRIMERO_FONDOS_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::MODO_HISTORIA);
         
     fondos.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-batalla-vs.png"),
-                            TipoSelectorMenuPrincipal::BATALLA_VS);
+                        FACTOR_PRIMERO_FONDOS_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::BATALLA_VS);
 
     fondos.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-opciones.png"),
-                            TipoSelectorMenuPrincipal::OPCIONES);
+                        FACTOR_PRIMERO_FONDOS_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::OPCIONES);
 
     rectanguloNegro.setFillColor(sf::Color::Black);
 

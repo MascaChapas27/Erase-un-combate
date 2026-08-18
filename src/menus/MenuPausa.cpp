@@ -68,7 +68,7 @@ void MenuPausa::comenzar()
 
     // En base a la textura recién creada, se construye un sprite,
     // el cual se mostrará en el fondo
-    SpriteDeseado spriteFondo(sf::Sprite(texturaVentana),FACTOR_APROXIMACION_ESTADO_ANTERIOR_MENU_PAUSA);
+    SpriteDeseado spriteFondo(texturaVentana,FACTOR_APROXIMACION_ESTADO_ANTERIOR_MENU_PAUSA);
 
     // Se establecen los valores deseados para el sprite del estado
     // anterior a la pausa
