@@ -58,10 +58,10 @@ ReproductorDeMusica::ReproductorDeMusica() : volumenActual(VOLUMEN_MAXIMO_MUSICA
     }
 }
 
-void ReproductorDeMusica::reproducir(std::string cancion, bool bucle, sf::Time progreso)
+void ReproductorDeMusica::reproducir(const std::string& cancion, bool bucle, const sf::Time& progreso)
 {
     if(!canciones.count(cancion) && !canciones[cancion].openFromFile(cancion)){
-        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Emilio, vamos a animar un poco el ambiente, reproduce la canción " + cancion);
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Emilio, vamos a animar un poco el ambiente, reproduce la canción " + cancion + ".");
         Bitacora::unicaInstancia()->escribir("Emilio: Ah no, esa se la llevó mi padre y ya no la he vuelto a ver");
         Bitacora::unicaInstancia()->escribir("Juan Cuesta: Pero... ¿para qué le das a tu padre un bien común de esta, nuestra comunidad?");
         Bitacora::unicaInstancia()->escribir("Emilio: Es que se puso muy pesado, y con tal de que me dejara un rato en paz...");
@@ -73,10 +73,28 @@ void ReproductorDeMusica::reproducir(std::string cancion, bool bucle, sf::Time p
     canciones[cancion].setLooping(bucle);
     canciones[cancion].setVolume(volumenActual);
     canciones[cancion].setPitch(tonoActual);
-    canciones[cancion].setPlayingOffset(progreso);
+    //canciones[cancion].setPlayingOffset(progreso);
     canciones[cancion].play();
 
     cancionActual = cancion;
+}
+
+void ReproductorDeMusica::reanudar(const std::string& cancion)
+{
+    if(canciones[cancion].getStatus() != sf::SoundSource::Status::Paused)
+    {
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: muy bien, Emilio, ya puedes reanudar la canción " + cancion + ".");
+        Bitacora::unicaInstancia()->escribir("Emilio: ¿cómo que reanudar? Si esa canción no la hemos puesto nunca...");
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: pero bueno, tengo órdenes estrictas de reanudar esta canción, ¿cómo que no está en estado pausado?");
+        Bitacora::unicaInstancia()->escribir("Emilio: ¿órdenes de quién?");
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: e-emm, eso da igual ahora, Emilio. El caso es que esto no puede continuar en estas condiciones. Se suspende la junta.");
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        cancionActual = cancion;
+        canciones[cancion].play();
+    }
 }
 
 void ReproductorDeMusica::reproducirCancionCombate(){
@@ -100,28 +118,18 @@ void ReproductorDeMusica::pausarCancionCombate()
     std::vector<std::string> nombreCancionActualSeparado(util::separarString(rutaCancionActual.string(),'/'));
     std::string nombreNuevaCancion = "musica/combate-pausa/"+nombreCancionActualSeparado[nombreCancionActualSeparado.size()-1];
 
-    // Se detiene la canción antes de reproducir la siguiente
-    detener();
-
     // Se reproduce la canción de pausa
     reproducir(nombreNuevaCancion,true,progresoCancionActual);
 }
 
 void ReproductorDeMusica::reanudarCancionCombate()
 {
-    // Se obtiene el progreso de la canción actual
-    pausar();
-    sf::Time progresoCancionActual = canciones[cancionActual].getPlayingOffset();
-
     // Se encuentra la ruta de la canción de combate
     std::vector nombreCancionActualSeparado(util::separarString(cancionActual,'/'));
     std::string nombreNuevaCancion = "musica/combate/"+nombreCancionActualSeparado[nombreCancionActualSeparado.size()-1];
 
-    // Se detiene la canción antes de reproducir la siguiente
-    detener();
-
-    // Se reproduce la canción de pausa
-    reproducir(nombreNuevaCancion,true,progresoCancionActual);
+    // Se reanuda la canción de combate
+    reanudar(nombreNuevaCancion);
 }
 
 void ReproductorDeMusica::detener()
@@ -132,6 +140,11 @@ void ReproductorDeMusica::detener()
 
 void ReproductorDeMusica::pausar(){
     canciones[cancionActual].pause();
+}
+
+sf::Time ReproductorDeMusica::getOffsetCancionActual()
+{
+    return canciones[cancionActual].getPlayingOffset();
 }
 
 float ReproductorDeMusica::getVolumen()

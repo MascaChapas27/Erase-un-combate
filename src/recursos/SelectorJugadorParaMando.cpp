@@ -156,11 +156,15 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
         sf::sleep(sf::seconds(1.f / Configuracion::unicaInstancia()->getFPS()) - reloj.reset());
     }
 
-    ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/seleccionar-mando/desaparece-ventana.ogg");
+    // Si se ha seleccionado un jugador para el mando, se reproduce un sonidito
+    if(jugadorSeleccionado != Jugador::NADIE)
+        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/seleccionar-mando/jugador-seleccionado.ogg");
+    else
+        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/seleccionar-mando/nadie-seleccionado.ogg");
 
-    // Se vuelve a reproducir la canción anterior
+    // Se para esta canción y se reanuda la anterior
     ReproductorDeMusica::unicaInstancia()->detener();
-    ReproductorDeMusica::unicaInstancia()->reproducir(cancionAnterior);
+    ReproductorDeMusica::unicaInstancia()->reanudar(cancionAnterior);
 
     return jugadorSeleccionado;
 }

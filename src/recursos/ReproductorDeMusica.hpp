@@ -41,9 +41,14 @@ private:
     float tonoActual;
 
 public:
-    // Reproduce la canción dado su identificador (ruta del fichero relativa al directorio donde
-    // se ejecuta el programa)
-    void reproducir(std::string cancion, bool bucle = true, sf::Time progreso = sf::seconds(0.f));
+    // Reproduce desde el principio (o desde un offset dado) la canción dado su
+    // identificador (ruta del fichero relativa al directorio donde se ejecuta
+    // el programa)
+    void reproducir(const std::string& cancion, bool bucle = true, const sf::Time& progreso = sf::seconds(0.f));
+
+    // Reanuda una canción que había sido pausada anteriormente. Si la canción no
+    // está en pausa, ocurre un error
+    void reanudar(const std::string& cancion);
 
     // Reproduce aleatoriamente una canción de combate
     void reproducirCancionCombate();
@@ -62,6 +67,10 @@ public:
     // Pausa la reproducción de la canción actual. Si se reproduce de nuevo, seguirá
     // por donde estaba
     void pausar();
+
+    // Devuelve el offset (el tiempo que ha pasado desde el inicio) de la canción que
+    // se está reproduciendo actualmente
+    sf::Time getOffsetCancionActual();
 
     // Devuelve el volumen de reproducción de música
     float getVolumen();

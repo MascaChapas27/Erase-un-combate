@@ -55,8 +55,7 @@ enum class TipoPlantilla {
 
 // Enumerado para los jugadores
 enum class Jugador {
-    NADIE, JUGADOR1, JUGADOR2,
-    NUM_JUGADORES
+    NADIE, JUGADOR1, JUGADOR2
 };
 
 // Posibles controles que un jugador puede utilizar
