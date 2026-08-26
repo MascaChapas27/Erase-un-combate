@@ -222,15 +222,15 @@ constexpr float DISTANCIA_PIXELES_SPRITE_TECLA_Y_SELECCION = 5.f;
 // El factor utilizado para actualizar los atributos de los sprites de clase
 // SpriteDeseado usados para indicar qué botones o teclas hay que pulsar
 // para llevar a cabo las acciones necesarias en cada menú
-constexpr float FACTOR_PRIMERO_SPRITES_TECLAS = 0.8f;
+constexpr float FACTOR_APROXIMACION_SPRITES_TECLAS = 0.8f;
 
 // El valor del atributo factorPrimero usado en los SpriteDeseado de los
 // fondos del menú principal
-constexpr float FACTOR_PRIMERO_FONDOS_MENU_PRINCIPAL = 0.8f;
+constexpr float FACTOR_APROXIMACION_FONDOS_MENU_PRINCIPAL = 0.8f;
 
 // El valor del atributo factorPrimero usado en los SpriteDeseado de los
 // selectores del menú principal
-constexpr float FACTOR_PRIMERO_SELECTORES_MENU_PRINCIPAL = 0.8f;
+constexpr float FACTOR_APROXIMACION_SELECTORES_MENU_PRINCIPAL = 0.8f;
 
 // La cantidad de píxeles que se mueven los sprites para las teclas o botones
 // cada vez que se pulsa la tecla o botón correspondiente
@@ -369,14 +369,17 @@ constexpr float ESCALA_ESTADO_ANTERIOR_MENU_PAUSA = 0.5;
 
 
 /*
-    CONSTANTES PARA EL SELECTOR DE MANDOS
+    CONSTANTES PARA EL SELECTOR DE JUGADOR PARA MANDO
 */
 
 // Color inicial del rectángulo que cubre el fondo en el menú de selección de jugador para el mando
-constexpr sf::Color COLOR_INICIAL_RECTANGULO_OSCURO_SELECTOR_MANDOS = sf::Color(0,0,0,0);
+constexpr sf::Color COLOR_INICIAL_RECTANGULO_OSCURO_SELECTOR_JUGADOR_MANDO = sf::Color(0,0,0,0);
 
 // Color final del rectángulo que cubre el fondo en el menú de selección de jugador para el mando
-constexpr sf::Color COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_MANDOS = sf::Color(0,0,0,225);
+constexpr sf::Color COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_JUGADOR_MANDO = sf::Color(0,0,0,225);
+
+// Factor de aproximación usado en los sprites que indican las distintas opciones disponibles
+constexpr float FACTOR_APROXIMACION_SPRITES_SELECTOR_JUGADOR_MANDO = 0.8f;
 
 
 

@@ -212,6 +212,14 @@ void Personaje::moverseDerecha()
         velocidad.x = velocidadMaximaActual;
 }
 
+void Personaje::saltar()
+{
+    velocidad.y = fuerzaSalto;
+    accionesRealizadas[Accion::ARRIBA] = false;
+    escalaSprite.x = isMirandoDerecha() ? 0.8 : -0.8;
+    escalaSprite.y = 1.2;
+}
+
 void Personaje::pararMovimiento()
 {
     // Si la velocidad es tan baja que se podría decir que es cero, termina
@@ -322,10 +330,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         }
         else if (accionesRealizadas[Accion::ARRIBA])
         {
-            velocidad.y = fuerzaSalto;
-            accionesRealizadas[Accion::ARRIBA] = false;
-            escalaSprite.x = isMirandoDerecha() ? 0.8 : -0.8;
-            escalaSprite.y = 1.2;
+            saltar();
             cambiarEstado(EstadoPersonaje::SALTANDO_SUBIENDO);
             levantarPolvo(efectosInsertados);
         }
@@ -377,16 +382,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         }
         else if (accionesRealizadas[Accion::ATACAR])
         {
-
-            if (medidorSuper == MAX_MEDIDOR_SUPER)
-            {
-                medidorSuper = 0;
-                cambiarEstado(EstadoPersonaje::PREPARANDO_SUPER);
-            }
-            else
-            {
-                cambiarEstado(EstadoPersonaje::ATAQUE_NORMAL_1);
-            }
+            cambiarEstado(EstadoPersonaje::ATAQUE_NORMAL_1);
         }
 
         break;
@@ -406,10 +402,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         }
         else if (accionesRealizadas[Accion::ARRIBA])
         {
-            velocidad.y = fuerzaSalto;
-            accionesRealizadas[Accion::ARRIBA] = false;
-            escalaSprite.x = isMirandoDerecha() ? 0.8 : -0.8;
-            escalaSprite.y = 1.2;
+            saltar();
             cambiarEstado(EstadoPersonaje::SALTANDO_SUBIENDO);
             levantarPolvo(efectosInsertados);
         }
@@ -452,10 +445,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         }
         else if (accionesRealizadas[Accion::ARRIBA])
         {
-            velocidad.y = fuerzaSalto*MULTIPLICADOR_POTENCIA_SALTO_CORRIENDO;
-            accionesRealizadas[Accion::ARRIBA] = false;
-            escalaSprite.x = (escalaSprite.x > 0) ? 0.8 : -0.8;
-            escalaSprite.y = 1.2;
+            saltar();
             cambiarEstado(EstadoPersonaje::SALTANDO_SUBIENDO);
             levantarPolvo(efectosInsertados);
         }
@@ -516,10 +506,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         }
         else if (accionesRealizadas[Accion::ARRIBA])
         {
-            velocidad.y = fuerzaSalto;
-            accionesRealizadas[Accion::ARRIBA] = false;
-            escalaSprite.x = isMirandoDerecha() ? 0.8 : -0.8;
-            escalaSprite.y = 1.2;
+            saltar();
             cambiarEstado(EstadoPersonaje::SALTANDO_SUBIENDO);
             levantarPolvo(efectosInsertados);
         }
@@ -600,18 +587,15 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         }
         else if (accionesRealizadas[Accion::ARRIBA])
         {
-            velocidad.y = fuerzaSalto;
-            accionesRealizadas[Accion::ARRIBA] = false;
             contadorEsquiveSuper = 0;
-            escalaSprite.x = (escalaSprite.x > 0) ? 0.8 : -0.8;
-            escalaSprite.y = 1.2;
+            saltar();
             cambiarEstado(EstadoPersonaje::SALTANDO_SUBIENDO);
             levantarPolvo(efectosInsertados);
         }
         else if (accionesRealizadas[Accion::DERECHA])
         {
             moverseDerecha();
-            if ((escalaSprite.x > 0))
+            if ((isMirandoDerecha()))
             {
                 contadorEsquiveSuper = 0;
                 cambiarEstado(EstadoPersonaje::ANDANDO_ACERCANDOSE);
@@ -620,7 +604,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         else if (accionesRealizadas[Accion::IZQUIERDA])
         {
             moverseIzquierda();
-            if (!(escalaSprite.x > 0))
+            if (!(isMirandoDerecha()))
             {
                 contadorEsquiveSuper = 0;
                 cambiarEstado(EstadoPersonaje::ANDANDO_ACERCANDOSE);
@@ -656,7 +640,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
 
     case EstadoPersonaje::SALTANDO_BAJANDO:
         velocidad.y += GRAVEDAD;
-        escalaSprite.x += ((escalaSprite.x > 0) ? -0.01 : 0.01);
+        escalaSprite.x += ((isMirandoDerecha()) ? -0.01 : 0.01);
         escalaSprite.y += 0.01;
 
         if (accionesRealizadas[Accion::ATACAR])
@@ -675,7 +659,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         {
             animaciones.at(estado)->setPosicion(animaciones.at(estado)->getPosicion().x, ALTURA_SUELO);
             velocidad.y = 0;
-            escalaSprite.x = (escalaSprite.x > 0) ? 1.1 : -1.1;
+            escalaSprite.x = (isMirandoDerecha()) ? 1.1 : -1.1;
             escalaSprite.y = 0.9;
             cambiarEstado(EstadoPersonaje::TOCANDO_SUELO);
             levantarPolvo(efectosInsertados);
@@ -694,7 +678,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         {
             animaciones.at(estado)->setPosicion(animaciones.at(estado)->getPosicion().x, ALTURA_SUELO);
             velocidad.y = 0;
-            escalaSprite.x = (escalaSprite.x > 0) ? 1.1 : -1.1;
+            escalaSprite.x = (isMirandoDerecha()) ? 1.1 : -1.1;
             escalaSprite.y = 0.9;
             cambiarEstado(EstadoPersonaje::TOCANDO_SUELO);
             levantarPolvo(efectosInsertados);
@@ -716,6 +700,11 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
             ataqueEspecial.resetear();
             detenerAccion(Accion::ATACAR);
             cambiarEstado(EstadoPersonaje::ATAQUE_ESPECIAL);
+        }
+        else if (medidorSuper == MAX_MEDIDOR_SUPER)
+        {
+            medidorSuper = 0;
+            cambiarEstado(EstadoPersonaje::PREPARANDO_SUPER);
         }
         else if (animaciones.at(estado)->haTerminado())
         {
@@ -829,7 +818,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
             // Ha caído
             velocidad.y = 0;
             animaciones.at(estado)->setPosicion(animaciones.at(estado)->getPosicion().x, ALTURA_SUELO);
-            escalaSprite.x = (escalaSprite.x > 0) ? 1.1 : -1.1;
+            escalaSprite.x = (isMirandoDerecha()) ? 1.1 : -1.1;
             escalaSprite.y = 0.9;
             levantarPolvo(efectosInsertados);
         }
@@ -866,7 +855,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
             {
                 velocidad.y = 0;
 
-                escalaSprite.x = (escalaSprite.x > 0) ? 1.1 : -1.1;
+                escalaSprite.x = (isMirandoDerecha()) ? 1.1 : -1.1;
                 escalaSprite.y = 0.9;
 
                 cambiarEstado(EstadoPersonaje::TUMBADO);
@@ -874,7 +863,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
             else
             {
                 velocidad.y *= -0.5;
-                escalaSprite.x = (escalaSprite.x > 0) ? 1.1 : -1.1;
+                escalaSprite.x = (isMirandoDerecha()) ? 1.1 : -1.1;
                 escalaSprite.y = 0.9;
                 cambiarEstado(EstadoPersonaje::GOLPEADO_SUBIENDO);
             }
@@ -954,22 +943,53 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         break;
 
     case EstadoPersonaje::BLOQUEANDO:
+        // Si el personaje está en el suelo...
         if (util::floatsIguales(velocidad.y,0) && (util::floatsIguales(animaciones.at(estado)->getPosicion().y,ALTURA_SUELO)))
         {
+            // Se detiene su movimiento porque está deslizándose contra el suelo
             pararMovimiento();
-            velocidad.y = 0;
-            animaciones.at(estado)->setPosicion({animaciones.at(estado)->getPosicion().x,ALTURA_SUELO});
+
+            // Si el personaje intenta atacar, comienza inmediatamente el ataque
+            // (esta es una ventaja especial que hace que, al bloquear un movimiento
+            // del oponente, puedas empezar tú el tuyo inmediatamente, cancelando
+            // la animación de bloqueo de tu personaje)
             if (accionesRealizadas[Accion::ATACAR])
             {
                 cambiarEstado(EstadoPersonaje::ATAQUE_NORMAL_1);
             }
+
+            // Si no está atacando, sigue con la animación de bloqueo como de costumbre
+            // hasta que esta termina
             else if (animaciones.at(estado)->haTerminado())
             {
-                if ((accionesRealizadas[Accion::DERECHA] && !(escalaSprite.x > 0)) ||
-                    (accionesRealizadas[Accion::IZQUIERDA] && (escalaSprite.x > 0)))
+                // Si se está moviendo hacia atrás, pasa al estado ANDANDO_ALEJANDOSE
+                if ((accionesRealizadas[Accion::DERECHA] && !isMirandoDerecha()) ||
+                    (accionesRealizadas[Accion::IZQUIERDA] && isMirandoDerecha()))
                 {
                     cambiarEstado(EstadoPersonaje::ANDANDO_ALEJANDOSE);
                 }
+
+                // Si se está moviendo hacia adelante, pasa al estado ANDANDO_ACERCANDOSE
+                else if ((accionesRealizadas[Accion::DERECHA] && isMirandoDerecha()) ||
+                    (accionesRealizadas[Accion::IZQUIERDA] && !isMirandoDerecha()))
+                {
+                    cambiarEstado(EstadoPersonaje::ANDANDO_ACERCANDOSE);
+                }
+
+                // Si está agachándose, pasa al estado AGACHADO
+                else if (accionesRealizadas[Accion::ABAJO])
+                {
+                    cambiarEstado(EstadoPersonaje::AGACHADO);
+                }
+
+                // Si está saltando, pasa al estado SALTANDO_SUBIENDO
+                else if (accionesRealizadas[Accion::ARRIBA])
+                {
+                    saltar();
+                    cambiarEstado(EstadoPersonaje::SALTANDO_SUBIENDO);
+                }
+
+                // Si no se está moviendo, pasa al estado QUIETO
                 else
                 {
                     cambiarEstado(EstadoPersonaje::QUIETO);
@@ -994,7 +1014,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
                 velocidad.y = 0;
                 levantarPolvo(efectosInsertados);
 
-                escalaSprite.x = (escalaSprite.x > 0) ? 1.1 : -1.1;
+                escalaSprite.x = (isMirandoDerecha()) ? 1.1 : -1.1;
                 escalaSprite.y = 0.9;
                 cambiarEstado(EstadoPersonaje::TOCANDO_SUELO);
             }
@@ -1012,7 +1032,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         }
         else if (!accionesRealizadas[Accion::ABAJO])
         {
-            escalaSprite.x = (escalaSprite.x > 0) ? 0.95 : -0.95;
+            escalaSprite.x = (isMirandoDerecha()) ? 0.95 : -0.95;
             escalaSprite.y = 1.05;
             cambiarEstado(EstadoPersonaje::QUIETO);
         }
@@ -1111,8 +1131,8 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
     case EstadoPersonaje::GOLPEADO_PEQUE:
     case EstadoPersonaje::GOLPEADO_MEDIO:
         // SÍ se voltea
-        if ((animaciones.at(estado)->getPosicion().x < posicionEnemigo.x && !(escalaSprite.x > 0)) ||
-            (animaciones.at(estado)->getPosicion().x > posicionEnemigo.x && (escalaSprite.x > 0)))
+        if ((animaciones.at(estado)->getPosicion().x < posicionEnemigo.x && !(isMirandoDerecha())) ||
+            (animaciones.at(estado)->getPosicion().x > posicionEnemigo.x && (isMirandoDerecha())))
         {
             this->voltear();
         }
@@ -1130,7 +1150,7 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
     animaciones[estado]->setEscala(escalaSprite);
 
     // Se devuelve la escala del sprite a su valor original
-    escalaSprite.x = util::aproximarFloat(escalaSprite.x, (escalaSprite.x > 0) ? 1.f : -1.f, 0.8);
+    escalaSprite.x = util::aproximarFloat(escalaSprite.x, (isMirandoDerecha()) ? 1.f : -1.f, 0.8);
     escalaSprite.y = util::aproximarFloat(escalaSprite.y, 1.f, 0.8);
 
     // Se consulta el movimiento de la animación por fotogramas
@@ -1279,12 +1299,12 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         switch (estado)
         {
         case EstadoPersonaje::AGACHADO:
-            this->animaciones.at(estado)->mover((escalaSprite.x > 0) ? -0.25 : 0.25, 0);
+            this->animaciones.at(estado)->mover((isMirandoDerecha()) ? -0.25 : 0.25, 0);
             break;
         case EstadoPersonaje::ATAQUE_SUPER:
             break;
         default:
-            this->animaciones.at(estado)->mover((escalaSprite.x > 0) ? -0.5 : 0.5, 0);
+            this->animaciones.at(estado)->mover((isMirandoDerecha()) ? -0.5 : 0.5, 0);
             break;
         }
 
@@ -1297,7 +1317,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
             // Si estamos saltando y el enemigo también (su hurtbox elegida está por encima
             // del suelo), y además estamos saltando hacia él, es como que nos chocamos y nos
             // dejamos de mover
-            if ((((escalaSprite.x > 0) && velocidad.x > 0) || (!(escalaSprite.x > 0) && velocidad.x < 0)) && colisionVoladora)
+            if ((((isMirandoDerecha()) && velocidad.x > 0) || (!(isMirandoDerecha()) && velocidad.x < 0)) && colisionVoladora)
             {
                 velocidad.x = 0;
             }
@@ -1307,7 +1327,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
             break;
         default:
             // En cualquier otro caso, dejamos de movernos
-            if ((((escalaSprite.x > 0) && velocidad.x > 0) || (!(escalaSprite.x > 0) && velocidad.x < 0)))
+            if ((((isMirandoDerecha()) && velocidad.x > 0) || (!(isMirandoDerecha()) && velocidad.x < 0)))
             {
                 velocidad.x = 0;
             }
@@ -1338,10 +1358,10 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         }
         else
         {
-            velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_X_GOLPE_SUPER : IMPULSO_X_GOLPE_SUPER;
+            velocidad.x = (isMirandoDerecha()) ? -IMPULSO_X_GOLPE_SUPER : IMPULSO_X_GOLPE_SUPER;
             velocidad.y = IMPULSO_Y_GOLPE_SUPER;
 
-            escalaSprite.x = (escalaSprite.x > 0) ? 0.8 : -0.8;
+            escalaSprite.x = (isMirandoDerecha()) ? 0.8 : -0.8;
             escalaSprite.y = 1.2;
             cambiarEstado(EstadoPersonaje::GOLPEADO_SUBIENDO);
         }
@@ -1378,7 +1398,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         case EstadoPersonaje::SALTANDO_SUBIENDO:
         case EstadoPersonaje::SALTANDO_BAJANDO:
             if ((estado == EstadoPersonaje::SALTANDO_SUBIENDO || estado == EstadoPersonaje::SALTANDO_BAJANDO) &&
-                (((escalaSprite.x > 0) && accionesRealizadas[Accion::IZQUIERDA]) || (!(escalaSprite.x > 0) && accionesRealizadas[Accion::DERECHA])))
+                (((isMirandoDerecha()) && accionesRealizadas[Accion::IZQUIERDA]) || (!(isMirandoDerecha()) && accionesRealizadas[Accion::DERECHA])))
             {
                 // Los gotos son el diablo pero no se me ocurre nada mejor jejej
                 goto bloqueoAereo;
@@ -1386,35 +1406,35 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
 
             if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_PEQUE)
             {
-                velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_PEQUE : IMPULSO_GOLPE_PEQUE;
-                escalaSprite.x = (escalaSprite.x > 0) ? 0.95 : -0.95;
+                velocidad.x = (isMirandoDerecha()) ? -IMPULSO_GOLPE_PEQUE : IMPULSO_GOLPE_PEQUE;
+                escalaSprite.x = (isMirandoDerecha()) ? 0.95 : -0.95;
                 escalaSprite.y = 1.05;
                 cambiarEstado(EstadoPersonaje::GOLPEADO_PEQUE);
             }
             else if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_MEDIO)
             {
-                velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
+                velocidad.x = (isMirandoDerecha()) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
                 if (hitboxElegidaEnemigo.esAtaqueBajo() && puntosDeVida < maxPuntosDeVida / 2)
                 {
                     velocidad.x /= 2;
                     velocidad.y = IMPULSO_GOLPE_BAJO_MEDIO;
-                    escalaSprite.x = (escalaSprite.x > 0) ? 0.9 : -0.9;
+                    escalaSprite.x = (isMirandoDerecha()) ? 0.9 : -0.9;
                     escalaSprite.y = 1.1;
                     cambiarEstado(EstadoPersonaje::GOLPEADO_SUBIENDO);
                 }
                 else
                 {
-                    escalaSprite.x = (escalaSprite.x > 0) ? 0.9 : -0.9;
+                    escalaSprite.x = (isMirandoDerecha()) ? 0.9 : -0.9;
                     escalaSprite.y = 1.1;
                     cambiarEstado(EstadoPersonaje::GOLPEADO_MEDIO);
                 }
             }
             else
             {
-                velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_X_GOLPE_SUPER : IMPULSO_X_GOLPE_SUPER;
+                velocidad.x = (isMirandoDerecha()) ? -IMPULSO_X_GOLPE_SUPER : IMPULSO_X_GOLPE_SUPER;
                 velocidad.y = IMPULSO_Y_GOLPE_SUPER;
 
-                escalaSprite.x = (escalaSprite.x > 0) ? 0.9 : -0.9;
+                escalaSprite.x = (isMirandoDerecha()) ? 0.9 : -0.9;
                 escalaSprite.y = 1.1;
                 cambiarEstado(EstadoPersonaje::GOLPEADO_SUBIENDO);
             }
@@ -1431,8 +1451,8 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
             {
                 if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_PEQUE)
                 {
-                    velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_PEQUE : IMPULSO_GOLPE_PEQUE;
-                    escalaSprite.x = (escalaSprite.x > 0) ? 0.95 : -0.95;
+                    velocidad.x = (isMirandoDerecha()) ? -IMPULSO_GOLPE_PEQUE : IMPULSO_GOLPE_PEQUE;
+                    escalaSprite.x = (isMirandoDerecha()) ? 0.95 : -0.95;
                     escalaSprite.y = 1.05;
                     cambiarEstado(EstadoPersonaje::GOLPEADO_PEQUE);
                 }
@@ -1440,17 +1460,17 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
                 {
                     if (puntosDeVida < maxPuntosDeVida / 2)
                     {
-                        velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
+                        velocidad.x = (isMirandoDerecha()) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
                         velocidad.x /= 2;
                         velocidad.y = IMPULSO_GOLPE_BAJO_MEDIO;
-                        escalaSprite.x = (escalaSprite.x > 0) ? 0.9 : -0.9;
+                        escalaSprite.x = (isMirandoDerecha()) ? 0.9 : -0.9;
                         escalaSprite.y = 1.1;
                         cambiarEstado(EstadoPersonaje::GOLPEADO_SUBIENDO);
                     }
                     else
                     {
-                        velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
-                        escalaSprite.x = (escalaSprite.x > 0) ? 0.9 : -0.9;
+                        velocidad.x = (isMirandoDerecha()) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
+                        escalaSprite.x = (isMirandoDerecha()) ? 0.9 : -0.9;
                         escalaSprite.y = 1.1;
                         cambiarEstado(EstadoPersonaje::GOLPEADO_MEDIO);
                     }
@@ -1460,15 +1480,15 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
             {
                 if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_PEQUE)
                 {
-                    velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_PEQUE : IMPULSO_GOLPE_PEQUE;
-                    escalaSprite.x = (escalaSprite.x > 0) ? 0.95 : -0.95;
+                    velocidad.x = (isMirandoDerecha()) ? -IMPULSO_GOLPE_PEQUE : IMPULSO_GOLPE_PEQUE;
+                    escalaSprite.x = (isMirandoDerecha()) ? 0.95 : -0.95;
                     escalaSprite.y = 1.05;
                     cambiarEstado(EstadoPersonaje::BLOQUEANDO);
                 }
                 else if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_MEDIO)
                 {
-                    velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
-                    escalaSprite.x = (escalaSprite.x > 0) ? 0.95 : -0.95;
+                    velocidad.x = (isMirandoDerecha()) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
+                    escalaSprite.x = (isMirandoDerecha()) ? 0.95 : -0.95;
                     escalaSprite.y = 1.05;
                     cambiarEstado(EstadoPersonaje::BLOQUEANDO);
                 }
@@ -1482,15 +1502,15 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
             {
                 if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_PEQUE)
                 {
-                    velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_PEQUE : IMPULSO_GOLPE_PEQUE;
-                    escalaSprite.x = (escalaSprite.x > 0) ? 0.95 : -0.95;
+                    velocidad.x = (isMirandoDerecha()) ? -IMPULSO_GOLPE_PEQUE : IMPULSO_GOLPE_PEQUE;
+                    escalaSprite.x = (isMirandoDerecha()) ? 0.95 : -0.95;
                     escalaSprite.y = 1.05;
                     cambiarEstado(EstadoPersonaje::GOLPEADO_PEQUE);
                 }
                 else if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_MEDIO)
                 {
-                    velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
-                    escalaSprite.x = (escalaSprite.x > 0) ? 0.9 : -0.9;
+                    velocidad.x = (isMirandoDerecha()) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
+                    escalaSprite.x = (isMirandoDerecha()) ? 0.9 : -0.9;
                     escalaSprite.y = 1.1;
                     cambiarEstado(EstadoPersonaje::GOLPEADO_MEDIO);
                 }
@@ -1499,15 +1519,15 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
             {
                 if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_PEQUE)
                 {
-                    velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_PEQUE : IMPULSO_GOLPE_PEQUE;
-                    escalaSprite.x = (escalaSprite.x > 0) ? 0.95 : -0.95;
+                    velocidad.x = (isMirandoDerecha()) ? -IMPULSO_GOLPE_PEQUE : IMPULSO_GOLPE_PEQUE;
+                    escalaSprite.x = (isMirandoDerecha()) ? 0.95 : -0.95;
                     escalaSprite.y = 1.05;
                     cambiarEstado(EstadoPersonaje::BLOQUEANDO);
                 }
                 else if (hitboxElegidaEnemigo.getFuerzaAtaque() <= MAX_ATAQUE_MEDIO)
                 {
-                    velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
-                    escalaSprite.x = (escalaSprite.x > 0) ? 0.95 : -0.95;
+                    velocidad.x = (isMirandoDerecha()) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
+                    escalaSprite.x = (isMirandoDerecha()) ? 0.95 : -0.95;
                     escalaSprite.y = 1.05;
                     cambiarEstado(EstadoPersonaje::BLOQUEANDO);
                 }
@@ -1592,7 +1612,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
 
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
             ((AnimacionConGravedad *)(particula.get()))->setPosicion(posicionMedia);
-            ((AnimacionConGravedad *)(particula.get()))->setVelocidad(sf::Vector2f(((escalaSprite.x > 0) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE));
+            ((AnimacionConGravedad *)(particula.get()))->setVelocidad(sf::Vector2f(((isMirandoDerecha()) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE));
             ((AnimacionConGravedad *)(particula.get()))->setVelocidadGiro((std::rand() % 2 == 0 ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_GIRO_PART);
 
             efectosInsertados.push_back(particula);
@@ -1609,7 +1629,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
 
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
             dynamic_cast<AnimacionConGravedad *>(particula.get())->setPosicion(posicionMedia);
-            dynamic_cast<AnimacionConGravedad *>(particula.get())->setVelocidad(sf::Vector2f(((escalaSprite.x > 0) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE));
+            dynamic_cast<AnimacionConGravedad *>(particula.get())->setVelocidad(sf::Vector2f(((isMirandoDerecha()) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE));
             dynamic_cast<AnimacionConGravedad *>(particula.get())->setVelocidadGiro((std::rand() % 2 == 0 ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_GIRO_PART);
 
             efectosInsertados.push_back(particula);
@@ -1637,7 +1657,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
 
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-2");
             ((AnimacionConGravedad *)(particula.get()))->setPosicion(posicionMedia);
-            ((AnimacionConGravedad *)(particula.get()))->setVelocidad(sf::Vector2f(((escalaSprite.x > 0) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_MEDIA, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_MEDIA));
+            ((AnimacionConGravedad *)(particula.get()))->setVelocidad(sf::Vector2f(((isMirandoDerecha()) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_MEDIA, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_MEDIA));
             ((AnimacionConGravedad *)(particula.get()))->setVelocidadGiro((std::rand() % 2 == 0 ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_GIRO_PART);
 
             efectosInsertados.push_back(particula);
@@ -1647,7 +1667,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         {
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
             ((AnimacionConGravedad *)(particula.get()))->setPosicion(posicionMedia);
-            ((AnimacionConGravedad *)(particula.get()))->setVelocidad(sf::Vector2f(((escalaSprite.x > 0) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE));
+            ((AnimacionConGravedad *)(particula.get()))->setVelocidad(sf::Vector2f(((isMirandoDerecha()) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE));
             ((AnimacionConGravedad *)(particula.get()))->setVelocidadGiro((std::rand() % 2 == 0 ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_GIRO_PART);
 
             efectosInsertados.push_back(particula);
@@ -1675,7 +1695,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
 
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-3");
             ((AnimacionConGravedad *)(particula.get()))->setPosicion(posicionMedia);
-            ((AnimacionConGravedad *)(particula.get()))->setVelocidad(sf::Vector2f(((escalaSprite.x > 0) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_SUPER, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_SUPER));
+            ((AnimacionConGravedad *)(particula.get()))->setVelocidad(sf::Vector2f(((isMirandoDerecha()) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_SUPER, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_SUPER));
             ((AnimacionConGravedad *)(particula.get()))->setVelocidadGiro((std::rand() % 2 == 0 ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_GIRO_PART);
 
             efectosInsertados.push_back(particula);
@@ -1685,7 +1705,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         {
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-2");
             ((AnimacionConGravedad *)(particula.get()))->setPosicion(posicionMedia);
-            ((AnimacionConGravedad *)(particula.get()))->setVelocidad(sf::Vector2f(((escalaSprite.x > 0) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_MEDIA, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_MEDIA));
+            ((AnimacionConGravedad *)(particula.get()))->setVelocidad(sf::Vector2f(((isMirandoDerecha()) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_MEDIA, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_MEDIA));
             ((AnimacionConGravedad *)(particula.get()))->setVelocidadGiro((std::rand() % 2 == 0 ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_GIRO_PART);
 
             efectosInsertados.push_back(particula);
@@ -1695,7 +1715,7 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         {
             auto particula = ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("particula-golpeado-1");
             ((AnimacionConGravedad *)(particula.get()))->setPosicion(posicionMedia);
-            ((AnimacionConGravedad *)(particula.get()))->setVelocidad(sf::Vector2f(((escalaSprite.x > 0) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE));
+            ((AnimacionConGravedad *)(particula.get()))->setVelocidad(sf::Vector2f(((isMirandoDerecha()) ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE, -1 * util::realAleatorio() * MAX_VELOCIDAD_PARTICULA_PEQUE));
             ((AnimacionConGravedad *)(particula.get()))->setVelocidadGiro((std::rand() % 2 == 0 ? -1 : 1) * util::realAleatorio() * MAX_VELOCIDAD_GIRO_PART);
 
             efectosInsertados.push_back(particula);
@@ -1756,10 +1776,10 @@ void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> 
         puntosDeVida = 0;
         if (estado != EstadoPersonaje::GOLPEADO_SUBIENDO)
         {
-            velocidad.x = (escalaSprite.x > 0) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
+            velocidad.x = (isMirandoDerecha()) ? -IMPULSO_GOLPE_MEDIO : IMPULSO_GOLPE_MEDIO;
             velocidad.x /= 2;
             velocidad.y = IMPULSO_GOLPE_BAJO_MEDIO;
-            escalaSprite.x = (escalaSprite.x > 0) ? 0.9 : -0.9;
+            escalaSprite.x = (isMirandoDerecha()) ? 0.9 : -0.9;
             escalaSprite.y = 1.1;
             cambiarEstado(EstadoPersonaje::GOLPEADO_SUBIENDO);
         }

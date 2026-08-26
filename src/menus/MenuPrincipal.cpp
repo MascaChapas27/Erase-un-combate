@@ -28,9 +28,9 @@ MenuPrincipal::~MenuPrincipal()
 
 MenuPrincipal::MenuPrincipal() : seleccionActual(0),
                                  cartelTitulo(ContenedorDeEfectos::unicaInstancia()->obtenerEfecto("titulo")),
-                                 spriteTeclaArriba(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-arriba-w.png"),FACTOR_PRIMERO_SPRITES_TECLAS),
-                                 spriteTeclaAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-abajo-s.png"),FACTOR_PRIMERO_SPRITES_TECLAS),
-                                 spriteTeclaSeleccionar(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-seleccionar-shift.png"),FACTOR_PRIMERO_SPRITES_TECLAS),
+                                 spriteTeclaArriba(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-arriba-w.png"),FACTOR_APROXIMACION_SPRITES_TECLAS),
+                                 spriteTeclaAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-abajo-s.png"),FACTOR_APROXIMACION_SPRITES_TECLAS),
+                                 spriteTeclaSeleccionar(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/tecla-seleccionar-shift.png"),FACTOR_APROXIMACION_SPRITES_TECLAS),
                                  controlUtilizadoParaLosSprites(GestorDeControles::unicaInstancia()->obtenerControlUsadoPorJugador(Jugador::JUGADOR1)),
                                  dientesSierraArriba(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png"),Direccion::ARRIBA,DIENTES_SIERRA_MENU_PRINCIPAL_VELOCIDAD),
                                  dientesSierraAbajo(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/dientes-sierra.png"),Direccion::ABAJO,DIENTES_SIERRA_MENU_PRINCIPAL_VELOCIDAD),
@@ -43,23 +43,23 @@ MenuPrincipal::MenuPrincipal() : seleccionActual(0),
 
     
     selectores.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/selector-modo-historia.png"),
-                            FACTOR_PRIMERO_SELECTORES_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::MODO_HISTORIA);
+                            FACTOR_APROXIMACION_SELECTORES_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::MODO_HISTORIA);
     
     selectores.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/selector-batalla-vs.png"),
-                            FACTOR_PRIMERO_SELECTORES_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::BATALLA_VS);
+                            FACTOR_APROXIMACION_SELECTORES_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::BATALLA_VS);
 
     selectores.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/selector-opciones.png"),
-                            FACTOR_PRIMERO_SELECTORES_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::OPCIONES);
+                            FACTOR_APROXIMACION_SELECTORES_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::OPCIONES);
     
 
     fondos.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-modo-historia.png"),
-                        FACTOR_PRIMERO_FONDOS_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::MODO_HISTORIA);
+                        FACTOR_APROXIMACION_FONDOS_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::MODO_HISTORIA);
         
     fondos.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-batalla-vs.png"),
-                        FACTOR_PRIMERO_FONDOS_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::BATALLA_VS);
+                        FACTOR_APROXIMACION_FONDOS_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::BATALLA_VS);
 
     fondos.emplace_back(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/menu-principal/captura-opciones.png"),
-                        FACTOR_PRIMERO_FONDOS_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::OPCIONES);
+                        FACTOR_APROXIMACION_FONDOS_MENU_PRINCIPAL, TipoSelectorMenuPrincipal::OPCIONES);
 
     rectanguloNegro.setFillColor(sf::Color::Black);
 

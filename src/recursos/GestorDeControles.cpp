@@ -146,7 +146,11 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
 
                 // Se indica que se ha terminado la asignación del mando
                 asignandoJugadorAMando = false;
-                conectarMando(jugadorConMando,control);
+
+                // Si se ha seleccionado un jugador, se asigna ese jugador al
+                // mando. Si no, pues no se asigna el mando a nadie
+                if(jugadorConMando != Jugador::NADIE)
+                    conectarMando(jugadorConMando,control);
             } 
         }
 

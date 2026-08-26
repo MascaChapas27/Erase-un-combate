@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "Enums.hpp"
+#include "SpriteDeseado.hpp"
 
 // Esta clase define la ventanita que sale cuando pulsas el boton de un mando cuando
 // los dos jugadores están usando el teclado, por lo que es necesario elegir para qué
@@ -19,10 +20,13 @@ class SelectorJugadorParaMando {
         static SelectorJugadorParaMando * selectorJugadorParaMando;
 
         // Imagen que aparece cuando seleccionas la opción del jugador 1
-        sf::Sprite spriteJugador1;
+        SpriteDeseado spriteJugador1;
 
         // Imagen que aparece cuando seleccionas la opción del jugador 2
-        sf::Sprite spriteJugador2;
+        SpriteDeseado spriteJugador2;
+
+        // Imagen que aparece cuando seleccionas la opción de ningún jugador
+        SpriteDeseado spriteJugadorNadie;
     
     public:
         // En base a un control dado, se pregunta al usuario qué jugador va a ser

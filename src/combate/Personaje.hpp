@@ -93,6 +93,9 @@ class Personaje : public sf::Drawable {
         // Función auxiliar para moverse un poco a la izquierda
         void moverseIzquierda();
 
+        // Función auxiliar para hacer que el personaje salte
+        void saltar();
+
         // Función auxiliar para disminuir la velocidad un poco hacia 0
         void pararMovimiento();
 

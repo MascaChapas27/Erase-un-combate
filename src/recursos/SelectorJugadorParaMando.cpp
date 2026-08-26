@@ -25,9 +25,14 @@ SelectorJugadorParaMando::~SelectorJugadorParaMando()
         delete selectorJugadorParaMando;
 }
 
-SelectorJugadorParaMando::SelectorJugadorParaMando() : spriteJugador1(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugador1.png")),
-                                                       spriteJugador2(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugador2.png"))
+SelectorJugadorParaMando::SelectorJugadorParaMando() : spriteJugador1(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugador1.png"), FACTOR_APROXIMACION_SPRITES_SELECTOR_JUGADOR_MANDO),
+                                                       spriteJugador2(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugador2.png"), FACTOR_APROXIMACION_SPRITES_SELECTOR_JUGADOR_MANDO),
+                                                       spriteJugadorNadie(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugadorNadie.png"), FACTOR_APROXIMACION_SPRITES_SELECTOR_JUGADOR_MANDO)
 {
+    spriteJugador1.getSprite().setColor(sf::Color::Transparent);
+    spriteJugador2.getSprite().setColor(sf::Color::Transparent);
+    spriteJugadorNadie.getSprite().setColor(sf::Color::Transparent);
+
 }
 
 Jugador SelectorJugadorParaMando::decidirJugador(Control c)
@@ -50,7 +55,7 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
 
     // Se crea un rectángulo negro del tamaño de la ventana para poder oscurecer el fondo
     sf::RectangleShape rectanguloOscuro(sf::Vector2f(VENTANA_ANCHURA,VENTANA_ALTURA));
-    rectanguloOscuro.setFillColor(COLOR_INICIAL_RECTANGULO_OSCURO_SELECTOR_MANDOS);
+    rectanguloOscuro.setFillColor(COLOR_INICIAL_RECTANGULO_OSCURO_SELECTOR_JUGADOR_MANDO);
 
     sf::RenderWindow *ventana = VentanaPrincipal::unicaInstancia();
 
@@ -60,11 +65,6 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
 
     ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/seleccionar-mando/aparece-ventana.ogg");
     ReproductorDeMusica::unicaInstancia()->reproducir("musica/selector-mando.ogg");
-
-    // Los sprites usados para mostrar qué jugador se ha seleccionado
-    // se van haciendo más opacos con el tiempo
-    spriteJugador1.setColor(sf::Color(255,255,255,0));
-    spriteJugador2.setColor(sf::Color(255,255,255,0));
 
     while (!jugadorDecidido && ventana->isOpen())
     {
@@ -94,24 +94,40 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
                 }
                 else if ((infoEvento.accion == Accion::ARRIBA || infoEvento.accion == Accion::ABAJO) && infoEvento.realizada)
                 {
-                    jugadorSeleccionado = (jugadorSeleccionado == Jugador::JUGADOR1 ? Jugador::JUGADOR2 : Jugador::JUGADOR1);
+                    // Se obtiene el número total de opciones en el enumerado Jugador
+                    int numOpcionesJugador = static_cast<int>(Jugador::NUM_JUGADORES);
+
+                    // Se pasa el jugador seleccionado de tipo Jugador a int
+                    int numJugadorSeleccionado = static_cast<int>(jugadorSeleccionado);
+
+                    // Se resta 1 (si la acción es ARRIBA) o se suma 1 (si la acción es ABAJO)
+                    if(infoEvento.accion == Accion::ARRIBA)
+                        numJugadorSeleccionado--;
+                    else
+                        numJugadorSeleccionado++;
+
+                    // El número de jugador seleccionado se pasa a un elemento del enumerado Jugador
+                    jugadorSeleccionado = static_cast<Jugador>(numJugadorSeleccionado);
+
+                    // Se reproduce el sonido de cambiar selección
                     ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/seleccionar-mando/cambiar-seleccion.ogg");
                 }
             }
         }
 
         // Se pone más claro el sprite de selección de jugador
-        spriteJugador1.setColor(util::aproximarColor(spriteJugador1.getColor(),sf::Color::White,0.8));
-        spriteJugador2.setColor(util::aproximarColor(spriteJugador2.getColor(),sf::Color::White,0.8));
+        spriteJugador1.actualizar();
+        spriteJugador2.actualizar();
+        spriteJugadorNadie.actualizar();
 
         // Se pone más oscuro el rectángulo negro del fondo
-        rectanguloOscuro.setFillColor(util::aproximarColor(rectanguloOscuro.getFillColor(),COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_MANDOS,0.8));
+        rectanguloOscuro.setFillColor(util::aproximarColor(rectanguloOscuro.getFillColor(),COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_JUGADOR_MANDO,FACTOR_APROXIMACION_SPRITES_SELECTOR_JUGADOR_MANDO));
 
         // Se dibujan las cosas
         ventana->clear();
         ventana->draw(spriteFondo);
         ventana->draw(rectanguloOscuro);
-        ventana->draw(jugadorSeleccionado == Jugador::JUGADOR1 ? spriteJugador1 : spriteJugador2);
+        ventana->draw(jugadorSeleccionado == Jugador::JUGADOR1 ? spriteJugador1 : (jugadorSeleccionado == Jugador::JUGADOR2 ? spriteJugador2 : spriteJugador2));
         ventana->display();
 
         // El juego se duerme hasta que dé tiempo a dibujar el siguiente fotograma, teniendo en cuenta
