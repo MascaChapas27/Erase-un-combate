@@ -27,11 +27,11 @@ SelectorJugadorParaMando::~SelectorJugadorParaMando()
 
 SelectorJugadorParaMando::SelectorJugadorParaMando() : spriteJugador1(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugador1.png"), FACTOR_APROXIMACION_SPRITES_SELECTOR_JUGADOR_MANDO),
                                                        spriteJugador2(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugador2.png"), FACTOR_APROXIMACION_SPRITES_SELECTOR_JUGADOR_MANDO),
-                                                       spriteJugadorNadie(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/jugadorNadie.png"), FACTOR_APROXIMACION_SPRITES_SELECTOR_JUGADOR_MANDO)
+                                                       spriteNadie(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/selector-mando/nadie.png"), FACTOR_APROXIMACION_SPRITES_SELECTOR_JUGADOR_MANDO)
 {
     spriteJugador1.getSprite().setColor(sf::Color::Transparent);
     spriteJugador2.getSprite().setColor(sf::Color::Transparent);
-    spriteJugadorNadie.getSprite().setColor(sf::Color::Transparent);
+    spriteNadie.getSprite().setColor(sf::Color::Transparent);
 
 }
 
@@ -92,22 +92,42 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
                 {
                     jugadorDecidido = true;
                 }
-                else if ((infoEvento.accion == Accion::ARRIBA || infoEvento.accion == Accion::ABAJO) && infoEvento.realizada)
+                else if ((infoEvento.accion == Accion::ABAJO) && infoEvento.realizada)
                 {
-                    // Se obtiene el número total de opciones en el enumerado Jugador
-                    int numOpcionesJugador = static_cast<int>(Jugador::NUM_JUGADORES);
+                    switch(jugadorSeleccionado)
+                    {
+                        case Jugador::JUGADOR1:
+                            jugadorSeleccionado = Jugador::JUGADOR2;
+                            break;
+                        
+                        case Jugador::JUGADOR2:
+                            jugadorSeleccionado = Jugador::NADIE;
+                            break;
 
-                    // Se pasa el jugador seleccionado de tipo Jugador a int
-                    int numJugadorSeleccionado = static_cast<int>(jugadorSeleccionado);
+                        case Jugador::NADIE:
+                            jugadorSeleccionado = Jugador::JUGADOR1;
+                            break;
+                    }
 
-                    // Se resta 1 (si la acción es ARRIBA) o se suma 1 (si la acción es ABAJO)
-                    if(infoEvento.accion == Accion::ARRIBA)
-                        numJugadorSeleccionado--;
-                    else
-                        numJugadorSeleccionado++;
+                    // Se reproduce el sonido de cambiar selección
+                    ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/seleccionar-mando/cambiar-seleccion.ogg");
+                }
+                else if ((infoEvento.accion == Accion::ARRIBA) && infoEvento.realizada)
+                {
+                    switch(jugadorSeleccionado)
+                    {
+                        case Jugador::JUGADOR1:
+                            jugadorSeleccionado = Jugador::NADIE;
+                            break;
+                        
+                        case Jugador::JUGADOR2:
+                            jugadorSeleccionado = Jugador::JUGADOR1;
+                            break;
 
-                    // El número de jugador seleccionado se pasa a un elemento del enumerado Jugador
-                    jugadorSeleccionado = static_cast<Jugador>(numJugadorSeleccionado);
+                        case Jugador::NADIE:
+                            jugadorSeleccionado = Jugador::JUGADOR2;
+                            break;
+                    }
 
                     // Se reproduce el sonido de cambiar selección
                     ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/seleccionar-mando/cambiar-seleccion.ogg");
@@ -118,7 +138,7 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
         // Se pone más claro el sprite de selección de jugador
         spriteJugador1.actualizar();
         spriteJugador2.actualizar();
-        spriteJugadorNadie.actualizar();
+        spriteNadie.actualizar();
 
         // Se pone más oscuro el rectángulo negro del fondo
         rectanguloOscuro.setFillColor(util::aproximarColor(rectanguloOscuro.getFillColor(),COLOR_FINAL_RECTANGULO_OSCURO_SELECTOR_JUGADOR_MANDO,FACTOR_APROXIMACION_SPRITES_SELECTOR_JUGADOR_MANDO));
@@ -127,7 +147,7 @@ Jugador SelectorJugadorParaMando::decidirJugador(Control c)
         ventana->clear();
         ventana->draw(spriteFondo);
         ventana->draw(rectanguloOscuro);
-        ventana->draw(jugadorSeleccionado == Jugador::JUGADOR1 ? spriteJugador1 : (jugadorSeleccionado == Jugador::JUGADOR2 ? spriteJugador2 : spriteJugador2));
+        ventana->draw(jugadorSeleccionado == Jugador::JUGADOR1 ? spriteJugador1 : (jugadorSeleccionado == Jugador::JUGADOR2 ? spriteJugador2 : spriteNadie));
         ventana->display();
 
         // El juego se duerme hasta que dé tiempo a dibujar el siguiente fotograma, teniendo en cuenta

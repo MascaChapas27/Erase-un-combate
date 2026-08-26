@@ -120,14 +120,18 @@ InfoEvento GestorDeControles::comprobarEvento(std::optional<sf::Event> evento)
         
         // Si el mando está asignado a un jugador (o si está siendo asignado
         // actualmente) se registra el botón pulsado
-        if(infoEvento.jugador != Jugador::NADIE || asignandoJugadorAMando){
+        if(infoEvento.jugador != Jugador::NADIE || asignandoJugadorAMando)
+        {
             if(boton == MANDO_BOTON_ATACAR) infoEvento.accion = Accion::ATACAR;
             else infoEvento.accion = Accion::NADA;
             infoEvento.realizada = evento->is<sf::Event::JoystickButtonPressed>();
+        }
 
         // Si el mando no está asignado a nadie y si no está siendo asignado,
-        // es necesario que sea asignado a un jugador
-        } else {
+        // es necesario que sea asignado a un jugador (aunque solo si se
+        // ha pulsado un botón, no si se suelta)
+        else if (evento->is<sf::Event::JoystickButtonPressed>())
+        {
             // Si el control no está asignado a un jugador, se comprueba si ninguno tiene mando
             Jugador jugadorTecladoIzq = controlAJugador[Control::TECLADO_IZQUIERDA];
             Jugador jugadorTecladoDer = controlAJugador[Control::TECLADO_DERECHA];

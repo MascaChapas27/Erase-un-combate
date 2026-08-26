@@ -26,7 +26,7 @@ class SelectorJugadorParaMando {
         SpriteDeseado spriteJugador2;
 
         // Imagen que aparece cuando seleccionas la opción de ningún jugador
-        SpriteDeseado spriteJugadorNadie;
+        SpriteDeseado spriteNadie;
     
     public:
         // En base a un control dado, se pregunta al usuario qué jugador va a ser
