@@ -73,7 +73,7 @@ void ReproductorDeMusica::reproducir(const std::string& cancion, bool bucle, con
     canciones[cancion].setLooping(bucle);
     canciones[cancion].setVolume(volumenActual);
     canciones[cancion].setPitch(tonoActual);
-    //canciones[cancion].setPlayingOffset(progreso);
+    canciones[cancion].setPlayingOffset(progreso);
     canciones[cancion].play();
 
     cancionActual = cancion;
@@ -124,12 +124,16 @@ void ReproductorDeMusica::pausarCancionCombate()
 
 void ReproductorDeMusica::reanudarCancionCombate()
 {
+    // Se obtiene el progreso de la canción actual
+    pausar();
+    sf::Time progresoCancionActual = canciones[cancionActual].getPlayingOffset();
+
     // Se encuentra la ruta de la canción de combate
     std::vector nombreCancionActualSeparado(util::separarString(cancionActual,'/'));
     std::string nombreNuevaCancion = "musica/combate/"+nombreCancionActualSeparado[nombreCancionActualSeparado.size()-1];
 
-    // Se reanuda la canción de combate
-    reanudar(nombreNuevaCancion);
+    // Se reproduce la canción de combate
+    reproducir(nombreNuevaCancion,true,progresoCancionActual);
 }
 
 void ReproductorDeMusica::detener()
