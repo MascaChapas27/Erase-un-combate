@@ -8,6 +8,7 @@
 #include "SpriteDeseado.hpp"
 #include "Utilidades.hpp"
 #include "ReproductorDeMusica.hpp"
+#include "ReproductorDeSonidos.hpp"
 #include <SFML/Graphics.hpp>
 #include <string>
 
@@ -35,6 +36,8 @@ fondoCuadriculado(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/elecc
 void MenuPausa::comenzar()
 {
     ReproductorDeMusica::unicaInstancia()->pausarCancionCombate();
+
+    ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-pausa/entrar.ogg");
 
     fondoCuadriculado.resetear();
 
@@ -100,8 +103,9 @@ void MenuPausa::comenzar()
             {
                 InfoEvento infoEvento = GestorDeControles::unicaInstancia()->comprobarEvento(evento);
                 if(infoEvento.realizada && infoEvento.jugador == Jugador::JUGADOR1){
-                    if (infoEvento.accion == Accion::ESCAPE)
+                    if (infoEvento.accion == Accion::ESCAPE && !saliendo)
                     {
+                        ReproductorDeSonidos::unicaInstancia()->reproducir("sonidos/menu-pausa/salir.ogg");
                         saliendo = true;
                         spriteFondo.setEscalaDeseada({1.f,1.f});
                         spriteFondo.setColorDeseado(sf::Color::White);
