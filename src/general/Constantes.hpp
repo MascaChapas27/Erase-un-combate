@@ -236,11 +236,6 @@ constexpr float FACTOR_APROXIMACION_SELECTORES_MENU_PRINCIPAL = 0.8f;
 // cada vez que se pulsa la tecla o botón correspondiente
 constexpr unsigned int REBOTE_SPRITES_TECLAS_MENU_PRINCIPAL = 5;
 
-// El número que se resta o suma en cada fotograma a los valores de transparencia
-// de los sprites que indican el botón o la tecla a pulsar en caso de que deban
-// aparecer o desaparecer
-constexpr unsigned int VELOCIDAD_CAMBIO_COLOR_SPRITES_TECLAS = 17;
-
 // Diferencia en la posición en el eje Y entre dos fondos distintos usados
 // por los selectores del menú principal
 constexpr float DIFERENCIA_POSICION_Y_FONDO_SELECTOR_MENU_PRINCIPAL = VENTANA_ALTURA/20.f;
@@ -286,9 +281,9 @@ constexpr int FRAMES_ESPERA_SALIR_MENU = 60;
 // salir al menú anterior
 constexpr sf::Vector2f POSICION_SPRITE_ESC_SELECCION_PERSONAJE = {0.f, 4.f};
 
-// Cantidad de píxeles en el eje X que se mueve el sprite de la tecla ESC
-// hacia la izquierda cuando pulsas la tecla para salir
-constexpr float NUM_PIXELES_RETROCESO_SPRITE_ESC = 6.f;
+// Cantidad de píxeles en el eje X que se mueven los sprites de las teclas
+// del menú de selección de personaje cuando se pulsa una tecla
+constexpr float NUM_PIXELES_RETROCESO_SPRITES_TECLAS_SELECCION_PERSONAJE = 6.f;
 
 // Posición en el eje X del selector de personaje para el jugador 1
 constexpr float POSICION_X_SELECTOR_PERSONAJE_J1 = VENTANA_ANCHURA/4.f;
@@ -317,6 +312,10 @@ constexpr float POSICION_Y_NOMBRE_SELECTOR_PERSONAJE = 7.f*VENTANA_ALTURA/10.f;
 // Diferencia en el eje X entre dos selectores seguidos
 constexpr float DIFERENCIA_POSICION_X_SELECTOR_PERSONAJE = 3.f*VENTANA_ANCHURA/10.f;
 
+// Escala que alcanzan los sprites que indican la tecla a pulsar para seleccionar
+// cuando seleccionas un personaje
+constexpr float ESCALA_TECLA_SELECCIONAR_MENU_SELECCION_PERSONAJE = 0.6f;
+
 // Color para el selector de personaje que se está seleccionado actualmente
 constexpr sf::Color COLOR_SELECTOR_PERSONAJE_POSICION_RELATIVA_0 = sf::Color(255,255,255,255);
 
@@ -335,6 +334,8 @@ constexpr float VELOCIDAD_FONDO_CUADRICULADO_SELECCION_PERSONAJE = 1.f/10.f;
 // La cantidad de píxeles que se mueve cada frame el fondo colorido que aparece
 // detrás de las imágenes grandes de los personajes cuando se seleccionan
 constexpr float VELOCIDAD_FONDO_PERSONAJE_SELECCIONADO = 1.f/2.f;
+
+// La cantidad de píxeles que rebotan los 
 
 // La cantidad de píxeles que está desplazado el fondo adicional que copia al
 // original con respecto al fondo de personaje original que está replicando

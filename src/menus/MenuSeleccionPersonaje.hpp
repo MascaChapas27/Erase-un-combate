@@ -4,6 +4,7 @@
 #include "FondoPersonaje.hpp"
 #include "Enums.hpp"
 #include "AnimacionFondoBucleLineal.hpp"
+#include "SpriteDeseado.hpp"
 
 #include <vector>
 #include <string>
@@ -44,7 +45,7 @@ class MenuSeleccionPersonaje {
 
         // El sprite que sale arriba a la derecha que indica que si le pulsas
         // a ESC sales al menú anterior
-        sf::Sprite spriteEsc;
+        SpriteDeseado spriteEsc;
 
         // El fondo super chulo cuadriculado que sale por detrás
         AnimacionFondoBucleLineal fondoCuadriculado;
@@ -84,16 +85,16 @@ class MenuSeleccionPersonaje {
         // Los sprites que indican qué teclas o botones tiene que pulsar
         // el jugador 1 para cambiar al personaje de la derecha, al de
         // la izquierda o para seleccionar al personaje actual
-        sf::Sprite spriteTeclaIzquierdaJ1;
-        sf::Sprite spriteTeclaDerechaJ1;
-        sf::Sprite spriteTeclaSeleccionarJ1;
+        SpriteDeseado spriteTeclaIzquierdaJ1;
+        SpriteDeseado spriteTeclaDerechaJ1;
+        SpriteDeseado spriteTeclaSeleccionarJ1;
 
         // Los sprites que indican qué teclas o botones tiene que pulsar
         // el jugador 2 para cambiar al personaje de la derecha, al de
         // la izquierda o para seleccionar al personaje actual
-        sf::Sprite spriteTeclaIzquierdaJ2;
-        sf::Sprite spriteTeclaDerechaJ2;
-        sf::Sprite spriteTeclaSeleccionarJ2;
+        SpriteDeseado spriteTeclaIzquierdaJ2;
+        SpriteDeseado spriteTeclaDerechaJ2;
+        SpriteDeseado spriteTeclaSeleccionarJ2;
 
         // Estos son los controles que cada jugador está usando. Dependiendo
         // del control, se mostrarán unos sprites u otros indicando qué
