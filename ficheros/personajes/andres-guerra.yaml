@@ -141,3 +141,13 @@ estados:
       tipo: "No repetir"
       fotogramas: [7]
     acciones: ["DERECHA", "DERECHA", "DERECHA", "ATACAR"]
+
+  agachado:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 52
+          posY: 32
+          ancho: 26
+          alto: 68
+          ataque: 0
+    fotogramas: [0]
