@@ -81,6 +81,9 @@ class Personaje : public sf::Drawable {
         // usar punteros compartidos con las animaciones)
         std::unordered_map<EstadoPersonaje,std::shared_ptr<AnimacionPorFotogramas>> animaciones;
 
+        // Sprite que se coloca encima del personaje y que indica el jugador al que pertenece
+        sf::Sprite indicadorJugador;
+
         // Indica qué acciones están siendo realizadas
         std::unordered_map<Accion,bool> accionesRealizadas;
 
@@ -102,10 +105,14 @@ class Personaje : public sf::Drawable {
         // Función auxiliar para mostrar dos nubes de polvo a los pies del personaje
         void levantarPolvo(std::list<std::shared_ptr<Animacion>> &efectosInsertados);
 
+        // Actualiza el sprite que indica qué jugador está manejando al personaje.
+        // Es llamado automáticamente desde setJugador
+        void actualizarIndicadorJugador();
+
     public:
 
         // Construye el personaje desde cero
-        Personaje(std::unordered_map<EstadoPersonaje,std::shared_ptr<AnimacionPorFotogramas>> animaciones, std::string nombre, int maxPuntosDeVida, float velocidadMaxima, float fuerzaSalto, std::vector<Accion> accionesAtaqueEspecial);
+        Personaje(std::unordered_map<EstadoPersonaje,std::shared_ptr<AnimacionPorFotogramas>> animaciones, std::string nombre, int maxPuntosDeVida, float velocidadMaxima, float fuerzaSalto, unsigned int altura, std::vector<Accion> accionesAtaqueEspecial);
 
         // Indica que se está pulsando un botón
         void realizarAccion(Accion accion);
@@ -169,7 +176,8 @@ class Personaje : public sf::Drawable {
         // Devuelve el nombre del personaje
         std::string getNombre();
 
-        // Establece el jugador asociado
+        // Establece el jugador asociado. Llama a actualizarIndicadorJugador para
+        // aprovechar y actualizar el indicador de jugador
         void setJugador(Jugador jugador);
 
         // Devuelve el jugador que está controlando al personaje

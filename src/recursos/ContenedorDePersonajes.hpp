@@ -38,7 +38,4 @@ class ContenedorDePersonajes
 
         // Devuelve la única instancia
         static ContenedorDePersonajes * unicaInstancia();
-
 };
-
-

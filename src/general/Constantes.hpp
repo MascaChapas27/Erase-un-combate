@@ -146,30 +146,34 @@ const std::string SECUENCIA_FIN_FICHERO = "####";
 
 // Valor máximo que debería tener el contador de parpadeo para hacer que una animación
 // con gravedad se dé por terminada
-constexpr int MAX_CONTADOR_PARPADEO = 40;
+constexpr unsigned int MAX_CONTADOR_PARPADEO = 40;
 
 // Cada cuántos fotogramas las animaciones con gravedad pasan a ser visibles o invisibles para
 // el efecto de parpadeo
-constexpr int DURACION_PARPADEO = 2;
+constexpr unsigned int DURACION_PARPADEO = 2;
 
 // Máxima velocidad de giro de una partícula en cualquier dirección
 constexpr double MAX_VELOCIDAD_GIRO_PART = 10;
 
 // Máxima velocidad en cualquier eje de una partícula pequeña
-constexpr int MAX_VELOCIDAD_PARTICULA_PEQUE = 3;
+constexpr unsigned int MAX_VELOCIDAD_PARTICULA_PEQUE = 3;
 
 // Máxima velocidad en cualquier eje de una partícula mediana
-constexpr int MAX_VELOCIDAD_PARTICULA_MEDIA = 6;
+constexpr unsigned int MAX_VELOCIDAD_PARTICULA_MEDIA = 6;
 
 // Máxima velocidad en cualquier eje de una partícula súper
-constexpr int MAX_VELOCIDAD_PARTICULA_SUPER = 8;
+constexpr unsigned int MAX_VELOCIDAD_PARTICULA_SUPER = 8;
 
 // Cómo de desplazada está la animación del polvo en el eje X con respecto al centro del personaje
-constexpr int OFFSET_POLVO = 15;
+constexpr unsigned int OFFSET_POLVO = 15;
 
 // El offset del polvo se multiplica por esto cuando el personaje está frenando porque si no
 // se ve feo (el polvo se junta mucho con el personaje)
 constexpr float MULTIPLO_OFFSET_POLVO = 2.2f;
+
+// La cantidad de píxeles que hay entre un personaje y el indicador
+// de jugador que se coloca encima
+constexpr unsigned int OFFSET_PERSONAJE_INDICADOR_JUGADOR = 3;
 
 // Cuánto se agrandan o disminuyen las animaciones agrandables cada fotograma
 constexpr double TASA_CRECIMIENTO_ANIMACION_AGRANDABLE = 0.1;
@@ -179,15 +183,15 @@ constexpr sf::Vector2f POSICION_CARTELES_COMBATE = sf::Vector2f(VENTANA_ANCHURA/
 
 // El número de partículas lineales que aparecen cuando un personaje es golpeado
 // con un ataque peque
-constexpr int NUM_PARTICULAS_LINEALES_ATAQUE_PEQUE = 2;
+constexpr unsigned int NUM_PARTICULAS_LINEALES_ATAQUE_PEQUE = 2;
 
 // El número de partículas lineales que aparecen cuando un personaje es golpeado
 // con un ataque medio
-constexpr int NUM_PARTICULAS_LINEALES_ATAQUE_MEDIO = 3;
+constexpr unsigned int NUM_PARTICULAS_LINEALES_ATAQUE_MEDIO = 3;
 
 // El número de píxeles que se mueven las partículas lineales que aparecen cuando
 // un personaje es golpeado por un ataque peque
-constexpr int LONGITUD_MOVIMIENTO_PARTICULA_LINEAL_ATAQUE_PEQUE = 15;
+constexpr unsigned int LONGITUD_MOVIMIENTO_PARTICULA_LINEAL_ATAQUE_PEQUE = 15;
 
 // El número de píxeles que se mueven las partículas lineales que aparecen cuando
 // un personaje es golpeado por un ataque medio

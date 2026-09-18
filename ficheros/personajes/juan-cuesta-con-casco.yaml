@@ -2,6 +2,7 @@ infoPersonaje:
   vida: 65
   velocidad: 2.4
   salto: 6.8
+  altura: 75
 
 estados:
   quieto:

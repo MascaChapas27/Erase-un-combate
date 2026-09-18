@@ -75,8 +75,10 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
         float velocidadPersonaje = infoPersonaje["velocidad"].as<float>();
 
         float fuerzaSaltoPersonaje = infoPersonaje["salto"].as<float>();
+
+        unsigned int alturaPersonaje = infoPersonaje["altura"].as<unsigned int>();
         
-        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Personaje con " + std::to_string(vidaPersonaje) + " puntos de vida, velocidad de " + std::to_string(velocidadPersonaje) + " y fuerza de salto de " + std::to_string(fuerzaSaltoPersonaje));
+        Bitacora::unicaInstancia()->escribir("Juan Cuesta: Personaje con " + std::to_string(vidaPersonaje) + " puntos de vida, velocidad de " + std::to_string(velocidadPersonaje) + ", fuerza de salto de " + std::to_string(fuerzaSaltoPersonaje) + " y altura de " + std::to_string(alturaPersonaje));
 
         // Ahora se saca la info de los estados del personaje
         for(YAML::const_iterator itEstado = estados.begin(); itEstado != estados.end(); ++itEstado)
@@ -272,7 +274,7 @@ void ContenedorDePersonajes::cargarTodosLosPersonajes()
             Bitacora::unicaInstancia()->escribir("Juan Cuesta: Se terminó de cargar la animación para el estado " + nombreEstado + ".\n");
         }
 
-        personajes.insert(std::pair<std::string, Personaje>(nombrePersonaje, Personaje(animaciones, nombrePersonaje, vidaPersonaje, velocidadPersonaje, fuerzaSaltoPersonaje, accionesAtaqueEspecial)));
+        personajes.insert(std::pair<std::string, Personaje>(nombrePersonaje, Personaje(animaciones, nombrePersonaje, vidaPersonaje, velocidadPersonaje, fuerzaSaltoPersonaje, alturaPersonaje, accionesAtaqueEspecial)));
 
         Bitacora::unicaInstancia()->escribir("Juan Cuesta: Concluye la inserción del personaje " + nombrePersonaje + ".\n");
     }

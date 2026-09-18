@@ -4,6 +4,7 @@
 #include "Utilidades.hpp"
 #include "ContenedorDeEfectos.hpp"
 #include "ContenedorDePersonajes.hpp"
+#include "ContenedorDeRecursos.hpp"
 #include "AnimacionConGravedad.hpp"
 #include "AnimacionParticulaLineal.hpp"
 #include "VentanaPrincipal.hpp"
@@ -13,18 +14,25 @@
 
 Personaje::Personaje(std::unordered_map<EstadoPersonaje, std::shared_ptr<AnimacionPorFotogramas>> animaciones,
                      std::string nombre, int maxPuntosDeVida, float velocidadMaxima, float fuerzaSalto,
-                     std::vector<Accion> accionesAtaqueEspecial)
+                     unsigned int altura, std::vector<Accion> accionesAtaqueEspecial)
 :
 puntosDeVida(maxPuntosDeVida), maxPuntosDeVida(maxPuntosDeVida), medidorSuper(0), velocidadMaxima(velocidadMaxima),
 fuerzaSalto(-fuerzaSalto), nombre(nombre), velocidad({0.f, 0.f}), escalaSprite({1.f, 1.f}), contadorTumbado(0),
 contadorBlanco(0), contadorEsquiveSuper(0), cuentaAtrasCorrer(0), punteroHitstop(nullptr), estado(EstadoPersonaje::QUIETO),
-shader(std::make_shared<sf::Shader>()), animaciones(animaciones), ataqueEspecial(accionesAtaqueEspecial)
+shader(std::make_shared<sf::Shader>()), animaciones(animaciones), indicadorJugador(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/personajes/indicador-j1.png")), ataqueEspecial(accionesAtaqueEspecial)
 {
     if (!shader->loadFromFile("shaders/blendColor.frag", sf::Shader::Type::Fragment))
     {
         Bitacora::unicaInstancia()->escribir("ERROR: no se pudo cargar el shader");
         exit(EXIT_FAILURE);
     }
+
+    // Para asegurar que el indicador de jugador esté encima del personaje en todo
+    // momento, es necesario situarlo correctamente. Para esto, se cambiará su origen
+    float indicadorJugadorOrigenX = indicadorJugador.getTextureRect().size.x/2.f;
+    float indicadorJugadorOrigenY = indicadorJugador.getTextureRect().size.y+altura+OFFSET_PERSONAJE_INDICADOR_JUGADOR;
+
+    indicadorJugador.setOrigin({indicadorJugadorOrigenX,indicadorJugadorOrigenY});
 }
 
 Personaje Personaje::clonar()
@@ -86,6 +94,14 @@ void Personaje::setMedidorSuper(int medidorSuper)
     this->medidorSuper = medidorSuper;
 }
 
+void Personaje::actualizarIndicadorJugador()
+{
+    if(jugador != Jugador::NADIE)
+    {
+        indicadorJugador.setTexture(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/personajes/indicador-j"+std::string(jugador == Jugador::JUGADOR1 ? "1" : "2")+".png"));
+    }
+}
+
 void Personaje::setPosicion(float x, float y)
 {
     animaciones.at(estado)->setPosicion(x, y);
@@ -144,6 +160,7 @@ void Personaje::mover(float offsetX, float offsetY)
 void Personaje::setJugador(Jugador jugador)
 {
     this->jugador = jugador;
+    actualizarIndicadorJugador();
 }
 
 Jugador Personaje::getJugador()
@@ -188,6 +205,9 @@ void Personaje::draw(sf::RenderTarget &target, sf::RenderStates states) const
     }
 
     target.draw(*animaciones.at(estado), states);
+
+    if(jugador != Jugador::NADIE)
+        target.draw(indicadorJugador, states);
 }
 
 void Personaje::moverseIzquierda()
@@ -1188,6 +1208,8 @@ void Personaje::actualizar(sf::Vector2f posicionEnemigo, std::list<std::shared_p
         if (contadorBlanco < 0)
             contadorBlanco = 0;
     }
+
+    indicadorJugador.setPosition(getPosicion());
 }
 
 void Personaje::comprobarColisiones(const std::list<std::shared_ptr<Animacion>> &animaciones, std::list<std::shared_ptr<Animacion>> &efectosInsertados)
