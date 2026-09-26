@@ -612,6 +612,18 @@ constexpr sf::Color COLOR_COMBO_TERMINADO = sf::Color(100.f,100.f,100.f);
 // El movimiento que hace la info del combo cada vez que el combo se continúa
 constexpr sf::Vector2f MOVIMIENTO_INFO_COMBO_CONTINUAR = {0.f,-5.f};
 
+
+/*
+    CONSTANTES PARA LA IA
+*/
+
+// La distancia máxima a la que se tiene que encontrar el personaje
+// manejado por IA del personaje manejado por un jugador para que
+// le pegue
+constexpr float RANGO_ATAQUE_IA = 50.f;
+
+
+
 /*
     CONSTANTES PARA EL ONLINE
 */

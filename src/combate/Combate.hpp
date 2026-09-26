@@ -7,6 +7,7 @@
 #include "AnimacionAgrandable.hpp"
 #include "ConectorOnline.hpp"
 #include "Temporizador.hpp"
+#include "IA.hpp"
 #include <optional>
 #include <SFML/Network.hpp>
 
@@ -24,6 +25,10 @@ class Combate{
 
         // Personaje asignado al jugador 2
         Personaje personajeJugador2;
+
+        // La IA que controla al jugador 2 (en
+        // caso de estar jugando contra la IA)
+        IA IAjugador2;
 
         // GUI para el personaje asignado al jugador 1
         GUIPersonaje GUIJugador1;

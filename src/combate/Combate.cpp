@@ -17,6 +17,7 @@
 Combate::Combate(std::string nombrePersonajeJ1, std::string nombrePersonajeJ2, std::string nombreEscenario, sf::IpAddress direccionIP, bool lider) :
     personajeJugador1(ContenedorDePersonajes::unicaInstancia()->obtenerPersonaje(nombrePersonajeJ1)),
     personajeJugador2(ContenedorDePersonajes::unicaInstancia()->obtenerPersonaje(nombrePersonajeJ2)),
+    IAjugador2(personajeJugador2,personajeJugador1),
     GUIJugador1(personajeJugador1, true), GUIJugador2(personajeJugador2, false),
     escenario(ContenedorDeTexturas::unicaInstancia()->obtener("sprites/escenarios/" + nombreEscenario + ".png")),
     contadorHitstop(0),
@@ -207,7 +208,6 @@ void Combate::recibirEntradaPlayerVSPlayerOffline()
 
 void Combate::recibirEntradaPlayerVSBot()
 {
-
     sf::RenderWindow *ventana = VentanaPrincipal::unicaInstancia();
 
     while (const std::optional evento = ventana->pollEvent())
@@ -236,46 +236,7 @@ void Combate::recibirEntradaPlayerVSBot()
 
     if ((dynamic_cast<AnimacionAgrandable *>(cartelTodoListo.get()))->haTerminado())
     {
-        if (std::rand() % 2 == 0)
-        {
-            personajeJugador2.realizarAccion(Accion::ATACAR);
-        }
-        else
-        {
-            personajeJugador2.detenerAccion(Accion::ATACAR);
-        }
-
-        if (std::rand() % 10 == 0)
-        {
-            personajeJugador2.realizarAccion(Accion::ARRIBA);
-        }
-        else
-        {
-            personajeJugador2.detenerAccion(Accion::ARRIBA);
-        }
-
-        if (std::rand() % 8 == 0)
-        {
-            if (personajeJugador2.isMirandoDerecha())
-            {
-                personajeJugador2.realizarAccion(Accion::DERECHA);
-                personajeJugador2.detenerAccion(Accion::IZQUIERDA);
-            }
-            else
-            {
-                personajeJugador2.realizarAccion(Accion::IZQUIERDA);
-                personajeJugador2.detenerAccion(Accion::DERECHA);
-            }
-        }
-
-        if (std::rand() % 8 == 0)
-        {
-            personajeJugador2.realizarAccion(Accion::ABAJO);
-        }
-        else
-        {
-            personajeJugador2.detenerAccion(Accion::ABAJO);
-        }
+        IAjugador2.actualizarIA();
     }
 }
 
@@ -411,12 +372,14 @@ void Combate::actualizarFotogramaNormal(std::list<std::shared_ptr<Animacion>> &e
         cartelAPelear->actualizar(efectos);
     }
 
-    recibirEntradaPlayerVSPlayerOffline();
+    // recibirEntradaPlayerVSPlayerOffline();
 
     // if (conector.has_value())
     //     recibirEntradaPlayerVSPlayerOnline();
     // else
     //     recibirEntradaPlayerVSPlayerOffline();
+
+    recibirEntradaPlayerVSBot();
 
     // SEGUNDO PASO: ACTUALIZAR PERSONAJES, EFECTOS, GUIS, ESCENARIO, VENTANA Y TEMPORIZADOR
 
