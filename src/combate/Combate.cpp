@@ -372,14 +372,14 @@ void Combate::actualizarFotogramaNormal(std::list<std::shared_ptr<Animacion>> &e
         cartelAPelear->actualizar(efectos);
     }
 
-    // recibirEntradaPlayerVSPlayerOffline();
+    recibirEntradaPlayerVSPlayerOffline();
 
     // if (conector.has_value())
     //     recibirEntradaPlayerVSPlayerOnline();
     // else
     //     recibirEntradaPlayerVSPlayerOffline();
 
-    recibirEntradaPlayerVSBot();
+    // recibirEntradaPlayerVSBot();
 
     // SEGUNDO PASO: ACTUALIZAR PERSONAJES, EFECTOS, GUIS, ESCENARIO, VENTANA Y TEMPORIZADOR
 
