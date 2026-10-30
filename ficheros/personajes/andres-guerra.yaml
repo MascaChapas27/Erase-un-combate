@@ -234,3 +234,43 @@ estados:
     sonido:
       tipo: "No repetir"
       fotogramas: [0]
+  
+  ataque-normal-1:
+    bucle: "Sin bucle"
+    rectangulos:
+      - - posX: 52
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+      - - posX: 55
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+        - posX: 78
+          posY: 63
+          ancho: 30
+          alto: 8
+          ataque: 2
+          bajo: false
+      - - posX: 55
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+        - posX: 78
+          posY: 63
+          ancho: 30
+          alto: 8
+          ataque: 2
+          bajo: false
+      - - posX: 54
+          posY: 27
+          ancho: 26
+          alto: 73
+          ataque: 0
+    fotogramas: [0,0,0,0,0,1,1,2,2,2,2,3,3,3]
+    sonido:
+      tipo: "No repetir"
+      fotogramas: [5]
